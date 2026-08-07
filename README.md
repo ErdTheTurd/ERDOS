@@ -1,8 +1,8 @@
 # ErdOS
 
-**Phosphor Glass** desktop environment for **Windows**, **macOS**, and **Linux**.
+**Phosphor Glass** desktop for **Windows**, **macOS**, and **Linux** — a windowed OS with ERDAI coaching, daily quests, streaks, and rare drops.
 
-Runs as a **normal app window** — it never replaces or locks your host OS.
+Runs as a **normal app window** — never replaces your host OS.
 
 [![Release](https://img.shields.io/github/v/release/ErdTheTurd/ERDOS?style=flat-square)](https://github.com/ErdTheTurd/ERDOS/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/ErdTheTurd/ERDOS/total?style=flat-square)](https://github.com/ErdTheTurd/ERDOS/releases)
@@ -49,8 +49,8 @@ npm run dist:linux   # AppImage + deb
 Push a version tag to publish via GitHub Actions:
 
 ```bash
-git tag v1.3.0
-git push origin v1.3.0
+git tag v1.4.0
+git push origin v1.4.0
 ```
 
 ## What's inside

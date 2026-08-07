@@ -159,6 +159,14 @@ const windowManager = (() => {
     app.mount(body, opts);
     focus(id);
     ErdOSProgress.onAppLaunch(appId);
+    const chip = document.getElementById('xp-chip');
+    const rect = chip?.getBoundingClientRect();
+    ErdOSJuice?.burst(
+      rect ? rect.left + rect.width / 2 : window.innerWidth / 2,
+      rect ? rect.top : 40,
+      { count: 8, color: '#2fe0b8', spread: 40 }
+    );
+    ErdOSJuice?.hitCombo();
     return id;
   }
 
