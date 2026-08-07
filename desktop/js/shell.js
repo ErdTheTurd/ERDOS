@@ -52,8 +52,12 @@
   function refreshHud() {
     const p = ErdOSProgress.get() || {};
     const lv = ErdOSProgress.levelFromXp(p.xp || 0);
-    streakChip.textContent = `Day ${p.streak || 1}`;
-    xpChip.textContent = `Lv ${lv.level}`;
+    streakChip.textContent = `Day ${p.streak || 0}`;
+    const xpLevel = document.getElementById('xp-level');
+    const xpFill = document.getElementById('xp-fill');
+    if (xpLevel) xpLevel.textContent = `Lv ${lv.level}`;
+    else xpChip.textContent = `Lv ${lv.level}`;
+    if (xpFill) xpFill.style.width = `${Math.min(100, (lv.into / lv.need) * 100)}%`;
     refreshQuestUI();
     refreshNotif();
   }
@@ -63,9 +67,12 @@
     const fill = document.getElementById('quest-fill');
     const count = document.getElementById('quest-count');
     const list = document.getElementById('quest-list');
+    const dailyList = document.getElementById('daily-list');
+    const coach = document.getElementById('erdai-coach');
     if (!fill) return;
     fill.style.width = `${(q.done / q.total) * 100}%`;
-    count.textContent = q.completed ? 'Quest complete!' : `${q.done} / ${q.total}`;
+    count.textContent = q.completed ? 'First Boot complete' : `First Boot · ${q.done} / ${q.total}`;
+    if (coach) coach.textContent = ErdOSProgress.coachLine();
     const items = [
       ['openBrowser', 'Open the Browser'],
       ['chatErdai', 'Chat with ERDAI'],
@@ -80,6 +87,17 @@
           `<li class="${quest[k] ? 'done' : ''}"><span class="quest-check">${quest[k] ? '✓' : ''}</span>${label}</li>`
       )
       .join('');
+    const dailies = ErdOSProgress.get()?.daily?.quests || [];
+    if (dailyList) {
+      dailyList.innerHTML = dailies.length
+        ? dailies
+            .map(
+              (d) =>
+                `<li class="${d.done ? 'done' : ''}"><span class="quest-check">${d.done ? '✓' : `${d.progress || 0}/${d.target}`}</span>${d.label}</li>`
+            )
+            .join('')
+        : '<li><span class="quest-check"></span>No dailies yet — reboot tomorrow</li>';
+    }
   }
 
   function refreshNotif() {
@@ -93,12 +111,34 @@
       })
       .join('');
     const q = ErdOSProgress.questProgress();
+    const dailies = (p.daily?.quests || []).filter((d) => !d.done);
     ErdOSUI.setNotifContent(`
-      <div><strong>Streak</strong><div class="muted">Day ${p.streak || 0} · best ${p.longestStreak || 0}</div></div>
-      <div><strong>Level ${lv.level}</strong><div class="muted">${p.xp || 0} XP · ${lv.need - lv.into} to next</div></div>
+      <div><strong>ERDAI</strong><div class="muted">${ErdOSUI.escapeHtml(ErdOSProgress.coachLine())}</div></div>
+      <div><strong>Streak</strong><div class="muted">Day ${p.streak || 0} · best ${p.longestStreak || 0} · freezes ${p.streakFreeze || 0}</div></div>
+      <div><strong>Level ${lv.level}</strong><div class="muted">${p.xp || 0} XP · ${lv.need - lv.into} to next · rare ${p.launchesSinceRare || 0}/22</div></div>
+      <div><strong>Daily</strong><div class="muted">${p.daily?.cleared ? 'Cleared ✓' : `${dailies.length} left`}</div></div>
       <div><strong>Quest</strong><div class="muted">${q.completed ? 'Complete' : `${q.done}/${q.total} steps`}</div></div>
       <div><strong>Recent trophies</strong>${recent || '<div class="muted">None yet</div>'}</div>
     `);
+  }
+
+  function showCoachBubble() {
+    const bubble = document.getElementById('coach-bubble');
+    if (!bubble) return;
+    const hook = ErdOSProgress.nextHook();
+    bubble.hidden = false;
+    bubble.innerHTML = `
+      <strong>ERDAI</strong>
+      <div>${ErdOSUI.escapeHtml(ErdOSProgress.coachLine())}</div>
+      <button type="button" id="coach-go">${ErdOSUI.escapeHtml(hook.label)} →</button>
+    `;
+    document.getElementById('coach-go')?.addEventListener('click', () => {
+      bubble.hidden = true;
+      launch(hook.app);
+    });
+    setTimeout(() => {
+      if (!bubble.hidden) bubble.hidden = true;
+    }, 14000);
   }
 
   function launch(appId) {
@@ -278,6 +318,11 @@
 
   streakChip.addEventListener('click', () => showQuest(true));
   xpChip.addEventListener('click', () => launch('trophies'));
+  document.getElementById('quest-do-next')?.addEventListener('click', () => {
+    const hook = ErdOSProgress.nextHook();
+    showQuest(false);
+    launch(hook.app);
+  });
   btnClock.addEventListener('click', (e) => {
     e.stopPropagation();
     refreshNotif();
@@ -336,9 +381,11 @@
       boot.remove();
       refreshHud();
       const fortune = await ErdOSProgress.dailyFortune();
-      ErdOSUI.toast('Daily fortune', fortune, 'info');
-      if (!ErdOSProgress.get()?.quest?.completed) {
-        setTimeout(() => showQuest(true), 600);
+      ErdOSUI.toast('ERDAI fortune', fortune, 'info');
+      setTimeout(() => showCoachBubble(), 700);
+      const p = ErdOSProgress.get();
+      if (!p?.quest?.completed || !(p.daily?.cleared)) {
+        setTimeout(() => showQuest(true), 1600);
       }
       windowManager.open('erdai');
     }, 520);

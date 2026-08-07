@@ -37,19 +37,23 @@
     <div id="quest-overlay" class="quest-overlay" hidden>
       <div class="quest-panel">
         <div class="quest-head">
-          <strong>First Boot Quest</strong>
+          <strong id="quest-title">Quests</strong>
           <button type="button" id="quest-close" class="win-btn" aria-label="Close">×</button>
         </div>
+        <p id="erdai-coach" class="erdai-coach"></p>
         <div class="quest-meter"><div id="quest-fill" class="quest-fill"></div></div>
         <p id="quest-count" class="quest-count">0 / 5</p>
         <ul id="quest-list" class="quest-list"></ul>
+        <h4 class="quest-sub">Daily</h4>
+        <ul id="daily-list" class="quest-list"></ul>
+        <button type="button" id="quest-do-next" class="app-btn" style="width:100%;margin-top:12px">Do next hook</button>
       </div>
     </div>
 
     <div id="start-menu" class="start-menu" hidden>
       <div class="start-brand">
         <span class="start-logo">ErdOS</span>
-        <span class="start-tag">Phosphor Glass · v1.1</span>
+        <span class="start-tag">Phosphor Glass · v1.2</span>
       </div>
       <div class="start-search-wrap">
         <input id="start-search" type="search" placeholder="Search apps…" autocomplete="off" />
@@ -76,6 +80,7 @@
     </div>
 
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+    <div id="coach-bubble" class="coach-bubble" hidden></div>
 
     <footer id="taskbar" class="taskbar">
       <button type="button" id="btn-start" class="taskbar-start" aria-label="Start menu">
@@ -86,7 +91,10 @@
       <div id="taskbar-apps" class="taskbar-apps"></div>
       <div class="taskbar-tray">
         <button type="button" id="streak-chip" class="streak-chip" title="Daily streak">Day 1</button>
-        <button type="button" id="xp-chip" class="xp-chip" title="XP and level">Lv 1</button>
+        <button type="button" id="xp-chip" class="xp-chip" title="XP and level">
+          <span id="xp-level">Lv 1</span>
+          <span class="xp-bar"><span id="xp-fill" class="xp-fill"></span></span>
+        </button>
         <button type="button" id="btn-clock" class="clock-btn">
           <time id="clock" class="clock"></time>
         </button>
