@@ -49,8 +49,8 @@ npm run dist:linux   # AppImage + deb
 Push a version tag to publish via GitHub Actions:
 
 ```bash
-git tag v1.2.0
-git push origin v1.2.0
+git tag v1.3.0
+git push origin v1.3.0
 ```
 
 ## What's inside

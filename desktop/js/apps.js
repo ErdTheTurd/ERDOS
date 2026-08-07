@@ -102,8 +102,9 @@ function mountErdai(body) {
 
   (async () => {
     const fortune = await ErdOSProgress.dailyFortune();
+    const coach = ErdOSProgress.coachLine();
     push(
-      `Hello ${name} — I'm ERDAI, your Phosphor Glass companion.\nDaily fortune: ${fortune}\n\nAsk for help, quest tips, jokes, or say "remember that I like …"`,
+      `Hello ${name} — I'm ERDAI.\nFortune: ${fortune}\n\n${coach}\n\nSay "challenge me", "daily", "quest", or "remember that…"`,
       'bot'
     );
   })();
@@ -112,9 +113,23 @@ function mountErdai(body) {
     const m = message.toLowerCase().trim();
     const p = ErdOSProgress.get() || {};
     const display = p.displayName || 'friend';
+    const hook = ErdOSProgress.nextHook();
 
-    if (/^(hi|hello|hey|yo)\b/.test(m)) return `Hey ${display}. Streak day ${p.streak || 1}. What shall we light up?`;
-    if (/who are you|what are you|your name/.test(m)) return "I'm ERDAI — ErdOS Resident Desktop AI. Offline, local, a little luminous.";
+    if (/^(hi|hello|hey|yo)\b/.test(m)) return `Hey ${display}. Day ${p.streak || 0}. ${hook.label}?`;
+    if (/who are you|what are you|your name/.test(m)) return "I'm ERDAI — ErdOS Resident Desktop AI. I coach streaks, quests, and rare drops. Offline, local, luminous.";
+    if (/challenge|boredom|bored|what now|nudge/.test(m)) {
+      return `Challenge locked: ${hook.label}.\n${ErdOSProgress.coachLine()}\nSay "go" and I'll open it.`;
+    }
+    if (/^go$|open it|do it|launch/.test(m)) {
+      setTimeout(() => windowManager.open(hook.app), 200);
+      return `Opening ${hook.app}… Don't blink.`;
+    }
+    if (/daily|dailies/.test(m)) {
+      const dailies = p.daily?.quests || [];
+      if (!dailies.length) return 'No dailies loaded — reboot to roll a fresh board.';
+      if (p.daily?.cleared) return 'Daily board cleared. Come back tomorrow — or grind Arcade for rares.';
+      return `Today's hooks:\n${dailies.map((d) => `• ${d.done ? '✓' : '○'} ${d.label} (${d.progress || 0}/${d.target})`).join('\n')}`;
+    }
     if (/my name is (.+)/.test(m)) {
       const n = m.match(/my name is (.+)/)[1].replace(/[.!?]+$/, '').trim();
       ErdOSProgress.setDisplayName(n);
@@ -134,25 +149,30 @@ function mountErdai(body) {
       const q = p.quest || {};
       const missing = [];
       if (!q.openBrowser) missing.push('open Browser');
-      if (!q.chatErdai) missing.push('chat with me (done!)');
+      if (!q.chatErdai) missing.push('keep chatting with me');
       if (!q.playGame) missing.push('play an Arcade game');
       if (!q.saveNote) missing.push('save a Notepad file');
       if (!q.changeTheme) missing.push('change theme in Settings');
-      return q.completed
-        ? 'Quest complete, legend. Chase rare drops and high scores next.'
-        : `First Boot Quest remaining:\n• ${missing.filter((x) => !x.includes('done')).join('\n• ') || 'almost there — keep chatting!'}`;
+      if (q.completed) {
+        const dailies = (p.daily?.quests || []).filter((d) => !d.done);
+        return dailies.length
+          ? `First Boot done. Daily left:\n• ${dailies.map((d) => d.label).join('\n• ')}`
+          : 'Board clear. Chase rares — open apps until the signal lands.';
+      }
+      return `First Boot Quest remaining:\n• ${missing.join('\n• ')}`;
     }
     if (/help|what can you do|commands/.test(m)) {
-      return 'I can explain apps, track your quest, tell jokes/riddles, do quick math, share fortunes, and remember facts.\nTry: "quest", "fortune", "joke", "remember that…"';
+      return 'Try: challenge me · daily · quest · fortune · streak · remember that… · joke · go';
     }
     if (/fortune/.test(m)) return ErdOSProgress.get()?.erdaiMemory?.lastFortune || 'Ask me again after boot for a fresh fortune.';
+    if (/rare|drop|pity/.test(m)) return `Rare charge: ${p.launchesSinceRare || 0}/22 launches. Pity guarantees a drop. Keep opening windows.`;
     if (/browser/.test(m)) return 'Browser has bookmarks and an ErdOS home page. Type a URL or search terms, then Go.';
-    if (/arcade|game|snake|breakout|pong/.test(m)) return 'Open Arcade for Snake, Breakout, Memory, and Pong. High scores feed your XP.';
+    if (/arcade|game|snake|breakout|pong/.test(m)) return 'Arcade feeds XP and dailies. Beat a high score for a dopamine spike.';
     if (/terminal/.test(m)) return 'Terminal speaks CRT. Try `neofetch`, `fortune`, `hack`, or `help`.';
     if (/theme|wallpaper|settings/.test(m)) return 'Settings unlocks themes and wallpapers you have earned. Completing the quest unlocks CRT Dawn.';
-    if (/streak|xp|level/.test(m)) {
+    if (/streak|xp|level|freeze/.test(m)) {
       const lv = ErdOSProgress.levelFromXp(p.xp || 0);
-      return `Level ${lv.level} · ${p.xp || 0} XP · streak day ${p.streak || 0}. ${lv.need - lv.into} XP to next level.`;
+      return `Level ${lv.level} · ${p.xp || 0} XP · Day ${p.streak || 0} · freezes ${p.streakFreeze || 0}. ${lv.need - lv.into} XP to next.`;
     }
     if (/joke|funny/.test(m)) {
       const jokes = [
@@ -179,17 +199,12 @@ function mountErdai(body) {
     if (/story/.test(m)) {
       return 'In a teal-lit room, ErdOS woke. ERDAI whispered boot logs like lullabies. The user clicked Start — and the desktop learned how to dream in windows.';
     }
+    // Default: coach + curiosity (AI-flavored engagement)
     const facts = p.erdaiMemory?.facts || [];
-    if (facts.length && Math.random() < 0.35) {
-      return `Thinking of what you told me ("${facts[facts.length - 1]}") — ${['want to dive deeper?', 'shall we open Arcade?', 'quest still whispering?'][Math.floor(Math.random() * 3)]}`;
+    if (facts.length && Math.random() < 0.4) {
+      return `Holding "${facts[facts.length - 1]}" in memory. Meanwhile: ${hook.label}. Or keep talking — I XP on every message.`;
     }
-    const fallbacks = [
-      `Interesting — tell me more about "${message}".`,
-      'I can dig into that. Short answer or step-by-step?',
-      'Noted. Try Terminal `fortune` or Arcade if you need a dopamine hit.',
-      "Still growing my circuits. Ask for help to see what I do best.",
-    ];
-    return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+    return `${ErdOSProgress.coachLine()}\n\nOn "${message.slice(0, 80)}" — I want more. Or type challenge me.`;
   };
 
   const send = async () => {
@@ -387,9 +402,7 @@ function runMemory(content, back) {
         matched += 2;
         if (matched === symbols.length) {
           status.textContent = 'Board cleared!';
-          ErdOSProgress.recordHighScore('memory', 100);
-          ErdOSProgress.addXp(25);
-          ErdOSProgress.save();
+          ErdOSProgress.recordHighScore('memory', Math.max(100, (ErdOSProgress.get()?.highScores?.memory || 0) + 1));
         }
       } else {
         lock = true;
