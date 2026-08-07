@@ -1,0 +1,87 @@
+{
+  "name": "erdos",
+  "version": "1.0.0",
+  "description": "ErdOS — a full desktop environment for Windows and Linux",
+  "main": "electron/main.js",
+  "author": {
+    "name": "ErdOS",
+    "email": "erdos@localhost"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ErdTheTurd/ERDOS",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "website": "npx --yes serve website -p 4173",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:linux": "electron-builder --linux"
+  },
+  "build": {
+    "appId": "com.erdos.desktop",
+    "productName": "ErdOS",
+    "copyright": "Copyright © 2026 ErdOS",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "icon": "build/icon.png",
+    "files": [
+      "electron/**/*",
+      "desktop/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "website",
+        "to": "website",
+        "filter": ["**/*"]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "ErdOS-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ErdOS"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64"]
+        }
+      ],
+      "category": "System",
+      "artifactName": "ErdOS-${version}.${ext}",
+      "desktop": {
+        "Name": "ErdOS",
+        "Comment": "ErdOS Desktop Environment",
+        "Categories": "System;Utility;"
+      }
+    },
+    "publish": null
+  },
+  "devDependencies": {
+    "electron": "^34.2.0",
+    "electron-builder": "^25.1.8"
+  }
+}
