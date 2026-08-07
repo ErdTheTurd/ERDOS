@@ -11,12 +11,10 @@
 
   const hint = document.getElementById('detect-hint');
   const primary = document.getElementById('btn-primary-download');
-  const navDl = document.getElementById('nav-download');
   const dlWin = document.getElementById('dl-win');
   const dlMac = document.getElementById('dl-mac');
   const dlApp = document.getElementById('dl-appimage');
   const dlDeb = document.getElementById('dl-deb');
-  const liveStreak = document.getElementById('live-streak');
 
   function assetUrls(version) {
     return {
@@ -27,58 +25,36 @@
     };
   }
 
-  function clearRec() {
-    [dlWin, dlMac, dlApp, dlDeb].forEach((el) => el?.classList.remove('is-recommended'));
-  }
-
   function apply(version) {
     const urls = assetUrls(version);
     if (dlWin) dlWin.href = urls.win;
     if (dlMac) dlMac.href = urls.mac;
     if (dlApp) dlApp.href = urls.appimage;
     if (dlDeb) dlDeb.href = urls.deb;
-    clearRec();
-
-    let url = `https://github.com/${OWNER}/${REPO}/releases/latest`;
-    let label = 'Download ErdOS';
-    let tip = '';
 
     if (isWin) {
-      url = urls.win;
-      label = 'Download for Windows';
-      tip = 'Windows · x64 installer';
+      primary.href = urls.win;
+      primary.textContent = 'Download for Windows';
       dlWin?.classList.add('is-recommended');
+      hint.textContent = 'Recommended for your system: Windows installer';
     } else if (isMac) {
-      url = urls.mac;
-      label = 'Download for Mac';
-      tip = 'macOS · universal DMG';
+      primary.href = urls.mac;
+      primary.textContent = 'Download for Mac';
       dlMac?.classList.add('is-recommended');
+      hint.textContent = 'Recommended for your system: macOS DMG (opens in a normal window)';
     } else if (isLinux) {
-      url = urls.appimage;
-      label = 'Download for Linux';
-      tip = 'Linux · AppImage';
+      primary.href = urls.appimage;
+      primary.textContent = 'Download for Linux';
       dlApp?.classList.add('is-recommended');
+      hint.textContent = 'Recommended for your system: Linux AppImage (or grab the .deb)';
     } else {
-      tip = 'Windows · macOS · Linux';
+      primary.href = `https://github.com/${OWNER}/${REPO}/releases/latest`;
+      primary.textContent = 'View downloads';
+      hint.textContent = 'Pick Windows, macOS, or Linux below.';
     }
-
-    if (primary) {
-      primary.href = url;
-      primary.textContent = label;
-    }
-    if (navDl) navDl.href = url;
-    if (hint) hint.textContent = tip;
   }
 
   apply(FALLBACK_VERSION);
-
-  if (liveStreak) {
-    let n = 7;
-    setInterval(() => {
-      n = n >= 99 ? 3 : n + 1;
-      liveStreak.textContent = String(n);
-    }, 2200);
-  }
 
   fetch(`https://api.github.com/repos/${OWNER}/${REPO}/releases/latest`)
     .then((r) => (r.ok ? r.json() : null))
@@ -90,7 +66,8 @@
 
       const winUrl = find((a) => /\.exe$/i.test(a.name) && /Setup/i.test(a.name))
         || find((a) => /\.exe$/i.test(a.name));
-      const macUrl = find((a) => /\.dmg$/i.test(a.name));
+      const macUrl = find((a) => /\.dmg$/i.test(a.name))
+        || find((a) => /mac.*\.zip$/i.test(a.name));
       const appUrl = find((a) => /\.AppImage$/i.test(a.name));
       const debUrl = find((a) => /\.deb$/i.test(a.name));
 
@@ -99,18 +76,20 @@
       if (appUrl && dlApp) dlApp.href = appUrl;
       if (debUrl && dlDeb) dlDeb.href = debUrl;
 
-      if (isWin && winUrl) {
-        primary.href = winUrl;
-        if (navDl) navDl.href = winUrl;
-      } else if (isMac && macUrl) {
-        primary.href = macUrl;
-        if (navDl) navDl.href = macUrl;
-      } else if (isLinux && appUrl) {
-        primary.href = appUrl;
-        if (navDl) navDl.href = appUrl;
-      }
+      if (isWin && winUrl) primary.href = winUrl;
+      else if (isMac && macUrl) primary.href = macUrl;
+      else if (isLinux && appUrl) primary.href = appUrl;
 
-      if (hint && hint.textContent) hint.textContent += ` · v${version}`;
+      hint.textContent = (hint.textContent || '') + ` · latest ${version}`;
     })
     .catch(() => {});
+
+  const stage = document.querySelector('.mock-desktop');
+  if (stage) {
+    let t = 0;
+    setInterval(() => {
+      t += 1;
+      stage.style.setProperty('--drift', `${Math.sin(t / 20) * 6}px`);
+    }, 40);
+  }
 })();
