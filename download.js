@@ -25,32 +25,37 @@
     };
   }
 
+  function clearRec() {
+    [dlWin, dlMac, dlApp, dlDeb].forEach((el) => el?.classList.remove('is-recommended'));
+  }
+
   function apply(version) {
     const urls = assetUrls(version);
     if (dlWin) dlWin.href = urls.win;
     if (dlMac) dlMac.href = urls.mac;
     if (dlApp) dlApp.href = urls.appimage;
     if (dlDeb) dlDeb.href = urls.deb;
+    clearRec();
 
     if (isWin) {
       primary.href = urls.win;
       primary.textContent = 'Download for Windows';
       dlWin?.classList.add('is-recommended');
-      hint.textContent = 'Recommended for your system: Windows installer';
+      if (hint) hint.textContent = 'Windows · x64 installer';
     } else if (isMac) {
       primary.href = urls.mac;
       primary.textContent = 'Download for Mac';
       dlMac?.classList.add('is-recommended');
-      hint.textContent = 'Recommended for your system: macOS DMG (opens in a normal window)';
+      if (hint) hint.textContent = 'macOS · universal DMG';
     } else if (isLinux) {
       primary.href = urls.appimage;
       primary.textContent = 'Download for Linux';
       dlApp?.classList.add('is-recommended');
-      hint.textContent = 'Recommended for your system: Linux AppImage (or grab the .deb)';
+      if (hint) hint.textContent = 'Linux · AppImage';
     } else {
       primary.href = `https://github.com/${OWNER}/${REPO}/releases/latest`;
-      primary.textContent = 'View downloads';
-      hint.textContent = 'Pick Windows, macOS, or Linux below.';
+      primary.textContent = 'Download';
+      if (hint) hint.textContent = 'Windows · macOS · Linux';
     }
   }
 
@@ -66,8 +71,7 @@
 
       const winUrl = find((a) => /\.exe$/i.test(a.name) && /Setup/i.test(a.name))
         || find((a) => /\.exe$/i.test(a.name));
-      const macUrl = find((a) => /\.dmg$/i.test(a.name))
-        || find((a) => /mac.*\.zip$/i.test(a.name));
+      const macUrl = find((a) => /\.dmg$/i.test(a.name));
       const appUrl = find((a) => /\.AppImage$/i.test(a.name));
       const debUrl = find((a) => /\.deb$/i.test(a.name));
 
@@ -80,7 +84,7 @@
       else if (isMac && macUrl) primary.href = macUrl;
       else if (isLinux && appUrl) primary.href = appUrl;
 
-      hint.textContent = (hint.textContent || '') + ` · latest ${version}`;
+      if (hint && hint.textContent) hint.textContent += ` · v${version}`;
     })
     .catch(() => {});
 
@@ -89,7 +93,7 @@
     let t = 0;
     setInterval(() => {
       t += 1;
-      stage.style.setProperty('--drift', `${Math.sin(t / 20) * 6}px`);
-    }, 40);
+      stage.style.setProperty('--drift', `${Math.sin(t / 28) * 4}px`);
+    }, 50);
   }
 })();
