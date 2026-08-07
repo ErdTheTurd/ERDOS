@@ -3,75 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ErdOS</title>
-  <meta name="description" content="ErdOS — a windowed Phosphor Glass desktop for Windows, macOS, and Linux. Download free." />
+  <title>ErdOS — Download Phosphor Glass Desktop</title>
+  <meta name="description" content="Download ErdOS for Windows, macOS, and Linux. A windowed Phosphor Glass desktop with Browser, Arcade, Terminal, and ERDAI — it never replaces your OS." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="nav">
-    <a class="nav-brand" href="#top">ErdOS</a>
-    <a class="nav-dl" id="nav-download" href="https://github.com/ErdTheTurd/ERDOS/releases/latest">Download</a>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <div class="scan" aria-hidden="true"></div>
+
+  <header class="top">
+    <a class="brand" href="#top">ErdOS</a>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#apps">Apps</a>
+      <a href="#download">Download</a>
+      <a href="https://github.com/ErdTheTurd/ERDOS" target="_blank" rel="noopener">GitHub</a>
+    </nav>
   </header>
 
   <main id="top">
-    <section class="hero" aria-label="ErdOS">
-      <div class="hero-visual" aria-hidden="true">
-        <div class="hero-glow"></div>
-        <div class="hero-grid"></div>
-        <div class="hero-desktop">
-          <div class="hd-win">
-            <div class="hd-bar"><i></i><i></i><i></i><span>ERDAI</span></div>
-            <div class="hd-chat">
-              <p class="bot">Keep Day <em id="live-streak">7</em> lit. One arcade run and you’re golden.</p>
-              <p class="user">challenge me</p>
-              <p class="bot pulse">Daily drop primed. Open Arcade — rare signal inbound.</p>
-            </div>
+    <section class="hero">
+      <p class="hero-brand">ErdOS</p>
+      <h1>Phosphor Glass desktop.</h1>
+      <p class="hero-lead">A downloadable OS-style environment for Windows, macOS, and Linux — runs in a normal app window (never overrides your OS). Retro chrome, modern motion, Browser, Arcade, Terminal, and ERDAI onboard.</p>
+      <div class="hero-cta">
+        <a id="btn-primary-download" class="btn primary" href="https://github.com/ErdTheTurd/ERDOS/releases/latest">Download ErdOS</a>
+        <a class="btn ghost" href="#apps">See what's inside</a>
+      </div>
+      <p id="detect-hint" class="detect-hint">Detecting your system…</p>
+      <div class="hero-stage" role="img" aria-label="ErdOS desktop preview">
+        <div class="mock-desktop">
+          <div class="mock-wallpaper"></div>
+          <div class="mock-window one">
+            <div class="mock-bar"><span>ERDAI</span><span class="mock-ctrls">─ □ ×</span></div>
+            <div class="mock-body">Daily fortune ready.<br/>Streak day glowing.</div>
           </div>
-          <div class="hd-dock">
-            <span class="orb"></span>
-            <span>ErdOS</span>
-            <span class="chip">Lv 12 · streak hot</span>
+          <div class="mock-window two">
+            <div class="mock-bar"><span>Arcade</span><span class="mock-ctrls">─ □ ×</span></div>
+            <div class="mock-body arcade"></div>
+          </div>
+          <div class="mock-taskbar">
+            <span class="mock-start">● ErdOS</span>
+            <span class="mock-chip">Day 7 · Lv 5</span>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="hero-copy">
-        <p class="brand">ErdOS</p>
-        <h1>The desktop that pulls you back.</h1>
-        <p class="lead">Phosphor Glass for Windows, Mac, and Linux — a windowed OS with ERDAI, streaks, and rare drops.</p>
-        <div class="cta">
-          <a id="btn-primary-download" class="btn" href="https://github.com/ErdTheTurd/ERDOS/releases/latest">Download ErdOS</a>
-        </div>
-        <p id="detect-hint" class="hint"></p>
+    <section id="features" class="section">
+      <h2>A desktop inside a window.</h2>
+      <p class="section-lead">ErdOS is an Electron app you install like any other. On Mac, Windows, or Linux it opens in its own window — your real desktop, Dock, and menu bar stay untouched.</p>
+      <div class="feature-rows">
+        <article>
+          <h3>Phosphor Glass UI</h3>
+          <p>Chunky retro titlebars, CRT boot bloom, glass panels, and springy window motion.</p>
+        </article>
+        <article>
+          <h3>Habit loops that respect you</h3>
+          <p>Streaks, XP, quests, and rare wallpaper drops — delightful, local, no accounts or ads.</p>
+        </article>
+        <article>
+          <h3>ERDAI onboard</h3>
+          <p>Offline assistant with memory, fortunes, quest tips, and a personality that fits the desktop.</p>
+        </article>
       </div>
     </section>
 
-    <section class="strip" id="download">
-      <h2>Get it</h2>
-      <p class="strip-lead">One click for your machine. Unsigned builds — Windows: More info → Run anyway. Mac: right-click → Open.</p>
-      <div class="platforms">
-        <a id="dl-win" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-Setup-1.4.0.exe">Windows</a>
-        <a id="dl-mac" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-1.4.0-mac.dmg">macOS</a>
-        <a id="dl-appimage" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-1.4.0.AppImage">Linux AppImage</a>
-        <a id="dl-deb" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-1.4.0.deb">Linux .deb</a>
-      </div>
-      <a class="all-releases" href="https://github.com/ErdTheTurd/ERDOS/releases/latest" target="_blank" rel="noopener">All releases on GitHub</a>
+    <section id="apps" class="section apps">
+      <h2>Built-in apps</h2>
+      <p class="section-lead">Everything you need to explore, play, and customize without leaving ErdOS.</p>
+      <ul class="app-list">
+        <li><strong>Browser</strong> — bookmarks, home page, webview browsing</li>
+        <li><strong>ERDAI</strong> — desktop AI with memory and daily fortune</li>
+        <li><strong>Arcade</strong> — Snake, Breakout, Memory, Pong + high scores</li>
+        <li><strong>Terminal</strong> — CRT green/amber command line</li>
+        <li><strong>Files &amp; Notepad</strong> — local ErdOS home folders</li>
+        <li><strong>Music Box · Sticky Notes · Trophy Case · Settings</strong></li>
+      </ul>
     </section>
 
-    <section class="strip dim">
-      <h2>Why it sticks</h2>
-      <p class="line"><strong>ERDAI</strong> coaches your streak, quests, and next dopamine hit.</p>
-      <p class="line"><strong>Daily quests</strong> refresh every boot — chat, play, beat yourself.</p>
-      <p class="line"><strong>Rare drops</strong> unlock wallpapers and themes. Pity timer so luck can’t ghost you forever.</p>
+    <section id="download" class="section download">
+      <h2>Download ErdOS</h2>
+      <p class="section-lead">Grab the latest public release. Builds are unsigned — on Windows choose More info → Run anyway; on Mac right-click the app → Open (or clear quarantine).</p>
+      <div class="download-grid">
+        <a id="dl-win" class="download-card" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-Setup-1.4.0.exe">
+          <span class="os">Windows</span>
+          <strong>Installer (.exe)</strong>
+          <span class="meta">NSIS · x64</span>
+        </a>
+        <a id="dl-mac" class="download-card" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-1.4.0-mac.dmg">
+          <span class="os">macOS</span>
+          <strong>Disk image (.dmg)</strong>
+          <span class="meta">Universal · windowed app</span>
+        </a>
+        <a id="dl-appimage" class="download-card" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-1.4.0.AppImage">
+          <span class="os">Linux</span>
+          <strong>AppImage</strong>
+          <span class="meta">chmod +x, then run</span>
+        </a>
+        <a id="dl-deb" class="download-card" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-1.4.0.deb">
+          <span class="os">Linux</span>
+          <strong>Debian package</strong>
+          <span class="meta">.deb · x64</span>
+        </a>
+      </div>
+      <p class="release-link"><a href="https://github.com/ErdTheTurd/ERDOS/releases/latest" target="_blank" rel="noopener">All assets on GitHub Releases →</a></p>
+      <div class="build-box">
+        <p>Or build from source:</p>
+        <pre><code>git clone https://github.com/ErdTheTurd/ERDOS.git
+cd ERDOS
+npm install
+npm start
+npm run dist:win   # Windows
+npm run dist:mac   # macOS (DMG)
+npm run dist:linux # AppImage + deb</code></pre>
+      </div>
     </section>
   </main>
 
   <footer class="foot">
     <span>ErdOS</span>
-    <span>Windowed desktop · never replaces your OS</span>
+    <span>Phosphor Glass · Windows, macOS &amp; Linux · MIT</span>
   </footer>
 
   <script src="download.js"></script>
