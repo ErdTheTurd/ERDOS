@@ -100,7 +100,8 @@
       {
         "provider": "github",
         "owner": "ErdTheTurd",
-        "repo": "ERDOS"
+        "repo": "ERDOS",
+        "releaseType": "release"
       }
     ]
   },
