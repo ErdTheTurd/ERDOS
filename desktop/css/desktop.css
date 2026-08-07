@@ -38,6 +38,9 @@ html, body {
 button, input, textarea, select { font: inherit; color: inherit; }
 button { cursor: pointer; border: none; background: none; }
 
+/* Author display rules must not override the hidden attribute */
+[hidden] { display: none !important; }
+
 /* Boot CRT */
 .boot-screen {
   position: fixed;
@@ -599,9 +602,16 @@ button { cursor: pointer; border: none; background: none; }
 }
 
 .start-brand {
-  padding: 16px 18px 12px;
+  padding: 14px 12px 12px 18px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   background: linear-gradient(180deg, rgba(47, 224, 184, 0.06), transparent);
+}
+
+.start-brand-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .start-logo {
