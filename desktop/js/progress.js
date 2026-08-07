@@ -1,4 +1,4 @@
-/* Habit loop: XP, streaks, daily quests, achievements, pity rares, ERDAI coach hooks */
+/* Progress: XP, streaks, dailies, achievements — kept quiet in the UI */
 const ACHIEVEMENTS = [
   { id: 'first_boot', name: 'First Boot', desc: 'Boot ErdOS for the first time', xp: 25 },
   { id: 'browser_voyager', name: 'Browser Voyager', desc: 'Open the Browser', xp: 20 },
@@ -176,14 +176,14 @@ const ErdOSProgress = (() => {
         if ((state.streakFreeze || 0) > 0 && (state.streak || 0) >= 3) {
           state.streakFreeze -= 1;
           queueMicrotask(() =>
-            ErdOSUI.toast('Streak freeze!', `Day ${state.streak} held · freezes left: ${state.streakFreeze}`, 'rare')
+            ErdOSUI.toast('Streak held', `Day ${state.streak} · freezes left: ${state.streakFreeze}`, 'info')
           );
         } else {
           const old = state.streak || 0;
           state.streak = 1;
           if (old > 1) {
             addXp(25, false, 'Comeback');
-            queueMicrotask(() => ErdOSUI.toast('Comeback surge', `+25 XP · streak restarts at 1`, 'info'));
+            queueMicrotask(() => ErdOSUI.toast('Welcome back', `Streak restarts at 1`, 'info'));
           }
         }
       } else {
@@ -217,18 +217,15 @@ const ErdOSProgress = (() => {
     state.xp = (state.xp || 0) + amount;
     const after = levelFromXp(state.xp).level;
     state.level = after;
-    if (amount > 0) {
+    if (!silent && amount >= 12) {
+      queueMicrotask(() =>
+        ErdOSUI.toast(`+${amount} XP`, reason || '', 'info')
+      );
+    } else if (!silent && amount >= 5) {
       queueMicrotask(() => ErdOSJuice?.floatXp(amount));
     }
-    if (!silent && amount >= 5) {
-      queueMicrotask(() =>
-        ErdOSUI.toast(`+${amount} XP`, reason || 'Phosphor gained', 'info')
-      );
-    } else if (silent && amount >= 3) {
-      ErdOSJuice?.hitCombo();
-    }
     if (after > before) {
-      queueMicrotask(() => ErdOSUI.toast(`Level ${after}`, 'Circuits upgraded', 'level'));
+      queueMicrotask(() => ErdOSUI.toast(`Level ${after}`, '', 'level'));
     }
     if (after >= 5) unlock('level_5', true);
     if (after >= 10) unlock('level_10', true);
@@ -300,7 +297,7 @@ const ErdOSProgress = (() => {
       state.daily.cleared = true;
       addXp(75, false, 'Daily clear bonus');
       unlock('daily_clear');
-      ErdOSUI.toast('Daily cleared!', 'Come back tomorrow for three fresh hooks', 'level');
+      ErdOSUI.toast('Dailies done', 'Fresh set tomorrow', 'info');
     }
     if (any) save();
   }
@@ -328,8 +325,8 @@ const ErdOSProgress = (() => {
         return 'theme';
       }
     }
-    addXp(55, false, 'Lucky phosphor surge');
-    ErdOSUI.toast('Lucky bonus', '+55 XP phosphor surge', 'rare');
+    addXp(55, false, 'Bonus');
+    ErdOSUI.toast('Bonus', '+55 XP', 'info');
     return 'xp';
   }
 
@@ -362,7 +359,7 @@ const ErdOSProgress = (() => {
     if (Math.random() < chance) {
       grantRareDrop();
     } else if (state.launchesSinceRare >= 12 && Math.random() < 0.35) {
-      ErdOSUI.toast('Signal flicker…', `Rare drop charging (${state.launchesSinceRare}/22)`, 'info');
+      ErdOSUI.toast('Almost there…', `Rare drop charging (${state.launchesSinceRare}/22)`, 'info');
       ErdOSSound.tick();
     }
     await save();
@@ -464,29 +461,29 @@ const ErdOSProgress = (() => {
 
   function coachLine() {
     const p = state;
-    if (!p) return 'Boot complete. I am listening.';
-    const name = p.displayName || 'friend';
+    if (!p) return 'Desktop is ready.';
+    const name = p.displayName || 'there';
     const lv = levelFromXp(p.xp || 0);
     const hour = new Date().getHours();
     const dailies = (p.daily?.quests || []).filter((q) => !q.done);
     const q = questProgress();
 
     if (!q.completed) {
-      return `${name}, First Boot Quest is ${q.done}/5. Finish it — CRT Dawn is waiting.`;
+      return `${name}, First Boot is ${q.done}/5. Finish it to unlock CRT Dawn.`;
     }
     if (dailies.length) {
-      return `${name}: daily hook — ${dailies[0].label}. ${dailies.length} left today.`;
+      return `${name}: next up — ${dailies[0].label}. ${dailies.length} left today.`;
     }
     if (p.daily?.cleared) {
-      return `Daily board cleared. Streak Day ${p.streak}. Flex Arcade or bank XP till tomorrow.`;
+      return `Today's list is clear. Streak day ${p.streak}.`;
     }
     if (hour >= 18 && (p.streak || 0) >= 2) {
-      return `Evening check: Day ${p.streak} is still lit. Don't let midnight snuff it.`;
+      return `Evening check-in: day ${p.streak} streak is still going.`;
     }
     if ((p.launchesSinceRare || 0) >= 15) {
-      return `Rare drop is humming (${p.launchesSinceRare}/22). Open something. Anything.`;
+      return `A rare drop is close (${p.launchesSinceRare}/22).`;
     }
-    return `Level ${lv.level} · ${lv.need - lv.into} XP to next. Day ${p.streak} streak. I'm right here.`;
+    return `Level ${lv.level} · ${lv.need - lv.into} XP to next. Day ${p.streak} streak.`;
   }
 
   async function dailyFortune() {
@@ -496,14 +493,14 @@ const ErdOSProgress = (() => {
       return state.erdaiMemory.lastFortune;
     }
     const fortunes = [
-      'A window you open today will surprise you.',
-      'Your streak is a phosphor heartbeat — keep it lit.',
-      'Rare drops favor the playful. Arcade is calling.',
-      'Tell me something to remember. Investment locks the loop.',
-      'Three daily quests. One dopamine stack. Go.',
-      'High scores are just stories you tell the Arcade.',
+      'A window you open today might surprise you.',
+      'Small sessions compound. Keep the streak if you can.',
+      'Arcade high scores are optional — play for fun.',
+      'Tell me something to remember and I will.',
+      'Three quiet tasks today. No rush.',
+      'Pin what you use most. The desktop becomes yours.',
       'Glass and phosphor: modern mind, retro soul.',
-      'Pin what you love. The desktop becomes yours.',
+      'Leave a sticky note for tomorrow-you.',
     ];
     const f = fortunes[Math.floor(Math.random() * fortunes.length)];
     state.erdaiMemory = state.erdaiMemory || {};
@@ -529,7 +526,7 @@ const ErdOSProgress = (() => {
       const next = map.find(([k]) => !state.quest[k]);
       if (next) return { type: 'boot', label: next[1], app: next[2] };
     }
-    return { type: 'play', label: 'Chase a high score', app: 'games' };
+    return { type: 'play', label: 'Open Arcade', app: 'games' };
   }
 
   function metricToApp(metric) {

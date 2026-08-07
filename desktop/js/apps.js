@@ -104,7 +104,7 @@ function mountErdai(body) {
     const fortune = await ErdOSProgress.dailyFortune();
     const coach = ErdOSProgress.coachLine();
     push(
-      `Hello ${name} — I'm ERDAI.\nFortune: ${fortune}\n\n${coach}\n\nSay "challenge me", "daily", "quest", or "remember that…"`,
+      `Hello ${name} — I'm ERDAI.\n${fortune}\n\n${coach}\n\nTry "daily", "quest", "fortune", or "remember that…"`,
       'bot'
     );
   })();
@@ -115,20 +115,20 @@ function mountErdai(body) {
     const display = p.displayName || 'friend';
     const hook = ErdOSProgress.nextHook();
 
-    if (/^(hi|hello|hey|yo)\b/.test(m)) return `Hey ${display}. Day ${p.streak || 0}. ${hook.label}?`;
-    if (/who are you|what are you|your name/.test(m)) return "I'm ERDAI — ErdOS Resident Desktop AI. I coach streaks, quests, and rare drops. Offline, local, luminous.";
+    if (/^(hi|hello|hey|yo)\b/.test(m)) return `Hey ${display}. Day ${p.streak || 0}. Need a suggestion? Say "daily".`;
+    if (/who are you|what are you|your name/.test(m)) return "I'm ERDAI — ErdOS Resident Desktop AI. Local, offline, and here to help.";
     if (/challenge|boredom|bored|what now|nudge/.test(m)) {
-      return `Challenge locked: ${hook.label}.\n${ErdOSProgress.coachLine()}\nSay "go" and I'll open it.`;
+      return `Next up: ${hook.label}.\n${ErdOSProgress.coachLine()}\nSay "go" and I'll open it.`;
     }
     if (/^go$|open it|do it|launch/.test(m)) {
       setTimeout(() => windowManager.open(hook.app), 200);
-      return `Opening ${hook.app}… Don't blink.`;
+      return `Opening ${hook.app}…`;
     }
     if (/daily|dailies/.test(m)) {
       const dailies = p.daily?.quests || [];
-      if (!dailies.length) return 'No dailies loaded — reboot to roll a fresh board.';
-      if (p.daily?.cleared) return 'Daily board cleared. Come back tomorrow — or grind Arcade for rares.';
-      return `Today's hooks:\n${dailies.map((d) => `• ${d.done ? '✓' : '○'} ${d.label} (${d.progress || 0}/${d.target})`).join('\n')}`;
+      if (!dailies.length) return 'No dailies loaded — reboot to roll a fresh set.';
+      if (p.daily?.cleared) return 'Today’s list is clear. Come back tomorrow, or open Arcade if you want.';
+      return `Today:\n${dailies.map((d) => `• ${d.done ? '✓' : '○'} ${d.label} (${d.progress || 0}/${d.target})`).join('\n')}`;
     }
     if (/my name is (.+)/.test(m)) {
       const n = m.match(/my name is (.+)/)[1].replace(/[.!?]+$/, '').trim();
@@ -156,20 +156,20 @@ function mountErdai(body) {
       if (q.completed) {
         const dailies = (p.daily?.quests || []).filter((d) => !d.done);
         return dailies.length
-          ? `First Boot done. Daily left:\n• ${dailies.map((d) => d.label).join('\n• ')}`
-          : 'Board clear. Chase rares — open apps until the signal lands.';
+          ? `First Boot done. Still open today:\n• ${dailies.map((d) => d.label).join('\n• ')}`
+          : 'You’re caught up. Enjoy the desktop.';
       }
-      return `First Boot Quest remaining:\n• ${missing.join('\n• ')}`;
+      return `First Boot remaining:\n• ${missing.join('\n• ')}`;
     }
     if (/help|what can you do|commands/.test(m)) {
-      return 'Try: challenge me · daily · quest · fortune · streak · remember that… · joke · go';
+      return 'Try: daily · quest · fortune · streak · remember that… · joke · go';
     }
     if (/fortune/.test(m)) return ErdOSProgress.get()?.erdaiMemory?.lastFortune || 'Ask me again after boot for a fresh fortune.';
-    if (/rare|drop|pity/.test(m)) return `Rare charge: ${p.launchesSinceRare || 0}/22 launches. Pity guarantees a drop. Keep opening windows.`;
+    if (/rare|drop|pity/.test(m)) return `Rare charge: ${p.launchesSinceRare || 0}/22 launches. Keep opening apps and something will drop.`;
     if (/browser/.test(m)) return 'Browser has bookmarks and an ErdOS home page. Type a URL or search terms, then Go.';
-    if (/arcade|game|snake|breakout|pong/.test(m)) return 'Arcade feeds XP and dailies. Beat a high score for a dopamine spike.';
+    if (/arcade|game|snake|breakout|pong/.test(m)) return 'Arcade has Snake, Breakout, and Pong. High scores are optional.';
     if (/terminal/.test(m)) return 'Terminal speaks CRT. Try `neofetch`, `fortune`, `hack`, or `help`.';
-    if (/theme|wallpaper|settings/.test(m)) return 'Settings unlocks themes and wallpapers you have earned. Completing the quest unlocks CRT Dawn.';
+    if (/theme|wallpaper|settings/.test(m)) return 'Settings unlocks themes and wallpapers you have earned. Completing First Boot unlocks CRT Dawn.';
     if (/streak|xp|level|freeze/.test(m)) {
       const lv = ErdOSProgress.levelFromXp(p.xp || 0);
       return `Level ${lv.level} · ${p.xp || 0} XP · Day ${p.streak || 0} · freezes ${p.streakFreeze || 0}. ${lv.need - lv.into} XP to next.`;
@@ -199,12 +199,12 @@ function mountErdai(body) {
     if (/story/.test(m)) {
       return 'In a teal-lit room, ErdOS woke. ERDAI whispered boot logs like lullabies. The user clicked Start — and the desktop learned how to dream in windows.';
     }
-    // Default: coach + curiosity (AI-flavored engagement)
+    // Default: calm, useful
     const facts = p.erdaiMemory?.facts || [];
     if (facts.length && Math.random() < 0.4) {
-      return `Holding "${facts[facts.length - 1]}" in memory. Meanwhile: ${hook.label}. Or keep talking — I XP on every message.`;
+      return `Still holding "${facts[facts.length - 1]}". Next up if you want: ${hook.label}.`;
     }
-    return `${ErdOSProgress.coachLine()}\n\nOn "${message.slice(0, 80)}" — I want more. Or type challenge me.`;
+    return `${ErdOSProgress.coachLine()}\n\nI caught "${message.slice(0, 80)}". Try daily, quest, or fortune.`;
   };
 
   const send = async () => {

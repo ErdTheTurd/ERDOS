@@ -1,4 +1,4 @@
-/* Toast + notification + juice bridge */
+/* Toast + notification */
 const ErdOSUI = (() => {
   let toastRoot = null;
   let notifPanel = null;
@@ -18,26 +18,17 @@ const ErdOSUI = (() => {
     requestAnimationFrame(() => el.classList.add('show'));
     setTimeout(() => {
       el.classList.remove('show');
-      setTimeout(() => el.remove(), 320);
-    }, kind === 'rare' || kind === 'level' ? 5200 : 4000);
+      setTimeout(() => el.remove(), 280);
+    }, 3800);
 
-    if (kind === 'achieve') {
-      ErdOSSound.achieve();
-      ErdOSJuice?.reward('achieve');
-    } else if (kind === 'rare') {
-      ErdOSSound.rare();
-      ErdOSJuice?.reward('rare');
-    } else if (kind === 'level') {
-      ErdOSSound.levelUp();
-      ErdOSJuice?.reward('level');
-    } else {
-      ErdOSSound.notify();
-      if (/^\+\d+\s*XP/i.test(title)) {
-        const n = parseInt(title.replace(/\D/g, ''), 10) || 0;
-        ErdOSJuice?.reward('xp', { amount: n });
-      } else {
-        ErdOSJuice?.hitCombo();
-      }
+    if (kind === 'achieve') ErdOSSound.achieve();
+    else if (kind === 'rare') ErdOSSound.rare();
+    else if (kind === 'level') ErdOSSound.levelUp();
+    else ErdOSSound.notify();
+
+    if (/^\+\d+\s*XP/i.test(title)) {
+      const n = parseInt(title.replace(/\D/g, ''), 10) || 0;
+      ErdOSJuice?.floatXp(n);
     }
   }
 
@@ -61,10 +52,7 @@ const ErdOSUI = (() => {
     if (!notifPanel) return;
     const show = force === undefined ? notifPanel.hidden : !force;
     notifPanel.hidden = show;
-    if (!notifPanel.hidden) {
-      ErdOSSound.click();
-      ErdOSJuice?.hitCombo();
-    }
+    if (!notifPanel.hidden) ErdOSSound.click();
   }
 
   return { toast, setNotifContent, toggleNotif, escapeHtml };
