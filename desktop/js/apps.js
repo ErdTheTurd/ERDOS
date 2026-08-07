@@ -896,7 +896,7 @@ function mountAbout(body) {
       el('div', { className: 'settings-card' }, [
         el('h3', { text: 'ErdOS' }),
         el('p', {
-          text: 'Phosphor Glass desktop for Windows & Linux.\nRetro chrome, modern motion, ethical habit loops.\n\nBrowser · ERDAI · Arcade · Terminal · Files · Notes · Music · Trophies\n\nDownload: github.com/ErdTheTurd/ERDOS/releases',
+          text: 'Phosphor Glass desktop for Windows, macOS & Linux.\nRuns in a normal app window — never replaces your OS.\nRetro chrome, modern motion, ethical habit loops.\n\nBrowser · ERDAI · Arcade · Terminal · Files · Notes · Music · Trophies\n\nDownload: github.com/ErdTheTurd/ERDOS/releases',
         }),
       ]),
     ]),

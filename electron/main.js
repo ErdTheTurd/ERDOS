@@ -78,6 +78,9 @@ function createWindow() {
     title: 'ErdOS',
     backgroundColor: '#030d14',
     show: false,
+    // Normal app window — never kiosk / never replaces the host OS
+    fullscreen: false,
+    simpleFullscreen: false,
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
