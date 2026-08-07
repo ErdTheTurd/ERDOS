@@ -1,5 +1,7 @@
 # ErdOS
 
+> **Live site:** [erdtheturd.github.io/ERDOS](https://erdtheturd.github.io/ERDOS/) — green glassy Phosphor download page.
+
 **Phosphor Glass** desktop for **Windows**, **macOS**, and **Linux** — a windowed OS with ERDAI coaching, daily quests, streaks, and rare drops.
 
 Runs as a **normal app window** — never replaces your host OS.
