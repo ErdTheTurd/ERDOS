@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ErdOS — Download the Desktop</title>
+  <meta name="description" content="ErdOS is a downloadable desktop environment for Windows and Linux with Browser, Games, ERDAI AI, Files, and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+
+  <header class="top">
+    <a class="brand" href="#top">ErdOS</a>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#apps">Apps</a>
+      <a href="#download">Download</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <p class="hero-brand">ErdOS</p>
+      <h1>A desktop you can download.</h1>
+      <p class="hero-lead">Windowed apps, a real taskbar, built-in browser, games, and ERDAI — your resident AI — for Windows and Linux.</p>
+      <div class="hero-cta">
+        <a class="btn primary" href="#download">Download ErdOS</a>
+        <a class="btn ghost" href="#apps">See what's inside</a>
+      </div>
+      <div class="hero-stage" role="img" aria-label="ErdOS desktop preview">
+        <div class="mock-desktop">
+          <div class="mock-wallpaper"></div>
+          <div class="mock-window one">
+            <div class="mock-bar"><span>ERDAI</span></div>
+            <div class="mock-body">Hello — I'm ERDAI.</div>
+          </div>
+          <div class="mock-window two">
+            <div class="mock-bar"><span>Browser</span></div>
+            <div class="mock-body browser"></div>
+          </div>
+          <div class="mock-taskbar">
+            <span class="mock-start">ErdOS</span>
+            <span class="mock-clock">Thu 14:21</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2>One desktop. Installed on your machine.</h2>
+      <p class="section-lead">ErdOS ships as a native installer for Windows and an AppImage/deb for Linux — not a website pretending to be an OS.</p>
+      <div class="feature-rows">
+        <article>
+          <h3>Window manager</h3>
+          <p>Drag, resize, minimize, and maximize apps on a persistent desktop shell.</p>
+        </article>
+        <article>
+          <h3>ERDAI onboard</h3>
+          <p>Chat with ERDAI for tips, jokes, riddles, and quick help navigating ErdOS.</p>
+        </article>
+        <article>
+          <h3>Your files, locally</h3>
+          <p>ErdOS home folders for Desktop, Documents, and Downloads — editable with Files and Notepad.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="apps" class="section apps">
+      <h2>Built-in apps</h2>
+      <p class="section-lead">Everything you need to explore, play, and create without leaving the desktop.</p>
+      <ul class="app-list">
+        <li><strong>Browser</strong> — address bar, search, and webview browsing</li>
+        <li><strong>ERDAI</strong> — desktop AI assistant</li>
+        <li><strong>Games</strong> — Snake, Breakout, Memory Match</li>
+        <li><strong>Files</strong> — browse and organize your ErdOS home</li>
+        <li><strong>Notepad</strong> — open and save text documents</li>
+        <li><strong>Calculator</strong> — quick arithmetic</li>
+        <li><strong>Settings</strong> — themes and system info</li>
+      </ul>
+    </section>
+
+    <section id="download" class="section download">
+      <h2>Download ErdOS</h2>
+      <p class="section-lead">Build installers from source, or grab release artifacts once published to GitHub Releases.</p>
+      <div class="download-grid">
+        <div class="download-card">
+          <span class="os">Windows</span>
+          <strong>Installer (.exe)</strong>
+          <span class="meta">npm run dist:win → dist/ErdOS-Setup-*.exe</span>
+        </div>
+        <div class="download-card">
+          <span class="os">Linux</span>
+          <strong>AppImage</strong>
+          <span class="meta">npm run dist:linux → dist/ErdOS-*.AppImage</span>
+        </div>
+        <div class="download-card">
+          <span class="os">Linux</span>
+          <strong>Debian package</strong>
+          <span class="meta">npm run dist:linux → dist/ErdOS-*.deb</span>
+        </div>
+      </div>
+      <div class="build-box">
+        <p>Build from source:</p>
+        <pre><code>npm install
+npm start          # run ErdOS
+npm run dist:win   # Windows installer
+npm run dist:linux # AppImage + deb</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>ErdOS</span>
+    <span>Desktop environment · Windows &amp; Linux</span>
+  </footer>
+
+  <script>
+    const stage = document.querySelector('.mock-desktop');
+    if (stage) {
+      let t = 0;
+      setInterval(() => {
+        t += 1;
+        stage.style.setProperty('--drift', `${Math.sin(t / 20) * 6}px`);
+      }, 40);
+    }
+  </script>
+</body>
+</html>
