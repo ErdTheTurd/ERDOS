@@ -6,7 +6,7 @@
 
   const ua = navigator.userAgent || '';
   const isWin = /Windows/i.test(ua);
-  const isMac = /Mac OS X|Macintosh/i.test(ua);
+  const isMac = /Mac OS X|Macintosh/i.test(ua) && !/like Mac OS X/i.test(ua);
   const isLinux = /Linux/i.test(ua) && !/Android/i.test(ua);
 
   const hint = document.getElementById('detect-hint');
@@ -15,6 +15,7 @@
   const dlMac = document.getElementById('dl-mac');
   const dlApp = document.getElementById('dl-appimage');
   const dlDeb = document.getElementById('dl-deb');
+  const topBar = document.querySelector('.top');
 
   function assetUrls(version) {
     return {
@@ -29,6 +30,30 @@
     [dlWin, dlMac, dlApp, dlDeb].forEach((el) => el?.classList.remove('is-recommended'));
   }
 
+  function platformLabel() {
+    if (isMac) return 'Mac';
+    if (isWin) return 'Windows';
+    if (isLinux) return 'Linux';
+    return null;
+  }
+
+  /** Only include when the browser reports it cleanly — never invent size. */
+  function machineSizeNote() {
+    const gb = navigator.deviceMemory;
+    if (typeof gb === 'number' && gb > 0 && Number.isFinite(gb)) {
+      return `${gb} GB`;
+    }
+    return null;
+  }
+
+  function recommendCopy() {
+    const platform = platformLabel();
+    if (!platform) return '';
+    const size = machineSizeNote();
+    if (size) return `This version is recommended for your ${platform} · ${size}`;
+    return `This version is recommended for your ${platform}`;
+  }
+
   function apply(version) {
     const urls = assetUrls(version);
     if (dlWin) dlWin.href = urls.win;
@@ -41,22 +66,20 @@
       primary.href = urls.win;
       primary.textContent = 'Download for Windows';
       dlWin?.classList.add('is-recommended');
-      if (hint) hint.textContent = 'Windows · x64 installer';
     } else if (isMac) {
       primary.href = urls.mac;
       primary.textContent = 'Download for Mac';
       dlMac?.classList.add('is-recommended');
-      if (hint) hint.textContent = 'macOS · universal DMG';
     } else if (isLinux) {
       primary.href = urls.appimage;
       primary.textContent = 'Download for Linux';
       dlApp?.classList.add('is-recommended');
-      if (hint) hint.textContent = 'Linux · AppImage';
     } else {
       primary.href = `https://github.com/${OWNER}/${REPO}/releases/latest`;
       primary.textContent = 'Download';
-      if (hint) hint.textContent = 'Windows · macOS · Linux';
     }
+
+    if (hint) hint.textContent = recommendCopy();
   }
 
   apply(FALLBACK_VERSION);
@@ -84,9 +107,18 @@
       else if (isMac && macUrl) primary.href = macUrl;
       else if (isLinux && appUrl) primary.href = appUrl;
 
-      if (hint && hint.textContent) hint.textContent += ` · v${version}`;
+      // Keep recommend line focused on platform; version stays on the download cards.
+      void version;
+      if (hint) hint.textContent = recommendCopy();
     })
     .catch(() => {});
+
+  function syncTopBar() {
+    if (!topBar) return;
+    topBar.classList.toggle('is-compact', window.scrollY > 24);
+  }
+  syncTopBar();
+  window.addEventListener('scroll', syncTopBar, { passive: true });
 
   const stage = document.querySelector('.mock-desktop');
   if (stage) {

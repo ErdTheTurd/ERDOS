@@ -28,11 +28,14 @@ body {
 .atmosphere {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: -2;
   background:
+    linear-gradient(rgba(62, 207, 173, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(62, 207, 173, 0.035) 1px, transparent 1px),
     radial-gradient(ellipse 70% 50% at 15% 0%, rgba(62, 207, 173, 0.12), transparent 55%),
     radial-gradient(ellipse 55% 45% at 90% 20%, rgba(74, 168, 201, 0.1), transparent 50%),
     linear-gradient(180deg, #061820 0%, #041016 55%, #030c12 100%);
+  background-size: 48px 48px, 48px 48px, auto, auto, auto;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -48,6 +51,16 @@ a { color: inherit; text-decoration: none; }
   backdrop-filter: blur(18px) saturate(1.2);
   background: rgba(4, 16, 22, 0.72);
   border-bottom: 1px solid var(--border);
+  transition:
+    padding 0.22s var(--ease),
+    background 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.top.is-compact {
+  padding: 8px clamp(20px, 4vw, 56px);
+  background: rgba(4, 16, 22, 0.88);
+  border-bottom-color: rgba(110, 200, 180, 0.22);
 }
 
 .brand {
@@ -55,6 +68,11 @@ a { color: inherit; text-decoration: none; }
   font-size: 1.15rem;
   letter-spacing: -0.04em;
   color: var(--phosphor);
+  transition: font-size 0.22s var(--ease);
+}
+
+.top.is-compact .brand {
+  font-size: 0.98rem;
 }
 
 nav {
@@ -63,6 +81,12 @@ nav {
   color: var(--dim);
   font-size: 0.92rem;
   font-weight: 500;
+  transition: gap 0.22s var(--ease), font-size 0.22s var(--ease);
+}
+
+.top.is-compact nav {
+  gap: 18px;
+  font-size: 0.82rem;
 }
 
 nav a:hover { color: var(--text); }
@@ -108,12 +132,13 @@ nav a:hover { color: var(--text); }
 }
 
 .detect-hint {
-  margin: 0;
-  min-height: 1.1em;
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
+  margin: 8px 0 0;
+  min-height: 1.25em;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   color: var(--dim);
+  line-height: 1.35;
 }
 
 .btn {
