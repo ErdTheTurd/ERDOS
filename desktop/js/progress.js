@@ -462,17 +462,18 @@ const ErdOSProgress = (() => {
   function coachLine() {
     const p = state;
     if (!p) return 'Desktop is ready.';
-    const name = p.displayName || 'there';
+    const name = p.displayName || '';
     const lv = levelFromXp(p.xp || 0);
     const hour = new Date().getHours();
     const dailies = (p.daily?.quests || []).filter((q) => !q.done);
     const q = questProgress();
+    const hi = name ? `${name}, ` : '';
 
     if (!q.completed) {
-      return `${name}, First Boot is ${q.done}/5. Finish it to unlock CRT Dawn.`;
+      return `${hi}First Boot is ${q.done}/5. Finish it to unlock CRT Dawn.`;
     }
     if (dailies.length) {
-      return `${name}: next up — ${dailies[0].label}. ${dailies.length} left today.`;
+      return `${hi}next up — ${dailies[0].label}. ${dailies.length} left today.`;
     }
     if (p.daily?.cleared) {
       return `Today's list is clear. Streak day ${p.streak}.`;

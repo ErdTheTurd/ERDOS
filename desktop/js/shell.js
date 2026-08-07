@@ -393,9 +393,8 @@
       boot.remove();
       refreshHud();
       const p = ErdOSProgress.get();
-      if (!p?.quest?.completed) {
-        setTimeout(() => showQuest(true), 900);
-      }
+      // First Boot stays in Today panel — don't block the desktop on boot
+      void p;
     }, 480);
   }, 2200);
 })();
