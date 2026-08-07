@@ -18,6 +18,8 @@ jobs:
             args: --linux
           - os: windows-latest
             args: --win
+          - os: macos-latest
+            args: --mac
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -34,3 +36,5 @@ jobs:
         run: npx electron-builder ${{ matrix.args }} --publish always
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Unsigned Mac app — windowed desktop shell, not a host OS replacement
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ErdOS — Download Phosphor Glass Desktop</title>
-  <meta name="description" content="Download ErdOS for Windows and Linux. A retro-modern Phosphor Glass desktop with Browser, Arcade, Terminal, and ERDAI." />
+  <meta name="description" content="Download ErdOS for Windows, macOS, and Linux. A windowed Phosphor Glass desktop with Browser, Arcade, Terminal, and ERDAI — it never replaces your OS." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -28,7 +28,7 @@
     <section class="hero">
       <p class="hero-brand">ErdOS</p>
       <h1>Phosphor Glass desktop.</h1>
-      <p class="hero-lead">A downloadable OS-style environment for Windows and Linux — retro chrome, modern motion, Browser, Arcade, Terminal, and ERDAI onboard.</p>
+      <p class="hero-lead">A downloadable OS-style environment for Windows, macOS, and Linux — runs in a normal app window (never overrides your OS). Retro chrome, modern motion, Browser, Arcade, Terminal, and ERDAI onboard.</p>
       <div class="hero-cta">
         <a id="btn-primary-download" class="btn primary" href="https://github.com/ErdTheTurd/ERDOS/releases/latest">Download ErdOS</a>
         <a class="btn ghost" href="#apps">See what's inside</a>
@@ -54,8 +54,8 @@
     </section>
 
     <section id="features" class="section">
-      <h2>Installed on your machine.</h2>
-      <p class="section-lead">Not a website pretending to be an OS — real Windows and Linux installers from GitHub Releases, with auto-update checks inside the desktop.</p>
+      <h2>A desktop inside a window.</h2>
+      <p class="section-lead">ErdOS is an Electron app you install like any other. On Mac, Windows, or Linux it opens in its own window — your real desktop, Dock, and menu bar stay untouched.</p>
       <div class="feature-rows">
         <article>
           <h3>Phosphor Glass UI</h3>
@@ -87,19 +87,24 @@
 
     <section id="download" class="section download">
       <h2>Download ErdOS</h2>
-      <p class="section-lead">Grab the latest public release. Builds are unsigned — on Windows choose More info → Run anyway if SmartScreen appears.</p>
+      <p class="section-lead">Grab the latest public release. Builds are unsigned — on Windows choose More info → Run anyway; on Mac right-click the app → Open (or clear quarantine).</p>
       <div class="download-grid">
-        <a id="dl-win" class="download-card" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-Setup-1.1.0.exe">
+        <a id="dl-win" class="download-card" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-Setup-1.2.0.exe">
           <span class="os">Windows</span>
           <strong>Installer (.exe)</strong>
           <span class="meta">NSIS · x64</span>
         </a>
-        <a id="dl-appimage" class="download-card" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-1.1.0.AppImage">
+        <a id="dl-mac" class="download-card" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-1.2.0-mac.dmg">
+          <span class="os">macOS</span>
+          <strong>Disk image (.dmg)</strong>
+          <span class="meta">Universal · windowed app</span>
+        </a>
+        <a id="dl-appimage" class="download-card" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-1.2.0.AppImage">
           <span class="os">Linux</span>
           <strong>AppImage</strong>
           <span class="meta">chmod +x, then run</span>
         </a>
-        <a id="dl-deb" class="download-card" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-1.1.0.deb">
+        <a id="dl-deb" class="download-card" href="https://github.com/ErdTheTurd/ERDOS/releases/latest/download/ErdOS-1.2.0.deb">
           <span class="os">Linux</span>
           <strong>Debian package</strong>
           <span class="meta">.deb · x64</span>
@@ -112,15 +117,16 @@
 cd ERDOS
 npm install
 npm start
-npm run dist:win    # Windows
-npm run dist:linux  # AppImage + deb</code></pre>
+npm run dist:win   # Windows
+npm run dist:mac   # macOS (DMG)
+npm run dist:linux # AppImage + deb</code></pre>
       </div>
     </section>
   </main>
 
   <footer class="foot">
     <span>ErdOS</span>
-    <span>Phosphor Glass · Windows &amp; Linux · MIT</span>
+    <span>Phosphor Glass · Windows, macOS &amp; Linux · MIT</span>
   </footer>
 
   <script src="download.js"></script>

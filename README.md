@@ -1,6 +1,8 @@
 # ErdOS
 
-**Phosphor Glass** desktop environment for **Windows** and **Linux**.
+**Phosphor Glass** desktop environment for **Windows**, **macOS**, and **Linux**.
+
+Runs as a **normal app window** — it never replaces or locks your host OS.
 
 [![Release](https://img.shields.io/github/v/release/ErdTheTurd/ERDOS?style=flat-square)](https://github.com/ErdTheTurd/ERDOS/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/ErdTheTurd/ERDOS/total?style=flat-square)](https://github.com/ErdTheTurd/ERDOS/releases)
@@ -14,11 +16,14 @@ Retro chrome · modern motion · Browser · Arcade · Terminal · **ERDAI** · s
 | Platform | Asset |
 |----------|--------|
 | Windows | `ErdOS-Setup-*.exe` |
+| macOS | `ErdOS-*-mac.dmg` (universal, windowed) |
 | Linux | `ErdOS-*.AppImage` or `ErdOS-*.deb` |
 
-Marketing site (GitHub Pages once enabled): `website/` in this repo → [erdtheturd.github.io/ERDOS](https://erdtheturd.github.io/ERDOS/) (or your Pages URL).
+Marketing site: `website/` → [GitHub Pages](https://erdtheturd.github.io/ERDOS/) when enabled.
 
-> Builds are **unsigned**. On Windows, SmartScreen may warn — choose **More info → Run anyway**.
+> Builds are **unsigned**.
+> - **Windows:** SmartScreen → More info → Run anyway  
+> - **macOS:** Right-click the app → **Open**, or run `xattr -cr /Applications/ErdOS.app`
 
 ## Quick start (from source)
 
@@ -37,14 +42,15 @@ npm run website
 
 ```bash
 npm run dist:win     # NSIS + portable
+npm run dist:mac     # DMG + zip (universal)
 npm run dist:linux   # AppImage + deb
 ```
 
 Push a version tag to publish via GitHub Actions:
 
 ```bash
-git tag v1.1.0
-git push origin v1.1.0
+git tag v1.2.0
+git push origin v1.2.0
 ```
 
 ## What's inside
