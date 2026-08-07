@@ -98,7 +98,27 @@
     },
     "dmg": {
       "title": "ErdOS ${version}",
-      "artifactName": "ErdOS-${version}-mac.${ext}"
+      "artifactName": "ErdOS-${version}-mac.${ext}",
+      "background": "build/dmg-background.png",
+      "iconSize": 96,
+      "iconTextSize": 13,
+      "window": {
+        "width": 660,
+        "height": 420
+      },
+      "contents": [
+        {
+          "x": 175,
+          "y": 185,
+          "type": "file"
+        },
+        {
+          "x": 485,
+          "y": 185,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
     },
     "linux": {
       "target": [
