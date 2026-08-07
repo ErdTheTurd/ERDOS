@@ -1,4 +1,4 @@
-/* global ErdOSApps */
+/* global ErdOSApps, ErdOSSound, ErdOSProgress */
 
 const windowManager = (() => {
   const layer = () => document.getElementById('windows-layer');
@@ -22,6 +22,7 @@ const windowManager = (() => {
   function close(id) {
     const win = windows.get(id);
     if (!win) return;
+    ErdOSSound.close();
     win.el.remove();
     win.taskBtn.remove();
     windows.delete(id);
@@ -34,6 +35,7 @@ const windowManager = (() => {
     win.el.classList.add('is-minimized');
     win.el.classList.remove('is-focused');
     win.taskBtn.classList.remove('is-active');
+    ErdOSSound.click();
   }
 
   function toggleMaximize(id) {
@@ -54,11 +56,12 @@ const windowManager = (() => {
         height: win.el.style.height,
       };
     }
+    ErdOSSound.click();
   }
 
   function open(appId, opts = {}) {
     const app = ErdOSApps.APPS.find((a) => a.id === appId);
-    if (!app) return;
+    if (!app) return null;
 
     const id = `win-${idCounter++}`;
     const offset = (windows.size % 8) * 28;
@@ -88,7 +91,7 @@ const windowManager = (() => {
       return b;
     };
     controls.append(
-      mkBtn('—', 'min', () => minimize(id)),
+      mkBtn('─', 'min', () => minimize(id)),
       mkBtn('□', 'max', () => toggleMaximize(id)),
       mkBtn('×', 'close', () => close(id))
     );
@@ -99,24 +102,31 @@ const windowManager = (() => {
 
     const body = document.createElement('div');
     body.className = 'window-body';
+
+    const taskBtn = document.createElement('button');
+    taskBtn.type = 'button';
+    taskBtn.className = 'task-btn is-active';
+    taskBtn.textContent = app.name;
+
     body.__windowApi = {
       setTitle: (t) => {
         title.textContent = t;
         taskBtn.textContent = t;
       },
       close: () => close(id),
+      shake: () => {
+        winEl.classList.remove('is-shaking');
+        void winEl.offsetWidth;
+        winEl.classList.add('is-shaking');
+      },
     };
 
     const resize = document.createElement('div');
     resize.className = 'resize-handle';
-
     winEl.append(titlebar, body, resize);
     layer().append(winEl);
+    taskbar().append(taskBtn);
 
-    const taskBtn = document.createElement('button');
-    taskBtn.type = 'button';
-    taskBtn.className = 'task-btn is-active';
-    taskBtn.textContent = app.name;
     taskBtn.addEventListener('click', () => {
       const win = windows.get(id);
       if (!win) return;
@@ -130,7 +140,6 @@ const windowManager = (() => {
         focus(id);
       }
     });
-    taskbar().append(taskBtn);
 
     windows.set(id, {
       id,
@@ -146,8 +155,10 @@ const windowManager = (() => {
     enableResize(winEl, resize, id);
     winEl.addEventListener('mousedown', () => focus(id));
 
+    ErdOSSound.open();
     app.mount(body, opts);
     focus(id);
+    ErdOSProgress.onAppLaunch(appId);
     return id;
   }
 

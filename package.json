@@ -1,7 +1,7 @@
 {
   "name": "erdos",
-  "version": "1.0.0",
-  "description": "ErdOS — a full desktop environment for Windows and Linux",
+  "version": "1.1.0",
+  "description": "ErdOS — Phosphor Glass desktop environment for Windows and Linux",
   "main": "electron/main.js",
   "author": {
     "name": "ErdOS",
@@ -9,6 +9,10 @@
   },
   "license": "MIT",
   "homepage": "https://github.com/ErdTheTurd/ERDOS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ErdTheTurd/ERDOS.git"
+  },
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
@@ -16,7 +20,8 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win",
-    "dist:linux": "electron-builder --linux"
+    "dist:linux": "electron-builder --linux",
+    "release": "electron-builder --publish always"
   },
   "build": {
     "appId": "com.erdos.desktop",
@@ -36,38 +41,51 @@
       {
         "from": "website",
         "to": "website",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
-      ],
-      "artifactName": "ErdOS-Setup-${version}.${ext}"
+      ]
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "ErdOS"
+      "shortcutName": "ErdOS",
+      "artifactName": "ErdOS-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "ErdOS-Portable-${version}.${ext}"
     },
     "linux": {
       "target": [
         {
           "target": "AppImage",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "deb",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "category": "System",
@@ -78,7 +96,16 @@
         "Categories": "System;Utility;"
       }
     },
-    "publish": null
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "ErdTheTurd",
+        "repo": "ERDOS"
+      }
+    ]
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9"
   },
   "devDependencies": {
     "electron": "^34.2.0",
