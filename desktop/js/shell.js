@@ -52,12 +52,18 @@
   function refreshHud() {
     const p = ErdOSProgress.get() || {};
     const lv = ErdOSProgress.levelFromXp(p.xp || 0);
-    streakChip.textContent = `Day ${p.streak || 0}`;
+    const streak = p.streak || 0;
+    streakChip.textContent = `Day ${streak}`;
+    if (streak >= 3) ErdOSJuice?.pulseStreak();
+    else streakChip.classList.remove('juice-streak-hot');
     const xpLevel = document.getElementById('xp-level');
     const xpFill = document.getElementById('xp-fill');
     if (xpLevel) xpLevel.textContent = `Lv ${lv.level}`;
     else xpChip.textContent = `Lv ${lv.level}`;
-    if (xpFill) xpFill.style.width = `${Math.min(100, (lv.into / lv.need) * 100)}%`;
+    if (xpFill) {
+      const pct = Math.min(100, (lv.into / lv.need) * 100);
+      xpFill.style.width = `${pct}%`;
+    }
     refreshQuestUI();
     refreshNotif();
   }
@@ -144,6 +150,8 @@
   function launch(appId) {
     startMenu.hidden = true;
     contextMenu.hidden = true;
+    const icon = desktopIcons.querySelector(`[data-app-id="${appId}"]`);
+    ErdOSJuice?.launchPop(icon);
     windowManager.open(appId);
     refreshHud();
   }
@@ -160,7 +168,10 @@
         <small>${app.description}</small>
       </span>
     `;
-    item.addEventListener('click', () => launch(app.id));
+    item.addEventListener('click', (e) => {
+      ErdOSJuice?.ripple(item, e);
+      launch(app.id);
+    });
     container.append(item);
   }
 
@@ -273,9 +284,11 @@
 
   btnStart.addEventListener('click', (e) => {
     e.stopPropagation();
+    ErdOSJuice?.ripple(btnStart, e);
     startMenu.hidden = !startMenu.hidden;
     if (!startMenu.hidden) {
       ErdOSSound.click();
+      ErdOSJuice?.hitCombo();
       startSearch.value = '';
       startSearch.dispatchEvent(new Event('input'));
       setTimeout(() => startSearch.focus(), 30);
@@ -383,6 +396,14 @@
       const fortune = await ErdOSProgress.dailyFortune();
       ErdOSUI.toast('ERDAI fortune', fortune, 'info');
       setTimeout(() => showCoachBubble(), 700);
+      setTimeout(() => {
+        ErdOSJuice?.burst(window.innerWidth * 0.5, window.innerHeight * 0.35, {
+          count: 30,
+          color: '#2fe0b8',
+          spread: 130,
+        });
+        ErdOSJuice?.flash('achieve');
+      }, 400);
       const p = ErdOSProgress.get();
       if (!p?.quest?.completed || !(p.daily?.cleared)) {
         setTimeout(() => showQuest(true), 1600);

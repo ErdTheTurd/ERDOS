@@ -32,7 +32,8 @@ const ErdOSSound = (() => {
     },
     isMuted: () => muted,
     click() {
-      tone(880, 0.06, 'triangle', 0.04);
+      tone(920, 0.045, 'triangle', 0.05);
+      tone(1400, 0.03, 'sine', 0.025, 0.02);
     },
     open() {
       tone(320, 0.1, 'sine', 0.06);

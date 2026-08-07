@@ -217,10 +217,15 @@ const ErdOSProgress = (() => {
     state.xp = (state.xp || 0) + amount;
     const after = levelFromXp(state.xp).level;
     state.level = after;
+    if (amount > 0) {
+      queueMicrotask(() => ErdOSJuice?.floatXp(amount));
+    }
     if (!silent && amount >= 5) {
       queueMicrotask(() =>
-        ErdOSUI.toast(`+${amount} XP`, reason || 'Phosphor gained', after > before ? 'level' : 'info')
+        ErdOSUI.toast(`+${amount} XP`, reason || 'Phosphor gained', 'info')
       );
+    } else if (silent && amount >= 3) {
+      ErdOSJuice?.hitCombo();
     }
     if (after > before) {
       queueMicrotask(() => ErdOSUI.toast(`Level ${after}`, 'Circuits upgraded', 'level'));
