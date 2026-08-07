@@ -31,7 +31,7 @@
       <button type="button" data-action="refresh">Refresh</button>
       <button type="button" data-action="new-note">New Sticky Note</button>
       <button type="button" data-action="wallpaper">Cycle Wallpaper</button>
-      <button type="button" data-action="quest">Open Quest</button>
+      <button type="button" data-action="quest">Today</button>
     </div>
 
     <div id="quest-overlay" class="quest-overlay" hidden>
@@ -46,7 +46,7 @@
         <ul id="quest-list" class="quest-list"></ul>
         <h4 class="quest-sub">Daily</h4>
         <ul id="daily-list" class="quest-list"></ul>
-        <button type="button" id="quest-do-next" class="app-btn" style="width:100%;margin-top:12px">Do next hook</button>
+        <button type="button" id="quest-do-next" class="app-btn" style="width:100%;margin-top:12px">Continue</button>
       </div>
     </div>
 
@@ -69,7 +69,7 @@
         </div>
       </div>
       <div class="start-footer">
-        <button type="button" id="btn-quest" class="start-secondary">Quest</button>
+        <button type="button" id="btn-quest" class="start-secondary">Today</button>
         <button type="button" id="btn-shutdown" class="start-power">Shut Down</button>
       </div>
     </div>
@@ -91,9 +91,9 @@
       <div id="taskbar-pins" class="taskbar-pins"></div>
       <div id="taskbar-apps" class="taskbar-apps"></div>
       <div class="taskbar-tray">
-        <button type="button" id="streak-chip" class="streak-chip" title="Daily streak">Day 1</button>
-        <button type="button" id="xp-chip" class="xp-chip" title="XP and level">
-          <span id="xp-level">Lv 1</span>
+        <button type="button" id="streak-chip" class="streak-chip" title="Daily streak">—</button>
+        <button type="button" id="xp-chip" class="xp-chip" title="Level">
+          <span id="xp-level">1</span>
           <span class="xp-bar"><span id="xp-fill" class="xp-fill"></span></span>
         </button>
         <button type="button" id="btn-clock" class="clock-btn">
