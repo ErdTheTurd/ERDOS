@@ -8,7 +8,7 @@
     "email": "erdos@localhost"
   },
   "license": "MIT",
-  "homepage": "https://github.com/erdos/erdos",
+  "homepage": "https://github.com/ErdTheTurd/ERDOS",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
