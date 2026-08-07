@@ -1,21 +1,26 @@
 # ErdOS
 
-Downloadable desktop environment for **Windows** and **Linux**.
+**Phosphor Glass** desktop environment for **Windows** and **Linux**.
 
-ErdOS is an Electron-based OS-style desktop with a window manager, taskbar, start menu, and built-in apps — including a browser, games, and **ERDAI**, the onboard AI assistant.
+[![Release](https://img.shields.io/github/v/release/ErdTheTurd/ERDOS?style=flat-square)](https://github.com/ErdTheTurd/ERDOS/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/ErdTheTurd/ERDOS/total?style=flat-square)](https://github.com/ErdTheTurd/ERDOS/releases)
 
-## Features
+Retro chrome · modern motion · Browser · Arcade · Terminal · **ERDAI** · streaks, XP, and quests — all local, no accounts.
 
-- Desktop shell with wallpaper, icons, taskbar, and start menu
-- Movable / resizable windows (minimize, maximize, close)
-- **Browser** — webview browsing with address bar and search
-- **ERDAI** — chat assistant for tips, jokes, riddles, and help
-- **Games** — Snake, Breakout, Memory Match
-- **Files** — browse ErdOS home folders
-- **Notepad**, **Calculator**, **Settings** (themes + system info)
-- Marketing site in `website/` for downloads
+## Download
 
-## Quick start
+**Public installs:** [Latest GitHub Release](https://github.com/ErdTheTurd/ERDOS/releases/latest)
+
+| Platform | Asset |
+|----------|--------|
+| Windows | `ErdOS-Setup-*.exe` |
+| Linux | `ErdOS-*.AppImage` or `ErdOS-*.deb` |
+
+Marketing site (GitHub Pages once enabled): `website/` in this repo → [erdtheturd.github.io/ERDOS](https://erdtheturd.github.io/ERDOS/) (or your Pages URL).
+
+> Builds are **unsigned**. On Windows, SmartScreen may warn — choose **More info → Run anyway**.
+
+## Quick start (from source)
 
 ```bash
 npm install
@@ -31,24 +36,32 @@ npm run website
 ## Build installers
 
 ```bash
-# Windows (NSIS installer + portable)
-npm run dist:win
-
-# Linux (AppImage + .deb)
-npm run dist:linux
-
-# Current platform
-npm run dist
+npm run dist:win     # NSIS + portable
+npm run dist:linux   # AppImage + deb
 ```
 
-Artifacts are written to `dist/`.
+Push a version tag to publish via GitHub Actions:
+
+```bash
+git tag v1.1.0
+git push origin v1.1.0
+```
+
+## What's inside
+
+- Desktop shell with CRT boot, taskbar, start menu, draggable windows
+- **Browser**, **ERDAI**, **Arcade** (Snake / Breakout / Memory / Pong)
+- **Terminal**, **Files**, **Notepad**, **Sticky Notes**, **Music Box**
+- **Trophy Case**, quests, streaks, XP, rare wallpaper/theme drops
+- In-app update checks via `electron-updater` (packaged builds)
 
 ## Project layout
 
 ```
-electron/     Main process + preload bridge
-desktop/      Desktop UI (shell, window manager, apps)
+electron/     Main process, preload, progress IPC, auto-updater
+desktop/      Phosphor Glass UI (shell, WM, apps, habit loop)
 website/      Public download / marketing page
+.github/      Release + Pages workflows
 ```
 
 ## License

@@ -14,9 +14,13 @@ function getHomeRoot() {
   return userDataRoot;
 }
 
+function progressPath() {
+  return path.join(getHomeRoot(), 'Apps', 'progress.json');
+}
+
 function ensureHome() {
   const root = getHomeRoot();
-  const dirs = ['Desktop', 'Documents', 'Downloads', 'Pictures', 'Apps'];
+  const dirs = ['Desktop', 'Documents', 'Downloads', 'Pictures', 'Apps', 'Notes'];
   for (const dir of dirs) {
     const full = path.join(root, dir);
     if (!fs.existsSync(full)) fs.mkdirSync(full, { recursive: true });
@@ -25,20 +29,54 @@ function ensureHome() {
   if (!fs.existsSync(welcome)) {
     fs.writeFileSync(
       welcome,
-      'Welcome to ErdOS!\n\nOpen the Start menu to launch apps.\nTry ERDAI, the Browser, Games, and more.\n',
+      'Welcome to ErdOS!\n\nOpen the Start menu to launch apps.\nTry ERDAI, the Arcade, Terminal, and more.\nComplete the First Boot Quest to unlock rewards.\n',
       'utf8'
     );
   }
+  if (!fs.existsSync(progressPath())) {
+    fs.writeFileSync(progressPath(), JSON.stringify(defaultProgress(), null, 2), 'utf8');
+  }
+}
+
+function defaultProgress() {
+  return {
+    version: 1,
+    xp: 0,
+    level: 1,
+    streak: 0,
+    longestStreak: 0,
+    lastOpenDate: null,
+    displayName: '',
+    muted: false,
+    wallpaper: 'phosphor-grid',
+    unlockedWallpapers: ['phosphor-grid', 'deep-scan'],
+    unlockedThemes: [''],
+    pinnedApps: ['browser', 'erdai', 'games', 'terminal'],
+    iconLayout: {},
+    achievements: {},
+    quest: {
+      openBrowser: false,
+      chatErdai: false,
+      playGame: false,
+      saveNote: false,
+      changeTheme: false,
+      completed: false,
+    },
+    highScores: { snake: 0, breakout: 0, memory: 0, pong: 0 },
+    erdaiMemory: { facts: [], lastFortuneDate: null, lastFortune: '' },
+    stats: { launches: 0, messages: 0, boots: 0 },
+    recentAchievements: [],
+  };
 }
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1400,
+    width: 1440,
     height: 900,
     minWidth: 1024,
     minHeight: 640,
     title: 'ErdOS',
-    backgroundColor: '#061018',
+    backgroundColor: '#030d14',
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
@@ -56,6 +94,7 @@ function createWindow() {
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
     if (isDev) mainWindow.webContents.openDevTools({ mode: 'detach' });
+    setupAutoUpdater();
   });
 
   mainWindow.on('closed', () => {
@@ -63,10 +102,44 @@ function createWindow() {
   });
 }
 
+function setupAutoUpdater() {
+  if (isDev) return;
+  try {
+    const { autoUpdater } = require('electron-updater');
+    autoUpdater.autoDownload = false;
+    autoUpdater.on('update-available', (info) => {
+      mainWindow?.webContents.send('erdos:update-status', {
+        status: 'available',
+        version: info.version,
+      });
+    });
+    autoUpdater.on('update-not-available', () => {
+      mainWindow?.webContents.send('erdos:update-status', { status: 'current' });
+    });
+    autoUpdater.on('error', (err) => {
+      mainWindow?.webContents.send('erdos:update-status', {
+        status: 'error',
+        message: String(err?.message || err),
+      });
+    });
+    autoUpdater.on('download-progress', (p) => {
+      mainWindow?.webContents.send('erdos:update-status', {
+        status: 'downloading',
+        percent: p.percent,
+      });
+    });
+    autoUpdater.on('update-downloaded', () => {
+      mainWindow?.webContents.send('erdos:update-status', { status: 'ready' });
+    });
+    autoUpdater.checkForUpdates().catch(() => {});
+  } catch {
+    // electron-updater optional in unpackaged runs
+  }
+}
+
 app.whenReady().then(() => {
   ensureHome();
   createWindow();
-
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
@@ -86,7 +159,26 @@ ipcMain.handle('erdos:get-system-info', () => ({
   memoryGB: Math.round(os.totalmem() / (1024 ** 3)),
   freememGB: Math.round(os.freemem() / (1024 ** 3)),
   uptime: Math.floor(os.uptime()),
+  isPackaged: app.isPackaged,
 }));
+
+ipcMain.handle('erdos:get-progress', async () => {
+  try {
+    const raw = await fs.promises.readFile(progressPath(), 'utf8');
+    return { ...defaultProgress(), ...JSON.parse(raw) };
+  } catch {
+    const data = defaultProgress();
+    await fs.promises.writeFile(progressPath(), JSON.stringify(data, null, 2), 'utf8');
+    return data;
+  }
+});
+
+ipcMain.handle('erdos:set-progress', async (_e, data) => {
+  const merged = { ...defaultProgress(), ...data };
+  await fs.promises.mkdir(path.dirname(progressPath()), { recursive: true });
+  await fs.promises.writeFile(progressPath(), JSON.stringify(merged, null, 2), 'utf8');
+  return merged;
+});
 
 ipcMain.handle('erdos:list-dir', async (_e, targetPath) => {
   const resolved = resolveSafe(targetPath || getHomeRoot());
@@ -109,7 +201,7 @@ ipcMain.handle('erdos:list-dir', async (_e, targetPath) => {
 ipcMain.handle('erdos:read-file', async (_e, targetPath) => {
   const resolved = resolveSafe(targetPath);
   const stat = await fs.promises.stat(resolved);
-  if (stat.size > 2 * 1024 * 1024) throw new Error('File too large to open in Notepad');
+  if (stat.size > 2 * 1024 * 1024) throw new Error('File too large');
   return fs.promises.readFile(resolved, 'utf8');
 });
 
@@ -153,11 +245,36 @@ ipcMain.handle('erdos:pick-open-path', async () => {
   return result.canceled ? null : result.filePaths[0];
 });
 
+ipcMain.handle('erdos:check-updates', async () => {
+  if (isDev || !app.isPackaged) return { status: 'dev' };
+  try {
+    const { autoUpdater } = require('electron-updater');
+    const result = await autoUpdater.checkForUpdates();
+    return { status: 'checked', version: result?.updateInfo?.version };
+  } catch (err) {
+    return { status: 'error', message: String(err?.message || err) };
+  }
+});
+
+ipcMain.handle('erdos:download-update', async () => {
+  try {
+    const { autoUpdater } = require('electron-updater');
+    await autoUpdater.downloadUpdate();
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, message: String(err?.message || err) };
+  }
+});
+
+ipcMain.handle('erdos:install-update', () => {
+  const { autoUpdater } = require('electron-updater');
+  autoUpdater.quitAndInstall();
+});
+
 function resolveSafe(targetPath) {
   const resolved = path.resolve(targetPath || getHomeRoot());
   const root = path.resolve(getHomeRoot());
   if (resolved !== root && !resolved.startsWith(root + path.sep)) {
-    // Allow absolute paths under user home for convenience in file manager
     const home = path.resolve(os.homedir());
     if (resolved !== home && !resolved.startsWith(home + path.sep)) {
       throw new Error('Access denied outside home directories');
