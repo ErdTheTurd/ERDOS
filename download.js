@@ -1,7 +1,7 @@
 (function () {
   const OWNER = 'ErdTheTurd';
   const REPO = 'ERDOS';
-  const FALLBACK_VERSION = '1.4.0';
+  const FALLBACK_VERSION = '1.5.0';
   const latestBase = `https://github.com/${OWNER}/${REPO}/releases/latest/download`;
 
   const ua = navigator.userAgent || '';

@@ -281,22 +281,33 @@
     });
   });
 
+  function closeStartMenu() {
+    startMenu.hidden = true;
+  }
+
+  function openStartMenu() {
+    startMenu.hidden = false;
+    ErdOSSound.click();
+    startSearch.value = '';
+    startSearch.dispatchEvent(new Event('input'));
+    setTimeout(() => startSearch.focus(), 30);
+  }
+
   btnStart.addEventListener('click', (e) => {
     e.stopPropagation();
     ErdOSJuice?.ripple(btnStart, e);
-    startMenu.hidden = !startMenu.hidden;
-    if (!startMenu.hidden) {
-      ErdOSSound.click();
-      ErdOSJuice?.hitCombo();
-      startSearch.value = '';
-      startSearch.dispatchEvent(new Event('input'));
-      setTimeout(() => startSearch.focus(), 30);
-    }
+    if (startMenu.hidden) openStartMenu();
+    else closeStartMenu();
+  });
+
+  document.getElementById('start-close')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeStartMenu();
   });
 
   document.addEventListener('click', (e) => {
     if (!startMenu.hidden && !startMenu.contains(e.target) && e.target !== btnStart && !btnStart.contains(e.target)) {
-      startMenu.hidden = true;
+      closeStartMenu();
     }
     if (!contextMenu.hidden && !contextMenu.contains(e.target)) contextMenu.hidden = true;
     const notif = document.getElementById('notif-panel');
@@ -306,24 +317,29 @@
   });
 
   btnShutdown.addEventListener('click', () => {
-    startMenu.hidden = true;
+    closeStartMenu();
     if (confirm('Shut down ErdOS?')) window.close();
   });
 
   function showQuest(force) {
-    if (force === false) questOverlay.hidden = true;
-    else {
-      refreshQuestUI();
-      questOverlay.hidden = false;
-      ErdOSSound.click();
+    if (force === false) {
+      questOverlay.hidden = true;
+      return;
     }
+    refreshQuestUI();
+    questOverlay.hidden = false;
+    ErdOSSound.click();
   }
 
   btnQuest.addEventListener('click', () => {
-    startMenu.hidden = true;
+    closeStartMenu();
     showQuest(true);
   });
-  questClose.addEventListener('click', () => showQuest(false));
+  questClose.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    showQuest(false);
+  });
   questOverlay.addEventListener('click', (e) => {
     if (e.target === questOverlay) showQuest(false);
   });
@@ -370,8 +386,26 @@
   });
 
   document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (!questOverlay.hidden) {
+        showQuest(false);
+        return;
+      }
+      if (!startMenu.hidden) {
+        closeStartMenu();
+        return;
+      }
+      const notif = document.getElementById('notif-panel');
+      if (notif && !notif.hidden) {
+        notif.hidden = true;
+        return;
+      }
+      if (!contextMenu.hidden) contextMenu.hidden = true;
+      return;
+    }
     if (e.key === 'Meta' || (e.ctrlKey && e.key.toLowerCase() === 'escape')) {
-      startMenu.hidden = !startMenu.hidden;
+      if (startMenu.hidden) openStartMenu();
+      else closeStartMenu();
     }
   });
 
