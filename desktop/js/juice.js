@@ -7,24 +7,7 @@ const ErdOSJuice = (() => {
     return layer;
   }
 
-  function floatXp(amount) {
-    if (!amount || amount < 5) return;
-    const root = ensure();
-    const chip = document.getElementById('xp-chip');
-    if (!root || !chip) return;
-    const end = chip.getBoundingClientRect();
-    const el = document.createElement('div');
-    el.className = 'juice-float-xp';
-    el.textContent = `+${amount}`;
-    el.style.left = `${end.left + end.width / 2}px`;
-    el.style.top = `${end.top - 8}px`;
-    root.append(el);
-    requestAnimationFrame(() => {
-      el.style.transform = 'translate(-50%, -28px)';
-      el.style.opacity = '0';
-    });
-    setTimeout(() => el.remove(), 700);
-  }
+  function floatXp() { /* XP system removed */ }
 
   function ripple(el, event) {
     if (!el) return;

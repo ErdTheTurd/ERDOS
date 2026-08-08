@@ -25,11 +25,6 @@ const ErdOSUI = (() => {
     else if (kind === 'rare') ErdOSSound.rare();
     else if (kind === 'level') ErdOSSound.levelUp();
     else ErdOSSound.notify();
-
-    if (/^\+\d+\s*XP/i.test(title)) {
-      const n = parseInt(title.replace(/\D/g, ''), 10) || 0;
-      ErdOSJuice?.floatXp(n);
-    }
   }
 
   function escapeHtml(s) {

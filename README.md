@@ -2,14 +2,14 @@
 
 > **Live site:** [erdtheturd.github.io/ERDOS](https://erdtheturd.github.io/ERDOS/) — green glassy Phosphor download page.
 
-**Phosphor Glass** desktop for **Windows**, **macOS**, and **Linux** — a windowed OS with ERDAI coaching, daily quests, streaks, and rare drops.
+**Phosphor Glass** desktop for **Windows**, **macOS**, and **Linux** — a modern windowed OS with **ERDAI** powered by **Puter AI**.
 
 Runs as a **normal app window** — never replaces your host OS.
 
 [![Release](https://img.shields.io/github/v/release/ErdTheTurd/ERDOS?style=flat-square)](https://github.com/ErdTheTurd/ERDOS/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/ErdTheTurd/ERDOS/total?style=flat-square)](https://github.com/ErdTheTurd/ERDOS/releases)
 
-Retro chrome · modern motion · Browser · Arcade · Terminal · **ERDAI** · streaks, XP, and quests — all local, no accounts.
+Glassmorphic chrome · simple browser · Arcade · Terminal · **ERDAI** (real AI via Puter). No XP grind.
 
 ## Download
 
@@ -51,8 +51,8 @@ npm run dist:linux   # AppImage + deb
 Push a version tag to publish via GitHub Actions:
 
 ```bash
-git tag v1.5.0
-git push origin v1.5.0
+git tag v1.6.0
+git push origin v1.6.0
 ```
 
 ## What's inside

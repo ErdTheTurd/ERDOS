@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https: http:; connect-src 'self' https:; media-src 'self' data:; frame-src *; child-src *" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://js.puter.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: https: http: blob:; connect-src 'self' https: wss: blob:; media-src 'self' data: blob:; frame-src * https://puter.com https://*.puter.com; child-src *; worker-src 'self' blob:" />
   <title>ErdOS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,7 +17,7 @@
       <div class="boot-mark">ErdOS</div>
       <p class="boot-sub">PHOSPHOR GLASS DESKTOP</p>
       <div class="boot-bar"><div class="boot-bar-fill"></div></div>
-      <p id="boot-status" class="boot-status">Warming CRT…</p>
+      <p id="boot-status" class="boot-status">Warming glass…</p>
     </div>
   </div>
 
@@ -31,23 +31,7 @@
       <button type="button" data-action="refresh">Refresh</button>
       <button type="button" data-action="new-note">New Sticky Note</button>
       <button type="button" data-action="wallpaper">Cycle Wallpaper</button>
-      <button type="button" data-action="quest">Today</button>
-    </div>
-
-    <div id="quest-overlay" class="quest-overlay" hidden>
-      <div class="quest-panel">
-        <div class="quest-head">
-          <strong id="quest-title">Quests</strong>
-          <button type="button" id="quest-close" class="win-btn" aria-label="Close">×</button>
-        </div>
-        <p id="erdai-coach" class="erdai-coach"></p>
-        <div class="quest-meter"><div id="quest-fill" class="quest-fill"></div></div>
-        <p id="quest-count" class="quest-count">0 / 5</p>
-        <ul id="quest-list" class="quest-list"></ul>
-        <h4 class="quest-sub">Daily</h4>
-        <ul id="daily-list" class="quest-list"></ul>
-        <button type="button" id="quest-do-next" class="app-btn" style="width:100%;margin-top:12px">Continue</button>
-      </div>
+      <button type="button" data-action="erdai">Open ERDAI</button>
     </div>
 
     <div id="start-menu" class="start-menu" hidden>
@@ -55,7 +39,7 @@
         <div class="start-brand-row">
           <div>
             <span class="start-logo">ErdOS</span>
-            <span class="start-tag">Phosphor Glass · v1.5</span>
+            <span class="start-tag">Phosphor Glass · v1.6</span>
           </div>
           <button type="button" id="start-close" class="win-btn close" aria-label="Close menu">×</button>
         </div>
@@ -74,7 +58,7 @@
         </div>
       </div>
       <div class="start-footer">
-        <button type="button" id="btn-quest" class="start-secondary">Today</button>
+        <button type="button" id="btn-erdai" class="start-secondary">ERDAI</button>
         <button type="button" id="btn-shutdown" class="start-power">Shut Down</button>
       </div>
     </div>
@@ -85,7 +69,6 @@
     </div>
 
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
-    <div id="coach-bubble" class="coach-bubble" hidden></div>
     <div id="juice-layer" aria-hidden="true"></div>
 
     <footer id="taskbar" class="taskbar">
@@ -96,11 +79,6 @@
       <div id="taskbar-pins" class="taskbar-pins"></div>
       <div id="taskbar-apps" class="taskbar-apps"></div>
       <div class="taskbar-tray">
-        <button type="button" id="streak-chip" class="streak-chip" title="Daily streak">—</button>
-        <button type="button" id="xp-chip" class="xp-chip" title="Level">
-          <span id="xp-level">1</span>
-          <span class="xp-bar"><span id="xp-fill" class="xp-fill"></span></span>
-        </button>
         <button type="button" id="btn-clock" class="clock-btn">
           <time id="clock" class="clock"></time>
         </button>
@@ -108,10 +86,12 @@
     </footer>
   </div>
 
+  <script src="https://js.puter.com/v2/"></script>
   <script src="js/sound.js"></script>
   <script src="js/juice.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/progress.js"></script>
+  <script src="js/erdai.js"></script>
   <script src="js/apps.js"></script>
   <script src="js/window-manager.js"></script>
   <script src="js/shell.js"></script>
