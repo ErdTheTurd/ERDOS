@@ -106,7 +106,11 @@ const windowManager = (() => {
     const taskBtn = document.createElement('button');
     taskBtn.type = 'button';
     taskBtn.className = 'task-btn is-active';
-    taskBtn.textContent = app.name;
+    const mark = app.icon || app.glyph || '';
+    const iconHtml = String(mark).includes('<svg')
+      ? `<span class="task-icon">${mark}</span>`
+      : `<span class="task-icon text">${mark || ''}</span>`;
+    taskBtn.innerHTML = `${iconHtml}<span class="task-label">${app.name}</span>`;
 
     body.__windowApi = {
       setTitle: (t) => {

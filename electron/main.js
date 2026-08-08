@@ -29,7 +29,7 @@ function ensureHome() {
   if (!fs.existsSync(welcome)) {
     fs.writeFileSync(
       welcome,
-      'Welcome to ErdOS!\n\nOpen the Start menu to launch apps.\nTry ERDAI, the Arcade, Terminal, and more.\nComplete the First Boot Quest to unlock rewards.\n',
+      'Welcome to ErdOS!\n\nOpen the Start menu to launch apps.\nTry ERDAI (Puter AI), the Browser, Arcade, and Terminal.\n',
       'utf8'
     );
   }
@@ -40,32 +40,16 @@ function ensureHome() {
 
 function defaultProgress() {
   return {
-    version: 1,
-    xp: 0,
-    level: 1,
-    streak: 0,
-    longestStreak: 0,
-    lastOpenDate: null,
+    version: 2,
     displayName: '',
     muted: false,
     wallpaper: 'phosphor-grid',
-    unlockedWallpapers: ['phosphor-grid', 'deep-scan'],
-    unlockedThemes: [''],
+    unlockedWallpapers: ['phosphor-grid', 'deep-scan', 'crt-dawn', 'signal-bloom', 'midnight-beam'],
+    unlockedThemes: ['', 'theme-ember', 'theme-violet-night', 'theme-forest'],
     pinnedApps: ['browser', 'erdai', 'games', 'terminal'],
     iconLayout: {},
-    achievements: {},
-    quest: {
-      openBrowser: false,
-      chatErdai: false,
-      playGame: false,
-      saveNote: false,
-      changeTheme: false,
-      completed: false,
-    },
     highScores: { snake: 0, breakout: 0, memory: 0, pong: 0 },
-    erdaiMemory: { facts: [], lastFortuneDate: null, lastFortune: '' },
-    stats: { launches: 0, messages: 0, boots: 0 },
-    recentAchievements: [],
+    erdaiMemory: { facts: [] },
   };
 }
 
@@ -93,6 +77,30 @@ function createWindow() {
 
   Menu.setApplicationMenu(null);
   mainWindow.loadFile(path.join(__dirname, '..', 'desktop', 'index.html'));
+
+  // Puter AI auth / popups
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    try {
+      const host = new URL(url).hostname;
+      if (host === 'puter.com' || host.endsWith('.puter.com') || host === 'js.puter.com') {
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            width: 520,
+            height: 720,
+            autoHideMenuBar: true,
+            webPreferences: {
+              contextIsolation: true,
+              nodeIntegration: false,
+              sandbox: true,
+            },
+          },
+        };
+      }
+    } catch (_) { /* fall through */ }
+    shell.openExternal(url);
+    return { action: 'deny' };
+  });
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();

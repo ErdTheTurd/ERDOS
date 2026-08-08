@@ -1,18 +1,37 @@
 /* global windowManager, ErdOSProgress, ErdOSSound, ErdOSUI */
 
+const ICONS = {
+  browser: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 12h18M12 3c2.5 3 4 6 4 9s-1.5 6-4 9c-2.5-3-4-6-4-9s1.5-6 4-9z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>',
+  erdai: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z" fill="currentColor"/><circle cx="18.5" cy="17.5" r="2.2" fill="currentColor" opacity=".85"/></svg>',
+  games: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12h4M10 10v4M16.5 11.5h.01M18.2 13.5h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  files: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 012-2h4l2 2h6a2 2 0 012 2v9a2 2 0 01-2 2H6a2 2 0 01-2-2V7z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
+  notepad: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l4 4v14H7V3z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15 3v4h4M9 11h6M9 15h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
+  sticky: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l5 5v11H6V4z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15 4v5h5" stroke="currentColor" stroke-width="1.4"/></svg>',
+  music: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18a3 3 0 100-6 3 3 0 000 6zM9 15V5l10-2v10" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="19" cy="13" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
+  trophies: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 01-8 0V4zM6 5H4v2a3 3 0 003 3M18 5h2v2a3 3 0 01-3 3M10 17h4M9 21h6M12 13v4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  calc: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 7h8M8 12h2M12 12h2M16 12h0M8 16h2M12 16h2M16 16h0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  settings: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v2M12 19v2M4.9 6.5l1.4 1.4M17.7 16.1l1.4 1.4M3 12h2M19 12h2M4.9 17.5l1.4-1.4M17.7 7.9l1.4-1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  about: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 10v6M12 7.5h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+};
+
+function appIcon(id, glyph) {
+  if (id === 'terminal') return glyph || '>_';
+  return ICONS[id] || glyph || '?';
+}
+
 const APPS = [
-  { id: 'browser', name: 'Browser', description: 'Surf the web', glyph: 'EB', desktop: true, width: 980, height: 660, mount: mountBrowser },
-  { id: 'erdai', name: 'ERDAI', description: 'Your resident AI', glyph: 'AI', desktop: true, width: 540, height: 640, mount: mountErdai },
-  { id: 'games', name: 'Arcade', description: 'Snake, Breakout, Pong…', glyph: 'AR', desktop: true, width: 740, height: 580, mount: mountGames },
-  { id: 'terminal', name: 'Terminal', description: 'CRT command line', glyph: '>_', desktop: true, width: 680, height: 480, mount: mountTerminal },
-  { id: 'files', name: 'Files', description: 'Browse ErdOS home', glyph: 'FL', desktop: true, width: 720, height: 520, mount: mountFiles },
-  { id: 'notepad', name: 'Notepad', description: 'Write documents', glyph: 'NT', desktop: true, width: 640, height: 480, mount: mountNotepad },
-  { id: 'sticky', name: 'Sticky Notes', description: 'Quick thoughts', glyph: 'SN', desktop: false, width: 360, height: 320, mount: mountSticky },
-  { id: 'music', name: 'Music Box', description: 'Ambient phosphor loops', glyph: 'MB', desktop: false, width: 420, height: 360, mount: mountMusic },
-  { id: 'trophies', name: 'Trophy Case', description: 'Achievements & XP', glyph: 'TR', desktop: false, width: 640, height: 520, mount: mountTrophies },
-  { id: 'calc', name: 'Calculator', description: 'Quick math', glyph: 'C+', desktop: false, width: 360, height: 460, mount: mountCalculator },
-  { id: 'settings', name: 'Settings', description: 'Theme, sound, system', glyph: 'ST', desktop: false, width: 580, height: 560, mount: mountSettings },
-  { id: 'about', name: 'About ErdOS', description: 'Version and credits', glyph: 'ER', desktop: false, width: 480, height: 380, mount: mountAbout },
+  { id: 'browser', name: 'Browser', description: 'Simple web browsing', icon: appIcon('browser'), desktop: true, width: 980, height: 660, mount: mountBrowser },
+  { id: 'erdai', name: 'ERDAI', description: 'Desktop AI via Puter', icon: appIcon('erdai'), desktop: true, width: 560, height: 660, mount: mountErdai },
+  { id: 'games', name: 'Arcade', description: 'Snake, Breakout, Pong…', icon: appIcon('games'), desktop: true, width: 740, height: 580, mount: mountGames },
+  { id: 'terminal', name: 'Terminal', description: 'CRT command line', glyph: '>_', icon: '>_', desktop: true, width: 680, height: 480, mount: mountTerminal },
+  { id: 'files', name: 'Files', description: 'Browse ErdOS home', icon: appIcon('files'), desktop: true, width: 720, height: 520, mount: mountFiles },
+  { id: 'notepad', name: 'Notepad', description: 'Write documents', icon: appIcon('notepad'), desktop: true, width: 640, height: 480, mount: mountNotepad },
+  { id: 'sticky', name: 'Sticky Notes', description: 'Quick thoughts', icon: appIcon('sticky'), desktop: false, width: 360, height: 320, mount: mountSticky },
+  { id: 'music', name: 'Music Box', description: 'Ambient phosphor loops', icon: appIcon('music'), desktop: false, width: 420, height: 360, mount: mountMusic },
+  { id: 'trophies', name: 'High Scores', description: 'Arcade bests', icon: appIcon('trophies'), desktop: false, width: 520, height: 420, mount: mountTrophies },
+  { id: 'calc', name: 'Calculator', description: 'Quick math', icon: appIcon('calc'), desktop: false, width: 360, height: 460, mount: mountCalculator },
+  { id: 'settings', name: 'Settings', description: 'Theme, sound, system', icon: appIcon('settings'), desktop: false, width: 580, height: 560, mount: mountSettings },
+  { id: 'about', name: 'About ErdOS', description: 'Version and credits', icon: appIcon('about'), desktop: false, width: 480, height: 380, mount: mountAbout },
 ];
 
 function el(tag, attrs = {}, children = []) {
@@ -32,27 +51,31 @@ function el(tag, attrs = {}, children = []) {
 }
 
 function mountBrowser(body) {
-  const root = el('div', { className: 'app-root' });
-  const urlInput = el('input', { type: 'text', value: 'erdos:home', spellcheck: 'false' });
+  const root = el('div', { className: 'app-root browser-app' });
+  const urlInput = el('input', {
+    type: 'text',
+    className: 'browser-url',
+    value: '',
+    placeholder: 'Search or enter address',
+    spellcheck: 'false',
+  });
   const loading = el('div', { className: 'browser-loading' });
-  const homeHtml = `data:text/html;charset=utf-8,${encodeURIComponent(`<!DOCTYPE html><html><head><style>
-    body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#031018;color:#e6f7f4;display:grid;place-items:center;min-height:100vh}
-    main{text-align:center;padding:40px}h1{font-size:3rem;margin:0;color:#7dffc8;text-shadow:0 0 20px rgba(47,224,184,.5)}
-    p{color:#7fa09a;max-width:36ch;margin:12px auto 0}a{color:#2fe0b8}
-  </style></head><body><main><h1>ErdOS</h1><p>Phosphor Glass start page. Type a URL or search above.</p></main></body></html>`)}`;
+  const homeHtml = `data:text/html;charset=utf-8,${encodeURIComponent(`<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+    :root{color-scheme:dark}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:Outfit,system-ui,sans-serif;
+      background:radial-gradient(ellipse at 30% 20%,rgba(47,224,184,.14),transparent 45%),
+      radial-gradient(ellipse at 80% 70%,rgba(58,180,216,.12),transparent 40%),#031018;color:#e6f7f4}
+    main{text-align:center;padding:48px 24px;max-width:28rem}
+    h1{margin:0;font-size:2.6rem;letter-spacing:-.04em;color:#7dffc8}
+    p{margin:12px 0 0;color:#8aa8a2;line-height:1.5}
+  </style></head><body><main><h1>ErdOS</h1><p>Type a URL or search above. Keep it simple.</p></main></body></html>`)}`;
 
   const frame = el('webview', { className: 'browser-frame', src: homeHtml, allowpopups: 'true' });
-  const bookmarks = [
-    { label: 'Home', url: 'erdos:home' },
-    { label: 'DuckDuckGo', url: 'https://duckduckgo.com' },
-    { label: 'Wikipedia', url: 'https://wikipedia.org' },
-  ];
 
   const go = (raw) => {
     let url = (raw ?? urlInput.value).trim();
-    if (!url) return;
-    if (url === 'erdos:home') {
-      urlInput.value = 'erdos:home';
+    if (!url) {
+      urlInput.value = '';
       frame.setAttribute('src', homeHtml);
       return;
     }
@@ -65,168 +88,116 @@ function mountBrowser(body) {
     frame.setAttribute('src', url);
   };
 
-  const bar = el('div', { className: 'app-toolbar' }, [
-    el('button', { className: 'app-btn ghost', type: 'button', text: '←', onClick: () => { try { frame.goBack(); } catch (_) {} } }),
-    el('button', { className: 'app-btn ghost', type: 'button', text: '→', onClick: () => { try { frame.goForward(); } catch (_) {} } }),
-    el('button', { className: 'app-btn ghost', type: 'button', text: '↻', onClick: () => { try { frame.reload(); } catch (_) { frame.src = frame.src; } } }),
-    el('button', { className: 'app-btn ghost', type: 'button', text: '⌂', onClick: () => go('erdos:home') }),
+  const bar = el('div', { className: 'browser-bar' }, [
+    el('button', { className: 'browser-icon-btn', type: 'button', title: 'Back', html: '←', onClick: () => { try { frame.goBack(); } catch (_) {} } }),
+    el('button', { className: 'browser-icon-btn', type: 'button', title: 'Forward', html: '→', onClick: () => { try { frame.goForward(); } catch (_) {} } }),
+    el('button', { className: 'browser-icon-btn', type: 'button', title: 'Reload', html: '↻', onClick: () => { try { frame.reload(); } catch (_) { frame.src = frame.src; } } }),
     urlInput,
     el('button', { className: 'app-btn', type: 'button', text: 'Go', onClick: () => go() }),
   ]);
 
-  const marks = el('div', { className: 'app-toolbar' }, bookmarks.map((b) =>
-    el('button', { className: 'app-btn ghost', type: 'button', text: b.label, onClick: () => go(b.url) })
-  ));
-
-  root.append(bar, marks, loading, el('div', { className: 'app-content flush' }, [frame]));
+  root.append(bar, loading, el('div', { className: 'app-content flush' }, [frame]));
   urlInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
-  frame.addEventListener('did-navigate', (e) => { if (e.url && !e.url.startsWith('data:')) urlInput.value = e.url; loading.classList.remove('is-on'); });
+  frame.addEventListener('did-navigate', (e) => {
+    if (e.url && !e.url.startsWith('data:')) urlInput.value = e.url;
+    loading.classList.remove('is-on');
+  });
   frame.addEventListener('did-finish-load', () => loading.classList.remove('is-on'));
   frame.addEventListener('page-title-updated', (e) => {
     if (e.title && body.__windowApi) body.__windowApi.setTitle(`Browser — ${e.title}`);
   });
   body.append(root);
+  setTimeout(() => urlInput.focus(), 40);
 }
+
 
 function mountErdai(body) {
   const root = el('div', { className: 'app-root' });
   const chat = el('div', { className: 'erdai-chat' });
-  const input = el('input', { type: 'text', placeholder: 'Ask ERDAI anything…', autocomplete: 'off' });
-  const progress = ErdOSProgress.get() || {};
-  const name = progress.displayName || 'friend';
+  const input = el('input', { type: 'text', placeholder: 'Message ERDAI…', autocomplete: 'off' });
+  const sendBtn = el('button', { className: 'app-btn', type: 'button', text: 'Send' });
+  const status = el('div', { className: 'erdai-status', text: ErdAI.available() ? 'Powered by Puter AI' : 'Loading Puter…' });
+  const history = [];
+  const name = ErdOSProgress.get()?.displayName || '';
 
   const push = (text, who) => {
     chat.append(el('div', { className: `erdai-msg ${who}`, text }));
     chat.scrollTop = chat.scrollHeight;
   };
 
-  (async () => {
-    const fortune = await ErdOSProgress.dailyFortune();
-    const coach = ErdOSProgress.coachLine();
-    push(
-      `Hello ${name} — I'm ERDAI.\n${fortune}\n\n${coach}\n\nTry "daily", "quest", "fortune", or "remember that…"`,
-      'bot'
-    );
-  })();
-
-  const reply = (message) => {
-    const m = message.toLowerCase().trim();
-    const p = ErdOSProgress.get() || {};
-    const display = p.displayName || 'friend';
-    const hook = ErdOSProgress.nextHook();
-
-    if (/^(hi|hello|hey|yo)\b/.test(m)) return `Hey ${display}. Day ${p.streak || 0}. Need a suggestion? Say "daily".`;
-    if (/who are you|what are you|your name/.test(m)) return "I'm ERDAI — ErdOS Resident Desktop AI. Local, offline, and here to help.";
-    if (/challenge|boredom|bored|what now|nudge/.test(m)) {
-      return `Next up: ${hook.label}.\n${ErdOSProgress.coachLine()}\nSay "go" and I'll open it.`;
-    }
-    if (/^go$|open it|do it|launch/.test(m)) {
-      setTimeout(() => windowManager.open(hook.app), 200);
-      return `Opening ${hook.app}…`;
-    }
-    if (/daily|dailies/.test(m)) {
-      const dailies = p.daily?.quests || [];
-      if (!dailies.length) return 'No dailies loaded — reboot to roll a fresh set.';
-      if (p.daily?.cleared) return 'Today’s list is clear. Come back tomorrow, or open Arcade if you want.';
-      return `Today:\n${dailies.map((d) => `• ${d.done ? '✓' : '○'} ${d.label} (${d.progress || 0}/${d.target})`).join('\n')}`;
-    }
-    if (/my name is (.+)/.test(m)) {
-      const n = m.match(/my name is (.+)/)[1].replace(/[.!?]+$/, '').trim();
-      ErdOSProgress.setDisplayName(n);
-      ErdOSProgress.rememberErdai(`User's name is ${n}`);
-      return `Got it — I'll call you ${n}.`;
-    }
-    if (/remember (?:that )?(.+)/.test(m)) {
-      const fact = m.match(/remember (?:that )?(.+)/)[1];
-      ErdOSProgress.rememberErdai(fact);
-      return `Logged in phosphor memory: "${fact}"`;
-    }
-    if (/what do you remember|memory/.test(m)) {
-      const facts = p.erdaiMemory?.facts || [];
-      return facts.length ? `I remember:\n• ${facts.join('\n• ')}` : 'My memory crystal is empty — tell me something to remember.';
-    }
-    if (/quest|what should i do|tips?/.test(m)) {
-      const q = p.quest || {};
-      const missing = [];
-      if (!q.openBrowser) missing.push('open Browser');
-      if (!q.chatErdai) missing.push('keep chatting with me');
-      if (!q.playGame) missing.push('play an Arcade game');
-      if (!q.saveNote) missing.push('save a Notepad file');
-      if (!q.changeTheme) missing.push('change theme in Settings');
-      if (q.completed) {
-        const dailies = (p.daily?.quests || []).filter((d) => !d.done);
-        return dailies.length
-          ? `First Boot done. Still open today:\n• ${dailies.map((d) => d.label).join('\n• ')}`
-          : 'You’re caught up. Enjoy the desktop.';
-      }
-      return `First Boot remaining:\n• ${missing.join('\n• ')}`;
-    }
-    if (/help|what can you do|commands/.test(m)) {
-      return 'Try: daily · quest · fortune · streak · remember that… · joke · go';
-    }
-    if (/fortune/.test(m)) return ErdOSProgress.get()?.erdaiMemory?.lastFortune || 'Ask me again after boot for a fresh fortune.';
-    if (/rare|drop|pity/.test(m)) return `Rare charge: ${p.launchesSinceRare || 0}/22 launches. Keep opening apps and something will drop.`;
-    if (/browser/.test(m)) return 'Browser has bookmarks and an ErdOS home page. Type a URL or search terms, then Go.';
-    if (/arcade|game|snake|breakout|pong/.test(m)) return 'Arcade has Snake, Breakout, and Pong. High scores are optional.';
-    if (/terminal/.test(m)) return 'Terminal speaks CRT. Try `neofetch`, `fortune`, `hack`, or `help`.';
-    if (/theme|wallpaper|settings/.test(m)) return 'Settings unlocks themes and wallpapers you have earned. Completing First Boot unlocks CRT Dawn.';
-    if (/streak|xp|level|freeze/.test(m)) {
-      const lv = ErdOSProgress.levelFromXp(p.xp || 0);
-      return `Level ${lv.level} · ${p.xp || 0} XP · Day ${p.streak || 0} · freezes ${p.streakFreeze || 0}. ${lv.need - lv.into} XP to next.`;
-    }
-    if (/joke|funny/.test(m)) {
-      const jokes = [
-        'Why did the window refuse to close? It had too many unresolved promises.',
-        'I told a TCP joke… had to keep repeating it until you got it.',
-        'ErdOS walks into a bar. Bartender: "We don\'t serve Windows." ErdOS: "Good — I brought Phosphor Glass."',
-      ];
-      return jokes[Math.floor(Math.random() * jokes.length)];
-    }
-    if (/riddle/.test(m)) return 'I speak without a mouth and hear without ears. I have no body, but come alive with wind. What am I?\n(Say "answer")';
-    if (/^answer$/.test(m)) return 'An echo — like a toast that never quite fades.';
-    if (/time|clock|date/.test(m)) return `Local time: ${new Date().toLocaleString()}`;
-    if (/thank/.test(m)) return 'Anytime. Keep the phosphor warm.';
-    if (/math|calculate|\d+\s*[\+\-\*\/]\s*\d+/.test(m)) {
-      const expr = m.match(/(-?\d+(?:\.\d+)?)\s*([\+\-\*\/])\s*(-?\d+(?:\.\d+)?)/);
-      if (expr) {
-        const a = Number(expr[1]);
-        const b = Number(expr[3]);
-        const op = expr[2];
-        const result = op === '+' ? a + b : op === '-' ? a - b : op === '*' ? a * b : b === 0 ? '∞' : a / b;
-        return `That comes to ${result}.`;
-      }
-    }
-    if (/story/.test(m)) {
-      return 'In a teal-lit room, ErdOS woke. ERDAI whispered boot logs like lullabies. The user clicked Start — and the desktop learned how to dream in windows.';
-    }
-    // Default: calm, useful
-    const facts = p.erdaiMemory?.facts || [];
-    if (facts.length && Math.random() < 0.4) {
-      return `Still holding "${facts[facts.length - 1]}". Next up if you want: ${hook.label}.`;
-    }
-    return `${ErdOSProgress.coachLine()}\n\nI caught "${message.slice(0, 80)}". Try daily, quest, or fortune.`;
-  };
+  push(
+    name
+      ? `Hi ${name}. I'm ERDAI — a real AI assistant in ErdOS (via Puter). Ask me anything.`
+      : "Hi. I'm ERDAI — a real AI assistant in ErdOS (via Puter). Ask me anything.",
+    'bot'
+  );
 
   const send = async () => {
     const text = input.value.trim();
-    if (!text) return;
+    if (!text || sendBtn.disabled) return;
     push(text, 'user');
     input.value = '';
-    await ErdOSProgress.onErdaiMessage();
-    setTimeout(() => push(reply(text), 'bot'), 280 + Math.random() * 420);
+    sendBtn.disabled = true;
+    sendBtn.textContent = '…';
+    status.textContent = 'Thinking…';
+
+    const remember = text.match(/^remember (?:that )?(.+)/i);
+    if (remember) {
+      await ErdOSProgress.rememberErdai(remember[1]);
+      const reply = `Got it — I'll remember: "${remember[1]}".`;
+      push(reply, 'bot');
+      history.push({ role: 'user', content: text }, { role: 'assistant', content: reply });
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send';
+      status.textContent = 'Powered by Puter AI';
+      return;
+    }
+    const nameMatch = text.match(/^my name is (.+)/i);
+    if (nameMatch) {
+      const n = nameMatch[1].replace(/[.!?]+$/, '').trim();
+      await ErdOSProgress.setDisplayName(n);
+      await ErdOSProgress.rememberErdai(`User's name is ${n}`);
+      const reply = `Nice to meet you, ${n}.`;
+      push(reply, 'bot');
+      history.push({ role: 'user', content: text }, { role: 'assistant', content: reply });
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send';
+      status.textContent = 'Powered by Puter AI';
+      return;
+    }
+
+    try {
+      if (!ErdAI.available()) await new Promise((r) => setTimeout(r, 500));
+      const reply = await ErdAI.chat(text, history);
+      push(reply, 'bot');
+      history.push({ role: 'user', content: text }, { role: 'assistant', content: reply });
+      status.textContent = 'Powered by Puter AI';
+    } catch (err) {
+      const msg = err?.message || String(err);
+      push(
+        /sign|auth|login|popup/i.test(msg)
+          ? 'Puter needs a quick sign-in the first time (a popup may appear). After that, chat works normally.'
+          : `Couldn't reach Puter AI: ${msg}`,
+        'bot'
+      );
+      status.textContent = 'Sign in via Puter if prompted';
+    } finally {
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send';
+    }
   };
 
+  sendBtn.addEventListener('click', send);
   root.append(
+    status,
     chat,
-    el('div', { className: 'erdai-compose' }, [
-      input,
-      el('button', { className: 'app-btn', type: 'button', text: 'Send', onClick: send }),
-    ])
+    el('div', { className: 'erdai-compose' }, [input, sendBtn])
   );
   input.addEventListener('keydown', (e) => { if (e.key === 'Enter') send(); });
   body.append(root);
   setTimeout(() => input.focus(), 50);
 }
+
 
 function mountGames(body) {
   const root = el('div', { className: 'app-root' });
@@ -487,25 +458,18 @@ function mountTerminal(body) {
     const [name, ...args] = c.split(/\s+/);
     print(`> ${c}`);
     if (!name) return;
-    if (name === 'help') print('Commands: help, clear, neofetch, fortune, date, whoami, xp, hack, amber, snake, echo');
+    if (name === 'help') print('Commands: help, clear, neofetch, date, whoami, hack, amber, snake, echo');
     else if (name === 'clear') out.textContent = '';
     else if (name === 'neofetch') {
       const s = await window.erdos.getSystemInfo();
       const p = ErdOSProgress.get();
-      print(`        #####\n       #######     ${p?.displayName || 'user'}@ErdOS\n       ##O#O##     -----------\n       #######     OS: ErdOS ${s.version}\n     ###########   Host: ${s.hostname}\n    #############  Kernel: Phosphor Glass\n   ############### CPU: ${s.cpus} · RAM: ${s.memoryGB}G\n   ##  #######  ## Streak: day ${p?.streak || 0}\n  ###  ##   ##  ### Theme: glass + CRT`);
-    } else if (name === 'fortune') print(await ErdOSProgress.dailyFortune());
-    else if (name === 'date') print(new Date().toString());
+      print(`        #####\n       #######     ${p?.displayName || 'user'}@ErdOS\n       ##O#O##     -----------\n       #######     OS: ErdOS ${s.version}\n     ###########   Host: ${s.hostname}\n    #############  Kernel: Phosphor Glass\n   ############### CPU: ${s.cpus} · RAM: ${s.memoryGB}G\n   ##  #######  ## Theme: Phosphor Glass\n  ###  ##   ##  ### Shell: erdai`);
+    } else if (name === 'date') print(new Date().toString());
     else if (name === 'whoami') print(ErdOSProgress.get()?.displayName || 'erdos-user');
-    else if (name === 'xp') {
-      const p = ErdOSProgress.get();
-      const lv = ErdOSProgress.levelFromXp(p?.xp || 0);
-      print(`Level ${lv.level} · ${p?.xp || 0} XP · ${lv.need - lv.into} to next`);
-    } else if (name === 'hack') {
+    else if (name === 'hack') {
       print('Initiating friendly hack...');
       for (let i = 0; i < 5; i++) print(`0x${(Math.random() * 0xfffff | 0).toString(16)}  OK`);
-      print('Access granted. (Just kidding — +5 XP)');
-      ErdOSProgress.addXp(5);
-      await ErdOSProgress.save();
+      print('Access granted. (Simulation complete.)');
     } else if (name === 'amber') {
       amber = !amber;
       out.classList.toggle('amber', amber);
@@ -703,21 +667,19 @@ function mountTrophies(body) {
   const root = el('div', { className: 'app-root' });
   const content = el('div', { className: 'app-content' });
   const render = () => {
-    const p = ErdOSProgress.get() || {};
-    const lv = ErdOSProgress.levelFromXp(p.xp || 0);
+    const scores = ErdOSProgress.get()?.highScores || {};
     content.innerHTML = '';
     content.append(
-      el('div', { className: 'settings-card', style: 'margin-bottom:12px' }, [
-        el('h3', { text: `Level ${lv.level}` }),
-        el('p', { text: `${p.xp || 0} XP · Day ${p.streak || 0} streak · Longest ${p.longestStreak || 0}` }),
-      ]),
-      el('div', { className: 'trophy-grid' }, ErdOSProgress.ACHIEVEMENTS.map((a) => {
-        const unlocked = !!p.achievements?.[a.id];
-        return el('div', { className: `trophy${unlocked ? '' : ' locked'}` }, [
-          el('strong', { text: unlocked ? a.name : '???' }),
-          el('small', { text: a.desc }),
-        ]);
-      }))
+      el('div', { className: 'settings-card' }, [
+        el('h3', { text: 'Arcade high scores' }),
+        el('p', { text: 'Just for fun — no XP attached.' }),
+        el('ul', { className: 'score-list' }, [
+          el('li', { text: `Snake — ${scores.snake || 0}` }),
+          el('li', { text: `Breakout — ${scores.breakout || 0}` }),
+          el('li', { text: `Pong — ${scores.pong || 0}` }),
+          el('li', { text: `Memory — play to match` }),
+        ]),
+      ])
     );
   };
   root.append(content);
@@ -725,6 +687,7 @@ function mountTrophies(body) {
   render();
   ErdOSProgress.onChange(render);
 }
+
 
 function mountCalculator(body) {
   const root = el('div', { className: 'app-root' });
@@ -776,21 +739,12 @@ function mountSettings(body) {
   ];
   const swatches = el('div', { className: 'theme-swatches' });
   themes.forEach((t) => {
-    const locked = t.id && !(p.unlockedThemes || ['']).includes(t.id) && !(p.unlockedThemes || []).includes(t.id);
-    // unlockedThemes includes '' and rare themes; allow base always; rare need unlock
-    const isRare = !!t.id;
-    const has = !isRare || (p.unlockedThemes || []).includes(t.id);
     const btn = el('button', {
       className: 'theme-swatch',
       type: 'button',
-      title: has ? t.label : `${t.label} (locked)`,
-      style: `background: linear-gradient(135deg, ${t.colors[0]}, ${t.colors[1]}); opacity:${has ? 1 : 0.35}`,
+      title: t.label,
+      style: `background: linear-gradient(135deg, ${t.colors[0]}, ${t.colors[1]})`,
       onClick: async () => {
-        if (!has) {
-          ErdOSUI.toast('Theme locked', 'Earn rare drops to unlock', 'info');
-          ErdOSSound.error();
-          return;
-        }
         document.body.classList.remove('theme-ember', 'theme-violet-night', 'theme-forest');
         if (t.id) document.body.classList.add(t.id);
         localStorage.setItem('erdos-theme', t.id);
@@ -806,18 +760,12 @@ function mountSettings(body) {
 
   const walls = el('div', { className: 'wall-swatches' });
   Object.entries(ErdOSProgress.WALLPAPERS).forEach(([id, label]) => {
-    const has = (p.unlockedWallpapers || []).includes(id);
     const btn = el('button', {
       className: `wall-swatch wallpaper-${id}`,
       type: 'button',
-      title: has ? label : `${label} (locked)`,
-      style: `opacity:${has ? 1 : 0.35}`,
+      title: label,
       onClick: async () => {
-        const ok = await ErdOSProgress.setWallpaper(id);
-        if (!ok) {
-          ErdOSUI.toast('Wallpaper locked', 'Complete quests or find rare drops', 'info');
-          return;
-        }
+        await ErdOSProgress.setWallpaper(id);
         const wp = document.getElementById('wallpaper');
         wp.className = `wallpaper wallpaper-${id}`;
         walls.querySelectorAll('.wall-swatch').forEach((s) => s.classList.remove('is-active'));
@@ -842,12 +790,12 @@ function mountSettings(body) {
   panel.append(
     el('div', { className: 'settings-card' }, [
       el('h3', { text: 'Accent theme' }),
-      el('p', { text: 'Base teal is free. Rare themes unlock via drops.' }),
+      el('p', { text: 'Pick a glass accent. All themes are unlocked.' }),
       swatches,
     ]),
     el('div', { className: 'settings-card' }, [
       el('h3', { text: 'Wallpaper' }),
-      el('p', { text: 'Cycle phosphor atmospheres.' }),
+      el('p', { text: 'Phosphor atmospheres for the desktop.' }),
       walls,
     ]),
     el('div', { className: 'settings-card' }, [
@@ -877,11 +825,11 @@ function mountSettings(body) {
         el('button', {
           className: 'app-btn ghost',
           type: 'button',
-          text: 'Reset progress',
+          text: 'Reset preferences',
           onClick: async () => {
-            if (confirm('Reset XP, streak, and achievements?')) {
+            if (confirm('Reset wallpapers, scores, and ERDAI memory?')) {
               await ErdOSProgress.resetProgress();
-              ErdOSUI.toast('Progress reset', 'A fresh phosphor boot', 'info');
+              ErdOSUI.toast('Reset', 'Preferences cleared', 'info');
             }
           },
         }),
@@ -892,16 +840,16 @@ function mountSettings(body) {
   root.append(el('div', { className: 'app-content' }, [panel]));
   body.append(root);
   window.erdos.getSystemInfo().then((sys) => {
-    const lv = ErdOSProgress.levelFromXp(ErdOSProgress.get()?.xp || 0);
     info.innerHTML = '';
     info.append(
       el('h3', { text: 'System' }),
       el('p', {
-        text: `ErdOS ${sys.version} · ${sys.platform}/${sys.arch}\nHost: ${sys.hostname}\nCPUs: ${sys.cpus} · RAM: ${sys.freememGB}/${sys.memoryGB} GB free\nLevel ${lv.level} · Day ${ErdOSProgress.get()?.streak || 0} streak\nHome: ${sys.home}`,
+        text: `ErdOS ${sys.version} · ${sys.platform}/${sys.arch}\nHost: ${sys.hostname}\nCPUs: ${sys.cpus} · RAM: ${sys.freememGB}/${sys.memoryGB} GB free\nHome: ${sys.home}`,
       })
     );
   });
 }
+
 
 function mountAbout(body) {
   body.append(el('div', { className: 'app-root' }, [
@@ -909,11 +857,12 @@ function mountAbout(body) {
       el('div', { className: 'settings-card' }, [
         el('h3', { text: 'ErdOS' }),
         el('p', {
-          text: 'Phosphor Glass desktop for Windows, macOS & Linux.\nRuns in a normal app window — never replaces your OS.\nRetro chrome, modern motion, ethical habit loops.\n\nBrowser · ERDAI · Arcade · Terminal · Files · Notes · Music · Trophies\n\nDownload: github.com/ErdTheTurd/ERDOS/releases',
+          text: 'Phosphor Glass desktop for Windows, macOS & Linux.\nRuns in a normal app window — never replaces your OS.\nModern glass chrome with ERDAI powered by Puter AI.\n\nBrowser · ERDAI · Arcade · Terminal · Files · Notes · Music\n\nDownload: github.com/ErdTheTurd/ERDOS/releases',
         }),
       ]),
     ]),
   ]));
 }
+
 
 window.ErdOSApps = { APPS, el };
