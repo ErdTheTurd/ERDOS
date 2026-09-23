@@ -1596,6 +1596,11 @@ body.theme-forest { --accent: #7dcf8a; --accent-2: #4db6ac; --phosphor: #a8e6b0;
   color: var(--accent);
 }
 
+/* Hide Puter.js file:// protocol warning if it injects into the desktop shell */
+body > div[style*="z-index"]:has(a[href*="puter.com"]) {
+  display: none !important;
+}
+
 /* ERDAI */
 .erdai-status {
   padding: 8px 14px;

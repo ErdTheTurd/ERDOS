@@ -64,6 +64,10 @@ function mountErdai(body) {
   const history = [];
   const name = ErdOSProgress.get()?.displayName || '';
 
+  ErdAI.loadPuter?.().then((ok) => {
+    status.textContent = ok || ErdAI.available() ? 'Powered by Puter AI' : 'Puter unavailable — check network';
+  });
+
   const push = (text, who) => {
     chat.append(el('div', { className: `erdai-msg ${who}`, text }));
     chat.scrollTop = chat.scrollHeight;
