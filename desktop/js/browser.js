@@ -74,14 +74,18 @@ const ErdOSBrowser = (() => {
     if (!url || typeof url !== 'string') return null;
     if (!url.startsWith('erdos://') && !url.startsWith('erdos:')) return null;
     try {
-      const normalized = url.replace(/^erdos:\/\//, 'https://erdos/').replace(/^erdos:/, 'https://erdos/');
+      // erdos://home → http://erdos.local/home (path in pathname, not hostname)
+      const normalized = url
+        .replace(/^erdos:\/\//i, 'http://erdos.local/')
+        .replace(/^erdos:/i, 'http://erdos.local/');
       const u = new URL(normalized);
-      return { path: (u.hostname + u.pathname).replace(/\/$/, '') || 'home', query: u.searchParams };
+      const path = (u.pathname.replace(/^\/+/, '') || 'home').replace(/\/+$/, '') || 'home';
+      return { path, query: u.searchParams };
     } catch {
-      const rest = url.replace(/^erdos:\/\//, '').replace(/^erdos:/, '');
+      const rest = url.replace(/^erdos:\/\//i, '').replace(/^erdos:/i, '');
       const [pathPart, qs] = rest.split('?');
       const query = new URLSearchParams(qs || '');
-      return { path: (pathPart || 'home').replace(/\/$/, ''), query };
+      return { path: (pathPart || 'home').replace(/\/$/, '') || 'home', query };
     }
   }
 
