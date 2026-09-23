@@ -12,19 +12,19 @@ const ErdOSBrowser = (() => {
   const PAGE_CSS = `
     @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@400;500;600;700&display=swap');
     :root{
-      color-scheme:dark;
-      --ink:#07090d;--fog:#d7dde8;--mute:#8b93a7;--line:rgba(215,221,232,.12);
-      --glow:rgba(110,168,255,.18);--mint:rgba(92,214,186,.55);--surface:rgba(255,255,255,.035);
+      color-scheme:light;
+      --ink:#171b24;--fog:#f7f8fb;--mute:#5c6578;--line:rgba(23,27,36,.1);
+      --glow:rgba(88,140,230,.16);--mint:#1f9d86;--surface:rgba(23,27,36,.035);
       --font:"Sora",system-ui,sans-serif;--display:"Instrument Serif",Georgia,serif;
     }
     *{box-sizing:border-box}
     html,body{margin:0;min-height:100%}
     body{
-      font-family:var(--font);color:var(--fog);
+      font-family:var(--font);color:var(--ink);
       background:
-        radial-gradient(ellipse 90% 55% at 50% -10%,var(--glow),transparent 55%),
-        radial-gradient(ellipse 50% 40% at 100% 100%,rgba(92,214,186,.08),transparent 50%),
-        linear-gradient(180deg,#0b1018 0%,var(--ink) 48%,#05070b 100%);
+        radial-gradient(ellipse 90% 55% at 50% -8%,var(--glow),transparent 55%),
+        radial-gradient(ellipse 45% 35% at 100% 100%,rgba(31,157,134,.08),transparent 50%),
+        linear-gradient(180deg,#ffffff 0%,#f4f6fa 52%,#eef1f6 100%);
       animation:rise .7s cubic-bezier(.22,1,.36,1) both;
     }
     @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -33,17 +33,16 @@ const ErdOSBrowser = (() => {
     .hero{text-align:center;padding:12px 0 8px}
     .brand{
       font-family:var(--display);font-style:italic;font-size:clamp(3.4rem,9vw,5.2rem);
-      line-height:.92;letter-spacing:-.03em;margin:0;color:#f3f6fb;
-      text-shadow:0 0 60px rgba(110,168,255,.25);
+      line-height:.92;letter-spacing:-.03em;margin:0;color:var(--ink);
     }
     .lede{margin:18px auto 0;max-width:28rem;font-size:1.02rem;line-height:1.55;color:var(--mute);font-weight:400}
     .nav{display:flex;justify-content:center;gap:28px;margin-top:36px}
     .nav a{
-      color:var(--fog);text-decoration:none;font-size:.84rem;font-weight:500;
+      color:var(--ink);text-decoration:none;font-size:.84rem;font-weight:500;
       letter-spacing:.02em;border-bottom:1px solid transparent;padding-bottom:2px;
       transition:color .2s ease,border-color .2s ease;
     }
-    .nav a:hover{color:#fff;border-color:var(--mint)}
+    .nav a:hover{color:var(--mint);border-color:rgba(31,157,134,.55)}
     .section{margin-top:56px;animation:softIn .6s .12s both}
     .section h2{
       margin:0 0 16px;font-size:.72rem;font-weight:600;letter-spacing:.16em;
@@ -55,19 +54,19 @@ const ErdOSBrowser = (() => {
       border-bottom:1px solid var(--line);transition:background .2s ease,padding-left .2s ease;
     }
     .list a:hover,.row:hover{background:var(--surface);padding-left:10px;border-radius:10px}
-    .list .t{font-size:1rem;font-weight:500;color:#eef2f8}
+    .list .t{font-size:1rem;font-weight:500;color:var(--ink)}
     .list .u,.meta{font-size:.78rem;color:var(--mute);word-break:break-all}
-    .src{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(92,214,186,.9)}
+    .src{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mint)}
     .page-head{margin-bottom:28px}
     .page-head .kicker{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:0 0 10px}
     .page-head h1{
       margin:0;font-family:var(--display);font-size:clamp(2.4rem,6vw,3.4rem);
-      font-weight:400;letter-spacing:-.02em;color:#f3f6fb;line-height:1.05;
+      font-weight:400;letter-spacing:-.02em;color:var(--ink);line-height:1.05;
     }
     .page-head .q,.page-head p{margin:12px 0 0;color:var(--mute);line-height:1.5;font-size:1rem}
     .empty{
       padding:36px 20px;text-align:center;color:var(--mute);border:1px solid var(--line);
-      border-radius:18px;background:var(--surface);
+      border-radius:18px;background:rgba(255,255,255,.7);
     }
   `;
 
