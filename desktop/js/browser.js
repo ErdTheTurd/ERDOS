@@ -10,31 +10,64 @@ const ErdOSBrowser = (() => {
   const HOME = 'erdos://home';
 
   const PAGE_CSS = `
-    :root{color-scheme:dark;--bg:#031018;--text:#e6f7f4;--muted:#8aa8a2;--accent:#7dffc8;--line:rgba(255,255,255,.1);--card:rgba(255,255,255,.04)}
+    @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@400;500;600;700&display=swap');
+    :root{
+      color-scheme:light;
+      --ink:#171b24;--fog:#f7f8fb;--mute:#5c6578;--line:rgba(23,27,36,.1);
+      --glow:rgba(88,140,230,.16);--mint:#1f9d86;--surface:rgba(23,27,36,.035);
+      --font:"Sora",system-ui,sans-serif;--display:"Instrument Serif",Georgia,serif;
+    }
     *{box-sizing:border-box}
-    body{margin:0;min-height:100vh;font-family:Outfit,system-ui,sans-serif;background:
-      radial-gradient(ellipse at 28% 12%,rgba(47,224,184,.16),transparent 42%),
-      radial-gradient(ellipse at 82% 78%,rgba(58,180,216,.12),transparent 40%),var(--bg);color:var(--text)}
-    main{max-width:44rem;margin:0 auto;padding:48px 24px 64px}
-    h1{margin:0;font-size:2.4rem;letter-spacing:-.04em;color:var(--accent)}
-    h2{margin:28px 0 12px;font-size:1rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-    p{margin:10px 0 0;color:var(--muted);line-height:1.55}
-    .brand{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-    .hero{text-align:center;padding:24px 0 8px}
-    .hero h1{font-size:3rem}
-    .links{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:28px}
-    a.chip{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:12px;border:1px solid var(--line);
-      background:var(--card);color:var(--text);text-decoration:none;font-size:.92rem}
-    a.chip:hover{border-color:rgba(125,255,200,.45);color:var(--accent)}
-    .list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-    .list a,.row{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);
-      background:var(--card);color:var(--text);text-decoration:none}
-    .list a:hover,.row:hover{border-color:rgba(125,255,200,.35)}
-    .list .t{font-weight:600;font-size:.95rem}
-    .list .u,.meta{font-size:.78rem;color:var(--muted);word-break:break-all;font-family:ui-monospace,monospace}
-    .empty{padding:24px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
-    .q{font-size:1.15rem;color:var(--text);margin-top:4px}
-    .src{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);opacity:.85}
+    html,body{margin:0;min-height:100%}
+    body{
+      font-family:var(--font);color:var(--ink);
+      background:
+        radial-gradient(ellipse 90% 55% at 50% -8%,var(--glow),transparent 55%),
+        radial-gradient(ellipse 45% 35% at 100% 100%,rgba(31,157,134,.08),transparent 50%),
+        linear-gradient(180deg,#ffffff 0%,#f4f6fa 52%,#eef1f6 100%);
+      animation:rise .7s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+    @keyframes softIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+    main{width:min(42rem,100%);margin:0 auto;padding:clamp(40px,10vh,88px) 28px 72px}
+    .hero{text-align:center;padding:12px 0 8px}
+    .brand{
+      font-family:var(--display);font-style:italic;font-size:clamp(3.4rem,9vw,5.2rem);
+      line-height:.92;letter-spacing:-.03em;margin:0;color:var(--ink);
+    }
+    .lede{margin:18px auto 0;max-width:28rem;font-size:1.02rem;line-height:1.55;color:var(--mute);font-weight:400}
+    .nav{display:flex;justify-content:center;gap:28px;margin-top:36px}
+    .nav a{
+      color:var(--ink);text-decoration:none;font-size:.84rem;font-weight:500;
+      letter-spacing:.02em;border-bottom:1px solid transparent;padding-bottom:2px;
+      transition:color .2s ease,border-color .2s ease;
+    }
+    .nav a:hover{color:var(--mint);border-color:rgba(31,157,134,.55)}
+    .section{margin-top:56px;animation:softIn .6s .12s both}
+    .section h2{
+      margin:0 0 16px;font-size:.72rem;font-weight:600;letter-spacing:.16em;
+      text-transform:uppercase;color:var(--mute);
+    }
+    .list{list-style:none;margin:0;padding:0;display:grid;gap:0}
+    .list a,.row{
+      display:grid;gap:4px;padding:16px 4px;text-decoration:none;color:inherit;
+      border-bottom:1px solid var(--line);transition:background .2s ease,padding-left .2s ease;
+    }
+    .list a:hover,.row:hover{background:var(--surface);padding-left:10px;border-radius:10px}
+    .list .t{font-size:1rem;font-weight:500;color:var(--ink)}
+    .list .u,.meta{font-size:.78rem;color:var(--mute);word-break:break-all}
+    .src{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mint)}
+    .page-head{margin-bottom:28px}
+    .page-head .kicker{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:0 0 10px}
+    .page-head h1{
+      margin:0;font-family:var(--display);font-size:clamp(2.4rem,6vw,3.4rem);
+      font-weight:400;letter-spacing:-.02em;color:var(--ink);line-height:1.05;
+    }
+    .page-head .q,.page-head p{margin:12px 0 0;color:var(--mute);line-height:1.5;font-size:1rem}
+    .empty{
+      padding:36px 20px;text-align:center;color:var(--mute);border:1px solid var(--line);
+      border-radius:18px;background:rgba(255,255,255,.7);
+    }
   `;
 
   function loadStore() {
@@ -65,8 +98,8 @@ const ErdOSBrowser = (() => {
   }
 
   function dataPage(title, bodyHtml) {
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${escapeHtml(title)}</title>
-      <style>${PAGE_CSS}</style></head><body>${bodyHtml}</body></html>`;
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>${escapeHtml(title)}</title><style>${PAGE_CSS}</style></head><body>${bodyHtml}</body></html>`;
     return `data:text/html;charset=utf-8,${encodeURIComponent(html)}`;
   }
 
@@ -112,8 +145,22 @@ const ErdOSBrowser = (() => {
 
   function mount(body) {
     const store = loadStore();
+    const ICO = {
+      back: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      fwd: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      reload: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 0112.7-5.4M19.5 12a7.5 7.5 0 01-12.7 5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M17 3.5v4h-4M7 20.5v-4h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      home: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 11.5L12 5l7.5 6.5V20a1 1 0 01-1 1h-4.5v-5h-4v5H5.5a1 1 0 01-1-1v-8.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>',
+      star: '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="star-path" d="M12 3.8l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 16.2 7.2 18.7l.9-5.4L4.2 9.5l5.4-.8L12 3.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+      menu: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12M6 12h12M6 16h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+      go: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      plus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    };
+
     const root = document.createElement('div');
     root.className = 'app-root browser-app';
+
+    const chrome = document.createElement('div');
+    chrome.className = 'browser-chrome';
 
     const tabsEl = document.createElement('div');
     tabsEl.className = 'browser-tabs';
@@ -123,13 +170,13 @@ const ErdOSBrowser = (() => {
     newTabBtn.type = 'button';
     newTabBtn.className = 'browser-tab-new';
     newTabBtn.title = 'New tab';
-    newTabBtn.textContent = '+';
+    newTabBtn.innerHTML = ICO.plus;
     tabsEl.append(tabList, newTabBtn);
 
     const urlInput = document.createElement('input');
     urlInput.type = 'text';
     urlInput.className = 'browser-url';
-    urlInput.placeholder = 'Search ErdOS or enter address';
+    urlInput.placeholder = 'Search or enter address';
     urlInput.spellcheck = false;
     urlInput.autocomplete = 'off';
 
@@ -139,32 +186,45 @@ const ErdOSBrowser = (() => {
     const frames = document.createElement('div');
     frames.className = 'browser-frames app-content flush';
 
-    const backBtn = iconBtn('←', 'Back');
-    const fwdBtn = iconBtn('→', 'Forward');
-    const reloadBtn = iconBtn('↻', 'Reload');
-    const homeBtn = iconBtn('⌂', 'Home');
-    const starBtn = iconBtn('☆', 'Bookmark');
-    const menuBtn = iconBtn('☰', 'Menu');
+    const backBtn = iconBtn(ICO.back, 'Back');
+    const fwdBtn = iconBtn(ICO.fwd, 'Forward');
+    const reloadBtn = iconBtn(ICO.reload, 'Reload');
+    const homeBtn = iconBtn(ICO.home, 'Home');
+    const starBtn = iconBtn(ICO.star, 'Bookmark');
+    starBtn.classList.add('browser-star');
+    const menuBtn = iconBtn(ICO.menu, 'Menu');
+    const goBtn = iconBtn(ICO.go, 'Go');
+    goBtn.classList.add('browser-go');
+
+    const nav = document.createElement('div');
+    nav.className = 'browser-nav';
+    nav.append(backBtn, fwdBtn, reloadBtn, homeBtn);
+
+    const omnibox = document.createElement('div');
+    omnibox.className = 'browser-omnibox';
+    omnibox.append(urlInput, goBtn);
+
+    const actions = document.createElement('div');
+    actions.className = 'browser-actions';
+    actions.append(starBtn, menuBtn);
 
     const bar = document.createElement('div');
     bar.className = 'browser-bar';
-    const goBtn = document.createElement('button');
-    goBtn.type = 'button';
-    goBtn.className = 'app-btn';
-    goBtn.textContent = 'Go';
-    bar.append(backBtn, fwdBtn, reloadBtn, homeBtn, urlInput, goBtn, starBtn, menuBtn);
+    bar.append(nav, omnibox, actions);
+
+    chrome.append(tabsEl, bar, loading);
 
     const menu = document.createElement('div');
     menu.className = 'browser-menu';
     menu.hidden = true;
     menu.append(
-      menuItem('Bookmarks', () => { closeMenu(); navigateActive(HOME.replace('home', 'bookmarks')); }),
+      menuItem('Bookmarks', () => { closeMenu(); navigateActive('erdos://bookmarks'); }),
       menuItem('History', () => { closeMenu(); navigateActive('erdos://history'); }),
       menuItem('Downloads', () => { closeMenu(); navigateActive('erdos://downloads'); }),
       menuItem('New tab', () => { closeMenu(); createTab(HOME); }),
     );
 
-    root.append(tabsEl, bar, loading, frames, menu);
+    root.append(chrome, frames, menu);
     body.append(root);
 
     /** @type {{ id:string, title:string, url:string, webview:HTMLElement, tabEl:HTMLElement, navSeq:number }[]} */
@@ -172,12 +232,12 @@ const ErdOSBrowser = (() => {
     let activeId = null;
     let idSeq = 0;
 
-    function iconBtn(label, title) {
+    function iconBtn(svg, title) {
       const b = document.createElement('button');
       b.type = 'button';
       b.className = 'browser-icon-btn';
       b.title = title;
-      b.textContent = label;
+      b.innerHTML = svg;
       return b;
     }
 
@@ -211,7 +271,6 @@ const ErdOSBrowser = (() => {
       if (!tab) return;
       urlInput.value = displayUrl(tab.url) || (tab.url.startsWith('data:') ? '' : tab.url);
       const bookmarked = store.bookmarks.some((b) => b.url === tab.url);
-      starBtn.textContent = bookmarked ? '★' : '☆';
       starBtn.title = bookmarked ? 'Remove bookmark' : 'Bookmark';
       starBtn.classList.toggle('is-on', bookmarked);
       try {
@@ -263,9 +322,9 @@ const ErdOSBrowser = (() => {
       if (path === 'home' || path === '') {
         const recent = store.history.slice(0, 6);
         const recentHtml = recent.length
-          ? `<h2>Recent</h2><ul class="list">${recent.map((h) =>
+          ? `<section class="section"><h2>Recent</h2><ul class="list">${recent.map((h) =>
               `<li><a href="${escapeHtml(h.url)}"><span class="t">${escapeHtml(h.title)}</span><span class="u">${escapeHtml(h.url)}</span></a></li>`
-            ).join('')}</ul>`
+            ).join('')}</ul></section>`
           : '';
         return {
           title: 'ErdOS',
@@ -273,14 +332,13 @@ const ErdOSBrowser = (() => {
           src: dataPage('ErdOS', `
             <main>
               <div class="hero">
-                <div class="brand">ErdOS Browser</div>
-                <h1>ErdOS</h1>
-                <p>Type a URL or search above. Results come from ErdOS Search — your history, bookmarks, and Wikipedia. No third-party search engine.</p>
-                <div class="links">
-                  <a class="chip" href="erdos://bookmarks">Bookmarks</a>
-                  <a class="chip" href="erdos://history">History</a>
-                  <a class="chip" href="erdos://downloads">Downloads</a>
-                </div>
+                <h1 class="brand">ErdOS</h1>
+                <p class="lede">Search or enter an address above. ErdOS Search blends your history, bookmarks, and Wikipedia — nothing else in the middle.</p>
+                <nav class="nav" aria-label="Quick links">
+                  <a href="erdos://bookmarks">Bookmarks</a>
+                  <a href="erdos://history">History</a>
+                  <a href="erdos://downloads">Downloads</a>
+                </nav>
               </div>
               ${recentHtml}
             </main>`),
@@ -300,11 +358,12 @@ const ErdOSBrowser = (() => {
           display: `erdos://search?q=${encodeURIComponent(q)}`,
           src: dataPage('ErdOS Search', `
             <main>
-              <div class="brand">ErdOS Search</div>
-              <h1>Results</h1>
-              <p class="q">${escapeHtml(q || '—')}</p>
-              <h2>Matches</h2>
-              ${list}
+              <header class="page-head">
+                <p class="kicker">ErdOS Search</p>
+                <h1>Results</h1>
+                <p class="q">${escapeHtml(q || '—')}</p>
+              </header>
+              <section class="section" style="margin-top:8px"><h2>Matches</h2>${list}</section>
             </main>`),
         };
       }
@@ -314,11 +373,11 @@ const ErdOSBrowser = (() => {
           ? `<ul class="list">${store.bookmarks.map((b) =>
               `<li><a href="${escapeHtml(b.url)}"><span class="t">${escapeHtml(b.title)}</span><span class="u">${escapeHtml(b.url)}</span></a></li>`
             ).join('')}</ul>`
-          : '<div class="empty">No bookmarks yet. Tap ★ in the toolbar on any page.</div>';
+          : '<div class="empty">No bookmarks yet. Star any page from the toolbar.</div>';
         return {
           title: 'Bookmarks',
           display: 'erdos://bookmarks',
-          src: dataPage('Bookmarks', `<main><div class="brand">ErdOS Browser</div><h1>Bookmarks</h1><p>Saved pages on this device.</p><h2>All</h2>${list}</main>`),
+          src: dataPage('Bookmarks', `<main><header class="page-head"><p class="kicker">ErdOS Browser</p><h1>Bookmarks</h1><p>Saved pages on this device.</p></header><section class="section" style="margin-top:8px"><h2>All</h2>${list}</section></main>`),
         };
       }
 
@@ -331,7 +390,7 @@ const ErdOSBrowser = (() => {
         return {
           title: 'History',
           display: 'erdos://history',
-          src: dataPage('History', `<main><div class="brand">ErdOS Browser</div><h1>History</h1><p>Pages you’ve opened in ErdOS Browser.</p><h2>Recent</h2>${list}</main>`),
+          src: dataPage('History', `<main><header class="page-head"><p class="kicker">ErdOS Browser</p><h1>History</h1><p>Pages you’ve opened in ErdOS Browser.</p></header><section class="section" style="margin-top:8px"><h2>Recent</h2>${list}</section></main>`),
         };
       }
 
@@ -348,14 +407,14 @@ const ErdOSBrowser = (() => {
         return {
           title: 'Downloads',
           display: 'erdos://downloads',
-          src: dataPage('Downloads', `<main><div class="brand">ErdOS Browser</div><h1>Downloads</h1><p>Files fetched by ErdOS Browser.</p><h2>Recent</h2>${list}</main>`),
+          src: dataPage('Downloads', `<main><header class="page-head"><p class="kicker">ErdOS Browser</p><h1>Downloads</h1><p>Files fetched by ErdOS Browser.</p></header><section class="section" style="margin-top:8px"><h2>Recent</h2>${list}</section></main>`),
         };
       }
 
       return {
         title: 'Not found',
         display: erdosUrl,
-        src: dataPage('Not found', `<main><h1>Unknown page</h1><p>${escapeHtml(erdosUrl)} isn’t a built-in ErdOS page.</p><div class="links"><a class="chip" href="erdos://home">Home</a></div></main>`),
+        src: dataPage('Not found', `<main><header class="page-head"><h1>Unknown page</h1><p>${escapeHtml(erdosUrl)} isn’t a built-in ErdOS page.</p></header><nav class="nav"><a href="erdos://home">Home</a></nav></main>`),
       };
     }
 
