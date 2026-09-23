@@ -6,6 +6,10 @@ const os = require('os');
 const isDev = process.argv.includes('--dev');
 let mainWindow = null;
 let userDataRoot = null;
+/** @type {Map<string, object>} */
+const browserDownloads = new Map();
+let downloadSeq = 0;
+let browserSessionHooked = false;
 
 function getHomeRoot() {
   if (!userDataRoot) {
@@ -29,7 +33,7 @@ function ensureHome() {
   if (!fs.existsSync(welcome)) {
     fs.writeFileSync(
       welcome,
-      'Welcome to ErdOS!\n\nOpen the Start menu to launch apps.\nTry ERDAI (Puter AI), the Browser, Arcade, and Terminal.\n',
+      'Welcome to ErdOS!\n\nOpen the Start menu to launch apps.\nTry ERDAI (Puter AI), the Browser (tabs & ErdOS Search), Arcade, and Terminal.\n',
       'utf8'
     );
   }
@@ -148,8 +152,87 @@ function setupAutoUpdater() {
   }
 }
 
+function downloadsDir() {
+  return path.join(getHomeRoot(), 'Downloads');
+}
+
+function broadcastDownload(entry) {
+  mainWindow?.webContents.send('erdos:browser-download', entry);
+}
+
+function hookBrowserDownloads(session) {
+  if (!session || session.__erdosDownloadHooked) return;
+  session.__erdosDownloadHooked = true;
+  session.on('will-download', (_event, item) => {
+    const id = `dl-${++downloadSeq}`;
+    let filename = item.getFilename() || `download-${downloadSeq}`;
+    try {
+      fs.mkdirSync(downloadsDir(), { recursive: true });
+    } catch (_) { /* */ }
+    let savePath = path.join(downloadsDir(), filename);
+    if (fs.existsSync(savePath)) {
+      const ext = path.extname(filename);
+      const base = path.basename(filename, ext);
+      filename = `${base}-${downloadSeq}${ext}`;
+      savePath = path.join(downloadsDir(), filename);
+    }
+    item.setSavePath(savePath);
+
+    const entry = {
+      id,
+      filename,
+      url: item.getURL(),
+      savePath,
+      state: 'progressing',
+      receivedBytes: 0,
+      totalBytes: item.getTotalBytes() || 0,
+      startedAt: Date.now(),
+    };
+    browserDownloads.set(id, entry);
+    broadcastDownload({ ...entry });
+
+    item.on('updated', (_e, state) => {
+      entry.state = state;
+      entry.receivedBytes = item.getReceivedBytes();
+      entry.totalBytes = item.getTotalBytes() || entry.totalBytes;
+      browserDownloads.set(id, entry);
+      broadcastDownload({ ...entry });
+    });
+
+    item.once('done', (_e, state) => {
+      entry.state = state;
+      entry.receivedBytes = item.getReceivedBytes();
+      entry.finishedAt = Date.now();
+      browserDownloads.set(id, entry);
+      broadcastDownload({ ...entry });
+    });
+  });
+}
+
+function ensureBrowserSessionHooks() {
+  if (browserSessionHooked) return;
+  browserSessionHooked = true;
+  app.on('web-contents-created', (_event, contents) => {
+    contents.on('did-attach-webview', (_e, wc) => {
+      try {
+        hookBrowserDownloads(wc.session);
+      } catch (_) { /* */ }
+    });
+    if (contents.getType?.() === 'webview') {
+      try {
+        hookBrowserDownloads(contents.session);
+      } catch (_) { /* */ }
+    }
+  });
+}
+
 app.whenReady().then(() => {
   ensureHome();
+  ensureBrowserSessionHooks();
+  try {
+    const { session } = require('electron');
+    hookBrowserDownloads(session.fromPartition('persist:erdos-browser'));
+  } catch (_) { /* */ }
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -280,6 +363,26 @@ ipcMain.handle('erdos:download-update', async () => {
 ipcMain.handle('erdos:install-update', () => {
   const { autoUpdater } = require('electron-updater');
   autoUpdater.quitAndInstall();
+});
+
+ipcMain.handle('erdos:browser-downloads', () =>
+  Array.from(browserDownloads.values()).sort((a, b) => (b.startedAt || 0) - (a.startedAt || 0))
+);
+
+ipcMain.handle('erdos:browser-clear-downloads', () => {
+  browserDownloads.clear();
+  return [];
+});
+
+ipcMain.handle('erdos:browser-open-download', async (_e, filePath) => {
+  if (typeof filePath !== 'string') return { ok: false };
+  const resolved = path.resolve(filePath);
+  const root = path.resolve(downloadsDir());
+  if (resolved !== root && !resolved.startsWith(root + path.sep)) {
+    throw new Error('Access denied');
+  }
+  shell.showItemInFolder(resolved);
+  return { ok: true };
 });
 
 function resolveSafe(targetPath) {
