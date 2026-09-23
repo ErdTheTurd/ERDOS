@@ -167,7 +167,7 @@ const ErdOSBrowser = (() => {
     root.append(tabsEl, bar, loading, frames, menu);
     body.append(root);
 
-    /** @type {{ id:string, title:string, url:string, webview:HTMLElement, tabEl:HTMLElement }[]} */
+    /** @type {{ id:string, title:string, url:string, webview:HTMLElement, tabEl:HTMLElement, navSeq:number }[]} */
     const tabs = [];
     let activeId = null;
     let idSeq = 0;
@@ -442,18 +442,27 @@ const ErdOSBrowser = (() => {
     }
 
     async function navigateTab(tab, raw, { fromOmnibox = false } = {}) {
+      const seq = ++tab.navSeq;
       setLoading(true);
       try {
         const target = await resolveNavigation(raw);
-        if (!target) return;
+        if (!target || seq !== tab.navSeq) return;
         tab.url = target.display || target.src;
         tab.title = target.title || 'New Tab';
         if (fromOmnibox) urlInput.value = displayUrl(tab.url);
         tab.webview.setAttribute('src', target.src);
-        updateChrome();
+        if (tab.id === activeId) updateChrome();
+        else {
+          const label = tab.tabEl.querySelector('.browser-tab-label');
+          if (label) label.textContent = tab.title || 'New Tab';
+          const fav = tab.tabEl.querySelector('.browser-tab-favicon');
+          if (fav) fav.textContent = faviconLetter(tab.title, tab.url);
+        }
       } catch (err) {
-        console.error(err);
-        setLoading(false);
+        if (seq === tab.navSeq) {
+          console.error(err);
+          setLoading(false);
+        }
       }
     }
 
@@ -555,7 +564,7 @@ const ErdOSBrowser = (() => {
       const webview = document.createElement('webview');
       webview.className = 'browser-frame';
 
-      const tab = { id, title: 'New Tab', url: HOME, webview, tabEl };
+      const tab = { id, title: 'New Tab', url: HOME, webview, tabEl, navSeq: 0 };
       tabs.push(tab);
       tabList.append(tabEl);
       frames.append(webview);
