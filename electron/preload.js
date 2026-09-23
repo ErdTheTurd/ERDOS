@@ -20,4 +20,12 @@ contextBridge.exposeInMainWorld('erdos', {
     ipcRenderer.on('erdos:update-status', handler);
     return () => ipcRenderer.removeListener('erdos:update-status', handler);
   },
+  getBrowserDownloads: () => ipcRenderer.invoke('erdos:browser-downloads'),
+  clearBrowserDownloads: () => ipcRenderer.invoke('erdos:browser-clear-downloads'),
+  openBrowserDownload: (filePath) => ipcRenderer.invoke('erdos:browser-open-download', filePath),
+  onBrowserDownload: (cb) => {
+    const handler = (_e, payload) => cb(payload);
+    ipcRenderer.on('erdos:browser-download', handler);
+    return () => ipcRenderer.removeListener('erdos:browser-download', handler);
+  },
 });

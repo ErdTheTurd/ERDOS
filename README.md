@@ -58,7 +58,7 @@ git push origin v1.6.0
 ## What's inside
 
 - Desktop shell with CRT boot, taskbar, start menu, draggable windows
-- **Browser**, **ERDAI**, **Arcade** (Snake / Breakout / Memory / Pong)
+- **Browser** (tabs, ErdOS Search, bookmarks, history, downloads), **ERDAI**, **Arcade** (Snake / Breakout / Memory / Pong)
 - **Terminal**, **Files**, **Notepad**, **Sticky Notes**, **Music Box**
 - **Trophy Case**, quests, streaks, XP, rare wallpaper/theme drops
 - In-app update checks via `electron-updater` (packaged builds)

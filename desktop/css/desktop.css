@@ -962,11 +962,35 @@ button { cursor: pointer; border: none; background: none; }
 .app-content { flex: 1; min-height: 0; overflow: auto; padding: 12px; }
 .app-content.flush { padding: 0; }
 
-.browser-frame { width: 100%; height: 100%; border: none; background: #fff; }
+.browser-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #031018;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.browser-frame.is-active {
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 1;
+}
+.browser-frames {
+  position: relative;
+  display: block;
+  flex: 1;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
 .browser-loading {
   height: 2px;
   background: transparent;
   overflow: hidden;
+  flex-shrink: 0;
 }
 .browser-loading.is-on::after {
   content: "";
@@ -1398,7 +1422,107 @@ body.theme-forest { --accent: #7dcf8a; --accent-2: #4db6ac; --phosphor: #a8e6b0;
 }
 .pin-btn { min-width: 40px; justify-content: center; color: var(--text); }
 
-/* Browser — simple chrome */
+/* Browser — ErdOS chrome */
+.browser-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  position: relative;
+}
+.browser-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px 0;
+  background: rgba(0, 0, 0, 0.28);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+.browser-tab-list {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.browser-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 200px;
+  min-width: 96px;
+  height: 34px;
+  padding: 0 8px 0 10px;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid transparent;
+  border-bottom: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  text-align: left;
+  flex-shrink: 0;
+}
+.browser-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+}
+.browser-tab.is-active {
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.browser-tab-favicon {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(47, 224, 184, 0.16);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.browser-tab-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.browser-tab-close {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  font-size: 0.95rem;
+  line-height: 1;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.browser-tab-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}
+.browser-tab-new {
+  width: 32px;
+  height: 28px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.browser-tab-new:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.08);
+}
 .browser-app .browser-bar {
   display: flex;
   align-items: center;
@@ -1406,6 +1530,7 @@ body.theme-forest { --accent: #7dcf8a; --accent-2: #4db6ac; --phosphor: #a8e6b0;
   padding: 10px 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(0, 0, 0, 0.22);
+  flex-shrink: 0;
 }
 .browser-url {
   flex: 1;
@@ -1426,11 +1551,54 @@ body.theme-forest { --accent: #7dcf8a; --accent-2: #4db6ac; --phosphor: #a8e6b0;
   color: var(--text-dim);
   font-size: 1rem;
   background: transparent;
+  flex-shrink: 0;
 }
-.browser-icon-btn:hover {
+.browser-icon-btn:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.06);
   color: var(--text);
   border-color: rgba(255, 255, 255, 0.08);
+}
+.browser-icon-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.browser-icon-btn.is-on {
+  color: var(--accent);
+}
+.browser-menu {
+  position: absolute;
+  top: 88px;
+  right: 12px;
+  z-index: 20;
+  min-width: 180px;
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(8, 22, 28, 0.94);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.browser-menu[hidden] { display: none !important; }
+.browser-menu-item {
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.88rem;
+}
+.browser-menu-item:hover {
+  background: rgba(47, 224, 184, 0.12);
+  color: var(--accent);
+}
+
+/* Hide Puter.js file:// protocol warning if it injects into the desktop shell */
+body > div[style*="z-index"]:has(a[href*="puter.com"]) {
+  display: none !important;
 }
 
 /* ERDAI */

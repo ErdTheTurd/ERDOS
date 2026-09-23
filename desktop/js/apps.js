@@ -1,4 +1,4 @@
-/* global windowManager, ErdOSProgress, ErdOSSound, ErdOSUI */
+/* global windowManager, ErdOSProgress, ErdOSSound, ErdOSUI, ErdOSBrowser, ErdAI */
 
 const ICONS = {
   browser: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 12h18M12 3c2.5 3 4 6 4 9s-1.5 6-4 9c-2.5-3-4-6-4-9s1.5-6 4-9z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>',
@@ -20,7 +20,7 @@ function appIcon(id, glyph) {
 }
 
 const APPS = [
-  { id: 'browser', name: 'Browser', description: 'Simple web browsing', icon: appIcon('browser'), desktop: true, width: 980, height: 660, mount: mountBrowser },
+  { id: 'browser', name: 'Browser', description: 'ErdOS Browser with tabs & search', icon: appIcon('browser'), desktop: true, width: 1040, height: 700, mount: mountBrowser },
   { id: 'erdai', name: 'ERDAI', description: 'Desktop AI via Puter', icon: appIcon('erdai'), desktop: true, width: 560, height: 660, mount: mountErdai },
   { id: 'games', name: 'Arcade', description: 'Snake, Breakout, Pong…', icon: appIcon('games'), desktop: true, width: 740, height: 580, mount: mountGames },
   { id: 'terminal', name: 'Terminal', description: 'CRT command line', glyph: '>_', icon: '>_', desktop: true, width: 680, height: 480, mount: mountTerminal },
@@ -51,63 +51,7 @@ function el(tag, attrs = {}, children = []) {
 }
 
 function mountBrowser(body) {
-  const root = el('div', { className: 'app-root browser-app' });
-  const urlInput = el('input', {
-    type: 'text',
-    className: 'browser-url',
-    value: '',
-    placeholder: 'Search or enter address',
-    spellcheck: 'false',
-  });
-  const loading = el('div', { className: 'browser-loading' });
-  const homeHtml = `data:text/html;charset=utf-8,${encodeURIComponent(`<!DOCTYPE html><html><head><meta charset="utf-8"><style>
-    :root{color-scheme:dark}
-    body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:Outfit,system-ui,sans-serif;
-      background:radial-gradient(ellipse at 30% 20%,rgba(47,224,184,.14),transparent 45%),
-      radial-gradient(ellipse at 80% 70%,rgba(58,180,216,.12),transparent 40%),#031018;color:#e6f7f4}
-    main{text-align:center;padding:48px 24px;max-width:28rem}
-    h1{margin:0;font-size:2.6rem;letter-spacing:-.04em;color:#7dffc8}
-    p{margin:12px 0 0;color:#8aa8a2;line-height:1.5}
-  </style></head><body><main><h1>ErdOS</h1><p>Type a URL or search above. Keep it simple.</p></main></body></html>`)}`;
-
-  const frame = el('webview', { className: 'browser-frame', src: homeHtml, allowpopups: 'true' });
-
-  const go = (raw) => {
-    let url = (raw ?? urlInput.value).trim();
-    if (!url) {
-      urlInput.value = '';
-      frame.setAttribute('src', homeHtml);
-      return;
-    }
-    if (!/^https?:\/\//i.test(url) && !url.startsWith('about:') && !url.startsWith('data:')) {
-      if (url.includes('.') && !url.includes(' ')) url = `https://${url}`;
-      else url = `https://duckduckgo.com/?q=${encodeURIComponent(url)}`;
-    }
-    urlInput.value = url;
-    loading.classList.add('is-on');
-    frame.setAttribute('src', url);
-  };
-
-  const bar = el('div', { className: 'browser-bar' }, [
-    el('button', { className: 'browser-icon-btn', type: 'button', title: 'Back', html: '←', onClick: () => { try { frame.goBack(); } catch (_) {} } }),
-    el('button', { className: 'browser-icon-btn', type: 'button', title: 'Forward', html: '→', onClick: () => { try { frame.goForward(); } catch (_) {} } }),
-    el('button', { className: 'browser-icon-btn', type: 'button', title: 'Reload', html: '↻', onClick: () => { try { frame.reload(); } catch (_) { frame.src = frame.src; } } }),
-    urlInput,
-    el('button', { className: 'app-btn', type: 'button', text: 'Go', onClick: () => go() }),
-  ]);
-
-  root.append(bar, loading, el('div', { className: 'app-content flush' }, [frame]));
-  urlInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
-  frame.addEventListener('did-navigate', (e) => {
-    if (e.url && !e.url.startsWith('data:')) urlInput.value = e.url;
-    loading.classList.remove('is-on');
-  });
-  frame.addEventListener('did-finish-load', () => loading.classList.remove('is-on'));
-  frame.addEventListener('page-title-updated', (e) => {
-    if (e.title && body.__windowApi) body.__windowApi.setTitle(`Browser — ${e.title}`);
-  });
-  body.append(root);
-  setTimeout(() => urlInput.focus(), 40);
+  ErdOSBrowser.mount(body);
 }
 
 
@@ -119,6 +63,10 @@ function mountErdai(body) {
   const status = el('div', { className: 'erdai-status', text: ErdAI.available() ? 'Powered by Puter AI' : 'Loading Puter…' });
   const history = [];
   const name = ErdOSProgress.get()?.displayName || '';
+
+  ErdAI.loadPuter?.().then((ok) => {
+    status.textContent = ok || ErdAI.available() ? 'Powered by Puter AI' : 'Puter unavailable — check network';
+  });
 
   const push = (text, who) => {
     chat.append(el('div', { className: `erdai-msg ${who}`, text }));

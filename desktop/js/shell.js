@@ -294,6 +294,12 @@
 
   ErdOSProgress.onChange(() => refreshNotif());
 
+  // Keep Puter.js file:// warnings from blocking the desktop / Browser.
+  const scrubPuterNoise = () => ErdAI?.dismissPuterProtocolNoise?.();
+  scrubPuterNoise();
+  const puterWatch = new MutationObserver(scrubPuterNoise);
+  puterWatch.observe(document.body, { childList: true });
+
   renderStart();
   renderPins();
   renderIcons();
