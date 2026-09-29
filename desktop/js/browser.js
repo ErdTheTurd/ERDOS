@@ -534,8 +534,9 @@ const ErdOSBrowser = (() => {
     }
 
     function isDevQuery(query) {
-      return /\b(css|html|javascript|typescript|python|api|function|array|promise|regex|http|json|npm|node|react|vue|rust|golang|sql)\b/i.test(query)
-        || /^(mdn|how to|what is the|docs?)\b/i.test(query);
+      return /\b(css|html|javascript|typescript|python|api|function|array|promise|regex|http|json|npm|node|react|vue|rust|golang|sql|flexbox|flex-box|grid|dom|cors|websocket|async|await|typescript)\b/i.test(query)
+        || /^(mdn|how to|what is the|docs?)\b/i.test(query)
+        || /^[a-z][a-z0-9_-]{1,28}$/i.test(query.trim());
     }
 
     function isBookQuery(query) {
@@ -634,12 +635,13 @@ const ErdOSBrowser = (() => {
       const wikidataPromise = fetchJson(
         `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(query)}&language=en&uselang=en&limit=6&format=json&origin=*`
       );
-      const openLibPromise = isBookQuery(query) || query.split(/\s+/).length <= 4
+      const openLibPromise = isBookQuery(query) || query.split(/\s+/).length <= 5
         ? fetchJson(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=5`)
         : Promise.resolve(null);
-      const mdnPromise = isDevQuery(query)
-        ? fetchJson(`https://developer.mozilla.org/api/v1/search?q=${encodeURIComponent(query)}&locale=en-US`)
-        : Promise.resolve(null);
+      // Always ask MDN — short tech queries often miss keyword heuristics.
+      const mdnPromise = fetchJson(
+        `https://developer.mozilla.org/api/v1/search?q=${encodeURIComponent(query)}&locale=en-US`
+      );
 
       const [wikiData, wikidata, openLib, mdn] = await Promise.all([
         wikiPromise, wikidataPromise, openLibPromise, mdnPromise,
