@@ -19,8 +19,6 @@
     "website": "npx --yes serve website -p 4173",
     "iphone": "npx --yes serve iphone -p 4174",
     "iphone:test": "node --test iphone/test/blok-logic.test.js",
-    "ios:sync": "cap sync ios",
-    "ios:open": "cap open ios",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win",
