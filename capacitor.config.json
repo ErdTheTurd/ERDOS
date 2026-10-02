@@ -1,0 +1,10 @@
+{
+  "appId": "com.erdos.browser",
+  "appName": "ERDOS",
+  "webDir": "iphone",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#f5f7fb",
+    "preferredContentMode": "mobile"
+  }
+}

@@ -1,6 +1,8 @@
 /* Platform adapter for the desktop renderer.
-   Electron's preload script assigns window.erdos before any page script runs.
-   A normal browser has no preload, so install the same method names here.
+   Three adapters share the window.erdos method names:
+   - Electron: electron/preload.js sets window.erdos before this file runs.
+   - Web: this file, when a normal browser loads the desktop.
+   - Capacitor (iPhone): iphone/js/platform.js, used by the phone shell.
    Never replace an object the preload already provided. */
 (function installErdOSPlatform() {
   if (window.erdos) return;
