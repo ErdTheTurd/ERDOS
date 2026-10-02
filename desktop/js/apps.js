@@ -409,9 +409,20 @@ function mountTerminal(body) {
     if (name === 'help') print('Commands: help, clear, neofetch, date, whoami, hack, amber, snake, echo');
     else if (name === 'clear') out.textContent = '';
     else if (name === 'neofetch') {
-      const s = await window.erdos.getSystemInfo();
+      let s = null;
+      try {
+        s = await window.erdos?.getSystemInfo?.();
+      } catch (err) {
+        print(String(err?.message || err));
+        return;
+      }
+      if (!s) {
+        print('System info is not available.');
+        return;
+      }
       const p = ErdOSProgress.get();
-      print(`        #####\n       #######     ${p?.displayName || 'user'}@ErdOS\n       ##O#O##     -----------\n       #######     OS: ErdOS ${s.version}\n     ###########   Host: ${s.hostname}\n    #############  Kernel: Phosphor Glass\n   ############### CPU: ${s.cpus} · RAM: ${s.memoryGB}G\n   ##  #######  ## Theme: Phosphor Glass\n  ###  ##   ##  ### Shell: erdai`);
+      const ram = s.memoryGB == null ? 'n/a' : `${s.memoryGB}G`;
+      print(`        #####\n       #######     ${p?.displayName || 'user'}@ErdOS\n       ##O#O##     -----------\n       #######     OS: ErdOS ${s.version}\n     ###########   Host: ${s.hostname}\n    #############  Kernel: Phosphor Glass\n   ############### CPU: ${s.cpus} · RAM: ${ram}\n   ##  #######  ## Theme: Phosphor Glass\n  ###  ##   ##  ### Shell: erdai`);
     } else if (name === 'date') print(new Date().toString());
     else if (name === 'whoami') print(ErdOSProgress.get()?.displayName || 'erdos-user');
     else if (name === 'hack') {
@@ -453,6 +464,7 @@ function mountFiles(body) {
   let current = '';
   const load = async (target) => {
     try {
+      if (!window.erdos?.listDir) throw new Error('The local file system is not available in the browser.');
       const data = await window.erdos.listDir(target || undefined);
       current = data.path;
       pathInput.value = current;
@@ -494,8 +506,14 @@ function mountFiles(body) {
           const name = prompt('Folder name');
           if (!name) return;
           const sep = current.includes('\\') ? '\\' : '/';
-          await window.erdos.createFolder(`${current}${sep}${name}`);
-          load(current);
+          try {
+            if (!window.erdos?.createFolder) throw new Error('Creating folders is not available in the browser.');
+            await window.erdos.createFolder(`${current}${sep}${name}`);
+            load(current);
+          } catch (err) {
+            list.innerHTML = '';
+            list.append(el('p', { text: String(err.message || err) }));
+          }
         },
       }),
     ]),
@@ -514,9 +532,14 @@ function mountNotepad(body, opts = {}) {
     if (body.__windowApi) body.__windowApi.setTitle(filePath ? `Notepad — ${filePath.split(/[\\/]/).pop()}` : 'Notepad');
   };
   const openFile = async (path) => {
-    area.value = await window.erdos.readFile(path);
-    filePath = path;
-    setTitle();
+    try {
+      if (!window.erdos?.readFile) throw new Error('Reading local files is not available in the browser.');
+      area.value = await window.erdos.readFile(path);
+      filePath = path;
+      setTitle();
+    } catch (err) {
+      area.value = String(err.message || err);
+    }
   };
   root.append(
     el('div', { className: 'app-toolbar' }, [
@@ -525,8 +548,13 @@ function mountNotepad(body, opts = {}) {
         type: 'button',
         text: 'Open',
         onClick: async () => {
-          const path = await window.erdos.pickOpenPath();
-          if (path) openFile(path);
+          try {
+            if (!window.erdos?.pickOpenPath) throw new Error('Opening files is not available in the browser.');
+            const path = await window.erdos.pickOpenPath();
+            if (path) openFile(path);
+          } catch (err) {
+            ErdOSUI.toast('Open', err?.message || 'Could not open a file', 'info');
+          }
         },
       }),
       el('button', {
@@ -534,14 +562,22 @@ function mountNotepad(body, opts = {}) {
         type: 'button',
         text: 'Save',
         onClick: async () => {
-          let path = filePath;
-          if (!path) path = await window.erdos.pickSavePath('untitled.txt');
-          if (!path) return;
-          await window.erdos.writeFile(path, area.value);
-          filePath = path;
-          setTitle();
-          await ErdOSProgress.onNoteSaved();
-          ErdOSUI.toast('Saved', path.split(/[\\/]/).pop(), 'info');
+          try {
+            let path = filePath;
+            if (!path) {
+              if (!window.erdos?.pickSavePath) throw new Error('Saving files is not available in the browser.');
+              path = await window.erdos.pickSavePath('untitled.txt');
+            }
+            if (!path) return;
+            if (!window.erdos?.writeFile) throw new Error('Writing local files is not available in the browser.');
+            await window.erdos.writeFile(path, area.value);
+            filePath = path;
+            setTitle();
+            await ErdOSProgress.onNoteSaved();
+            ErdOSUI.toast('Saved', path.split(/[\\/]/).pop(), 'info');
+          } catch (err) {
+            ErdOSUI.toast('Save', err?.message || 'Could not save', 'info');
+          }
         },
       }),
     ]),
@@ -765,9 +801,18 @@ function mountSettings(body) {
           type: 'button',
           text: 'Check updates',
           onClick: async () => {
-            const r = await window.erdos.checkUpdates();
-            if (r.status === 'dev') ErdOSUI.toast('Dev mode', 'Updates apply to packaged builds', 'info');
-            else ErdOSUI.toast('Update check', r.version ? `Latest seen: ${r.version}` : r.status, 'info');
+            try {
+              const r = await window.erdos?.checkUpdates?.();
+              if (!r) {
+                ErdOSUI.toast('Updates', 'Update check is not available.', 'info');
+                return;
+              }
+              if (r.status === 'dev') ErdOSUI.toast('Dev mode', 'Updates apply to packaged builds', 'info');
+              else if (r.status === 'web') ErdOSUI.toast('Updates', r.message || 'Not available in the browser.', 'info');
+              else ErdOSUI.toast('Update check', r.version ? `Latest seen: ${r.version}` : r.status, 'info');
+            } catch (err) {
+              ErdOSUI.toast('Updates', err?.message || 'Update check failed', 'info');
+            }
           },
         }),
         el('button', {
@@ -787,15 +832,33 @@ function mountSettings(body) {
   );
   root.append(el('div', { className: 'app-content' }, [panel]));
   body.append(root);
-  window.erdos.getSystemInfo().then((sys) => {
+  const systemInfo = window.erdos?.getSystemInfo?.();
+  if (!systemInfo) {
     info.innerHTML = '';
     info.append(
       el('h3', { text: 'System' }),
-      el('p', {
-        text: `ErdOS ${sys.version} · ${sys.platform}/${sys.arch}\nHost: ${sys.hostname}\nCPUs: ${sys.cpus} · RAM: ${sys.freememGB}/${sys.memoryGB} GB free\nHome: ${sys.home}`,
-      })
+      el('p', { text: 'System info is not available.' })
     );
-  });
+  } else {
+    systemInfo.then((sys) => {
+      const ram = sys.freememGB == null && sys.memoryGB == null
+        ? 'RAM: n/a'
+        : `RAM: ${sys.freememGB ?? '—'}/${sys.memoryGB ?? '—'} GB free`;
+      info.innerHTML = '';
+      info.append(
+        el('h3', { text: 'System' }),
+        el('p', {
+          text: `ErdOS ${sys.version} · ${sys.platform}/${sys.arch}\nHost: ${sys.hostname}\nCPUs: ${sys.cpus} · ${ram}\nHome: ${sys.home}`,
+        })
+      );
+    }).catch((err) => {
+      info.innerHTML = '';
+      info.append(
+        el('h3', { text: 'System' }),
+        el('p', { text: String(err?.message || err) })
+      );
+    });
+  }
 }
 
 

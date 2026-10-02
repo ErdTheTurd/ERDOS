@@ -39,15 +39,43 @@ const ErdOSProgress = (() => {
     return () => listeners.delete(fn);
   }
 
+  function isUntouchedDefault(raw) {
+    if (!raw || typeof raw !== 'object') return true;
+    const base = defaultProgress();
+    if (raw.displayName) return false;
+    if (raw.muted) return false;
+    if (raw.wallpaper && raw.wallpaper !== base.wallpaper) return false;
+    if (raw.iconLayout && Object.keys(raw.iconLayout).length) return false;
+    const scores = raw.highScores || {};
+    if (Object.keys(base.highScores).some((key) => Number(scores[key]) > 0)) return false;
+    if (raw.erdaiMemory?.facts?.length) return false;
+    if (Array.isArray(raw.pinnedApps) && raw.pinnedApps.join('\0') !== base.pinnedApps.join('\0')) {
+      return false;
+    }
+    return true;
+  }
+
   async function load() {
+    let fromDisk = null;
     try {
-      const raw = await window.erdos?.readProgress?.();
-      if (raw && typeof raw === 'object') return migrate(raw);
+      const raw = await window.erdos?.getProgress?.();
+      if (raw && typeof raw === 'object') fromDisk = raw;
     } catch (_) { /* fall through */ }
+    let fromLocal = null;
     try {
       const local = localStorage.getItem('erdos-progress');
-      if (local) return migrate(JSON.parse(local));
+      if (local) fromLocal = JSON.parse(local);
     } catch (_) { /* fall through */ }
+
+    // Preload exposes getProgress/setProgress. Older builds called
+    // readProgress/writeProgress, so the file stayed at the first-launch
+    // default while real state lived in localStorage. Keep that local copy
+    // once; save() then writes it through setProgress.
+    if (fromDisk && fromLocal && isUntouchedDefault(fromDisk) && !isUntouchedDefault(fromLocal)) {
+      return migrate(fromLocal);
+    }
+    if (fromDisk) return migrate(fromDisk);
+    if (fromLocal) return migrate(fromLocal);
     return defaultProgress();
   }
 
@@ -81,7 +109,7 @@ const ErdOSProgress = (() => {
       localStorage.setItem('erdos-progress', JSON.stringify(state));
     } catch (_) { /* ignore */ }
     try {
-      await window.erdos?.writeProgress?.(state);
+      await window.erdos?.setProgress?.(state);
     } catch (_) { /* ignore */ }
     emit();
   }
