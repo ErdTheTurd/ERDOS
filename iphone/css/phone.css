@@ -27,10 +27,16 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
   outline: 3px solid var(--sky);
   outline-offset: 2px;
 }
-.shell { min-height: 100%; }
+.shell { height: 100%; }
 .panel {
   min-height: 100%;
   padding-bottom: var(--tab);
+}
+#panel-browser {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
 }
 .panel[hidden] { display: none !important; }
 body.keyboard-open .tabbar { display: none; }
@@ -51,18 +57,19 @@ body.keyboard-open .panel { padding-bottom: var(--keyboard); }
 }
 .tabbar button {
   flex: 1;
-  min-height: 50px;
+  min-height: 48px;
   border: 0;
   border-radius: 12px;
   background: transparent;
-  color: var(--muted);
+  color: #8b97a8;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  font-size: 11px;
-  font-weight: 700;
+  gap: 1px;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
 }
 .tabbar button svg { width: 22px; height: 22px; }
 .tabbar button[aria-current="page"] { color: var(--blue); }
@@ -75,7 +82,9 @@ body.keyboard-open .panel { padding-bottom: var(--keyboard); }
   background: rgba(245, 247, 251, 0.94);
   backdrop-filter: blur(16px);
 }
-.nav-row, .tab-row { display: flex; align-items: center; gap: 8px; }
+.nav-row, .tool-row, .tab-row { display: flex; align-items: center; gap: 8px; }
+.tool-row { margin-top: 8px; }
+.tool-row .tab-row { flex: 1; min-width: 0; margin: 0; }
 .icon-btn, .blok-pill, .text-btn, .primary, .ghost, .danger-btn {
   min-height: 44px;
   border-radius: 14px;
@@ -108,15 +117,16 @@ body.keyboard-open .panel { padding-bottom: var(--keyboard); }
 .blok-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 0 12px 0 6px;
+  justify-content: center;
+  width: 44px;
+  padding: 0;
   background: var(--blue);
   color: white;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  flex: none;
 }
 .blok-pill img { width: 28px; height: 28px; border-radius: 8px; }
-.tab-row { margin-top: 8px; overflow: auto; }
+.tab-row { overflow: auto; }
 .page-tab, .add-tab {
   min-height: 36px;
   border: 0;
@@ -127,11 +137,15 @@ body.keyboard-open .panel { padding-bottom: var(--keyboard); }
 }
 .page-tab[aria-current="true"] { background: var(--ink); color: white; }
 .hint { margin: 6px 2px 0; color: var(--muted); font-size: 12px; }
-.viewport { min-height: calc(100vh - 150px - var(--tab)); background: white; }
-.viewport iframe { width: 100%; height: calc(100vh - 168px - var(--tab)); border: 0; background: white; }
-.home { padding: 8px 16px 24px; }
-.home h1 { margin: 12px 0 4px; font-size: 32px; letter-spacing: -0.04em; }
-.home p { margin: 0 0 16px; color: var(--muted); }
+.home[hidden], .viewport[hidden], iframe[hidden] { display: none !important; }
+.viewport { flex: 1; min-height: 0; background: white; }
+.viewport iframe { width: 100%; height: 100%; border: 0; background: white; display: block; }
+.home { flex: 1; min-height: 0; overflow: auto; padding: 18px 16px 24px; }
+.start-kicker { margin: 0; color: var(--blue); font-size: 13px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.home h1 { margin: 4px 0 8px; font-size: 34px; letter-spacing: -0.045em; line-height: 1.05; }
+.home p { margin: 0 0 18px; color: var(--muted); font-size: 16px; line-height: 1.35; }
+.tile-accent { background: var(--blue); color: white; }
+.tile-accent span { color: rgba(255,255,255,.86); }
 .tile-grid { display: grid; gap: 10px; }
 .tile {
   text-align: left;
@@ -273,7 +287,7 @@ body.keyboard-open .panel { padding-bottom: var(--keyboard); }
   padding: 14px;
   margin: 12px 0;
 }
-.blok-home h1 { font-size: 40px; }
+.blok-home h1 { font-size: 32px; margin-top: 14px; }
 .mode-row { display: flex; gap: 8px; }
 .mode-row button { flex: 1; min-height: 48px; border: 0; border-radius: 14px; background: var(--mist); font-weight: 800; }
 .mode-row button[aria-pressed="true"] { background: var(--blue); color: white; }
@@ -282,6 +296,7 @@ body.keyboard-open .panel { padding-bottom: var(--keyboard); }
 .fine { color: rgba(255,255,255,.88); font-size: 14px; }
 .card .fine, .panel-pad .fine { color: var(--muted); }
 .panel-pad { padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 24px; }
+.panel-pad > h1 { margin: 8px 0 4px; font-size: 34px; letter-spacing: -0.045em; }
 .panel-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; }
 .seg { display: flex; gap: 6px; padding: 4px; background: white; border-radius: 14px; }
 .seg button { flex: 1; min-height: 40px; border: 0; border-radius: 10px; background: transparent; font-weight: 800; }

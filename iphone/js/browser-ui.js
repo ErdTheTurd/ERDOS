@@ -5,6 +5,7 @@ const BrowserUI = (() => {
   const Logic = () => window.BlokLogic;
   let host;
   let frame;
+  let viewport;
   let omnibox;
   let hint;
   let home;
@@ -70,6 +71,7 @@ const BrowserUI = (() => {
     omnibox.value = target;
     home.hidden = true;
     frame.hidden = false;
+    if (viewport) viewport.hidden = false;
     if (window.erdos.browser.native) {
       frame.src = 'about:blank';
       await window.erdos.browser.load(target);
@@ -77,10 +79,11 @@ const BrowserUI = (() => {
       const q = new URL(target).searchParams.get('q') || 'search';
       frame.src = previewUrl(q);
       hint.hidden = false;
-      hint.textContent = 'Preview of Blok on a sample results page. On iPhone this opens ' + target;
+      hint.textContent = target;
     } else if (/^https?:\/\//i.test(target)) {
       frame.hidden = true;
       home.hidden = false;
+      if (viewport) viewport.hidden = true;
       home.innerHTML = '';
       home.append(el('div', { className: 'preview-note', text: 'On your iPhone, ERDOS opens this in its own browser view so Blok can filter it. This preview only loads ERDOS sample pages.' }));
       hint.hidden = false;
@@ -100,18 +103,20 @@ const BrowserUI = (() => {
     frame.hidden = true;
     frame.src = 'about:blank';
     home.hidden = false;
+    if (viewport) viewport.hidden = true;
     hint.hidden = true;
     home.innerHTML = '';
     home.append(
-      el('h1', { text: 'Browser' }),
-      el('p', { text: 'One tap opens a page. Blok can filter it in the on-device browser.' }),
+      el('p', { className: 'start-kicker', text: 'Start' }),
+      el('h1', { text: 'Search the web' }),
+      el('p', { text: 'Blok covers ads and AI on the page. Tap a chip to show one.' }),
       el('div', { className: 'tile-grid' }, [
         el('button', {
-          className: 'tile',
+          className: 'tile tile-accent',
           type: 'button',
           id: 'open-sample',
           onClick: () => navigate('erdos browser'),
-        }, [el('strong', { text: 'Sample search' }), el('span', { text: 'Google Web results with Blok on. This preview shows a sample page.' })]),
+        }, [el('strong', { text: 'Try Blok on a search' }), el('span', { text: 'Sample results, with ads and AI covered' })]),
       ])
     );
     renderTabs();
@@ -276,6 +281,8 @@ const BrowserUI = (() => {
     host = panel;
     frame = el('iframe', { id: 'page-preview', title: 'Page preview' });
     frame.hidden = true;
+    viewport = el('div', { className: 'viewport', id: 'browser-viewport' }, [frame]);
+    viewport.hidden = true;
     omnibox = el('input', { type: 'search', placeholder: 'Search or type a URL', 'aria-label': 'Address', autocomplete: 'off', enterkeyhint: 'go' });
     hint = el('p', { className: 'hint' });
     hint.hidden = true;
@@ -287,23 +294,22 @@ const BrowserUI = (() => {
         navigate(omnibox.value);
       },
     }, [omnibox]);
+    const tabs = el('div', { className: 'tab-row' });
     panel.append(
       el('header', { className: 'browser-chrome' }, [
-        el('div', { className: 'nav-row' }, [
+        el('div', { className: 'nav-row' }, [form, el('button', { className: 'blok-pill', type: 'button', id: 'blok-badge', 'aria-label': 'Blok for this site', onClick: openSheet }, [
+          el('img', { src: 'assets/blok-mark.svg', alt: '' }),
+        ])]),
+        el('div', { className: 'tool-row' }, [
           el('button', { className: 'icon-btn', type: 'button', text: '‹', 'aria-label': 'Back', onClick: () => { if (window.erdos.browser.native) window.erdos.browser.back(); else showHome(); } }),
           el('button', { className: 'icon-btn', type: 'button', text: '›', 'aria-label': 'Forward', onClick: () => window.erdos.browser.forward() }),
-          form,
-          el('button', { className: 'blok-pill', type: 'button', id: 'blok-badge', 'aria-label': 'Blok for this site', onClick: openSheet }, [
-            el('img', { src: 'assets/blok-mark.svg', alt: '' }),
-            'blok',
-          ]),
+          tabs,
           el('button', { className: 'icon-btn', type: 'button', text: '↻', 'aria-label': 'Reload', onClick: () => { if (window.erdos.browser.native) window.erdos.browser.reload(); else reloadPreview(); } }),
         ]),
-        el('div', { className: 'tab-row' }),
         hint,
       ]),
       home,
-      el('div', { className: 'viewport', id: 'browser-viewport' }, [frame])
+      viewport
     );
     window.addEventListener('message', onFrameMessage);
     window.addEventListener('resize', () => syncNativeFrame());

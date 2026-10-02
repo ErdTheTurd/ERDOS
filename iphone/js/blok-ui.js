@@ -32,7 +32,7 @@ const BlokUI = (() => {
       el('span', {}, [
         el('strong', { text: 'Text detection' }),
         document.createElement('br'),
-        el('small', { text: 'Beta · placeholder detector · hides at 80% or more' }),
+        el('small', { text: 'Beta. Covers a long block at 80% or more.' }),
       ])
     );
     textRow.addEventListener('click', async () => {
@@ -45,7 +45,7 @@ const BlokUI = (() => {
       el('span', {}, [
         el('strong', { text: 'Share feedback' }),
         document.createElement('br'),
-        el('small', { text: 'Off by default. Opt in to queue corrections for retraining.' }),
+        el('small', { text: 'Off. Turn on only if corrections may leave this phone.' }),
       ])
     );
     shareRow.addEventListener('click', async () => {
@@ -58,7 +58,7 @@ const BlokUI = (() => {
       el('span', {}, [
         el('strong', { text: 'Review before sending' }),
         document.createElement('br'),
-        el('small', { text: 'Approved items stay on this phone. Nothing is uploaded in this build.' }),
+        el('small', { text: 'You approve each one. Nothing is uploaded from this phone yet.' }),
       ])
     );
     reviewRow.addEventListener('click', async () => {
@@ -93,13 +93,12 @@ const BlokUI = (() => {
           onClick: () => window.Onboarding.openSettings(),
         }),
       ]),
-      el('h1', { text: 'Ads and AI, on this phone.' }),
-      el('p', { className: 'fine', text: 'Four proprietary detectors learn from the corrections you make here. Their weights are not in this build, so each answer is stored for on-device training and, only if you opt in, a later shared retrain.' }),
+      el('h1', { text: 'Covered until you tap.' }),
+      el('p', { className: 'fine', text: 'Ads, AI overviews, and chat widgets stay hidden. Corrections stay on this phone unless you opt in.' }),
       el('div', { className: 'card' }, [
         el('span', { className: 'pill-tag beta', text: 'Beta' }),
-        el('h2', { text: 'Text', style: 'margin:8px 0;font-size:28px;letter-spacing:-.04em;' }),
         textRow,
-        el('p', { className: 'fine', text: (summary.text ? summary.text.examples : 0) + ' corrections saved · model not installed' }),
+        el('p', { className: 'fine', text: (summary.text ? summary.text.examples : 0) + ' corrections saved on this phone' }),
       ]),
       el('div', { className: 'card' }, [
         el('strong', { text: 'Look' }),
