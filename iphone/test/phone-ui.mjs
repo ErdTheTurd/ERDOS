@@ -92,6 +92,18 @@ try {
   if (banned !== 0) throw new Error('Phone UI still has desktop chrome');
   await page.screenshot({ path: path.join(outDir, 'browser-home.png') });
 
+  await page.locator('input[aria-label="Address"]').fill('erdos');
+  await page.locator('form.omnibox').evaluate((form) => form.requestSubmit());
+  const searchFrame = page.frameLocator('#page-preview');
+  await searchFrame.getByText('ErdOS Search').waitFor({ timeout: 12000 });
+  const searchText = await searchFrame.locator('body').innerText();
+  if (/duckduckgo|google\.com\/search/i.test(searchText)) throw new Error('Query left ErdOS Search');
+  const shown = await page.locator('input[aria-label="Address"]').inputValue();
+  if (!shown.startsWith('erdos://search?q=')) throw new Error('Address bar did not keep ErdOS Search: ' + shown);
+  await page.screenshot({ path: path.join(outDir, 'erdos-search.png') });
+  await page.getByRole('button', { name: 'Back' }).click();
+  await page.locator('#open-sample').waitFor();
+
   await page.locator('#open-sample').click();
   const frame = page.frameLocator('#page-preview');
   await frame.getByText('Blok thinks this is AI-written').waitFor({ timeout: 8000 });

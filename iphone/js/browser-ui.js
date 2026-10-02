@@ -37,14 +37,29 @@ const BrowserUI = (() => {
     return 'demo/search.html?q=' + encodeURIComponent(q);
   }
 
-  function googleFor(query) {
-    return Logic().googleWebResultsUrl('https://www.google.com/search?q=' + encodeURIComponent(query || 'erdos'));
+  function snapshot(tab) {
+    return {
+      title: tab.title,
+      url: tab.url || '',
+      kind: tab.kind || 'home',
+      html: tab.html || '',
+      src: tab.src || '',
+    };
+  }
+
+  function pushEntry(tab, entry) {
+    if (!tab.entries) tab.entries = [];
+    const cursor = tab.cursor == null ? -1 : tab.cursor;
+    tab.entries = tab.entries.slice(0, cursor + 1);
+    tab.entries.push(entry);
+    tab.cursor = tab.entries.length - 1;
+    Object.assign(tab, entry);
   }
 
   async function syncNativeFrame() {
     if (!window.erdos.browser.native || !frame) return;
     const rect = frame.getBoundingClientRect();
-    const show = !sheetOpen && !!currentTab().url && rect.width > 0 && rect.height > 0;
+    const show = !sheetOpen && currentTab().kind === 'web' && rect.width > 0 && rect.height > 0;
     await window.erdos.browser.setVisible(show);
     if (show) {
       await window.erdos.browser.setFrame({
@@ -57,70 +72,129 @@ const BrowserUI = (() => {
   }
 
   async function navigate(raw) {
-    const tab = currentTab();
     const text = String(raw || '').trim();
-    if (!text) return showHome();
-    const looksUrl = /^https?:\/\//i.test(text) || /^[\w.-]+\.[a-z]{2,}(\/|$)/i.test(text);
-    let target = text;
-    if (!looksUrl) target = googleFor(text);
-    else if (!/^https?:\/\//i.test(target)) target = 'https://' + target;
-    const rewritten = Logic().googleWebResultsUrl(target);
-    if (rewritten) target = rewritten;
-    tab.url = target;
-    tab.title = text.slice(0, 24) || 'Page';
-    omnibox.value = target;
+    if (!text) return showHome(true);
+    if (text === 'erdos-sample') return openSample();
+    const target = await window.ErdOSSearch.resolve(text);
+    let src = target.src || '';
+    let display = target.display || src;
+    if (target.kind === 'url') {
+      const rewritten = Logic().googleWebResultsUrl(src);
+      if (rewritten) {
+        src = rewritten;
+        display = rewritten;
+      }
+    }
+    const entry = {
+      title: target.title || text.slice(0, 24) || 'Page',
+      url: display,
+      kind: target.kind === 'html' ? 'html' : 'web',
+      html: target.html || '',
+      src,
+    };
+    if (entry.kind === 'web' && src.indexOf('demo/') === 0) entry.kind = 'sample';
+    pushEntry(currentTab(), entry);
+    await renderEntry();
+  }
+
+  async function renderEntry() {
+    const tab = currentTab();
+    omnibox.value = tab.kind === 'home' ? '' : (tab.url || '');
+    hint.hidden = true;
+    if (tab.kind === 'home' || !tab.kind) return showHome(false);
     home.hidden = true;
-    frame.hidden = false;
     if (viewport) viewport.hidden = false;
-    if (window.erdos.browser.native) {
+    frame.hidden = false;
+    if (tab.kind === 'html') {
+      frame.removeAttribute('src');
+      frame.srcdoc = tab.html;
+      if (window.erdos.browser.native) await window.erdos.browser.setVisible(false);
+    } else if (window.erdos.browser.native && tab.kind === 'web') {
+      frame.removeAttribute('srcdoc');
       frame.src = 'about:blank';
-      await window.erdos.browser.load(target);
-    } else if (/^https?:\/\//i.test(target) && Logic().googleWebResultsUrl(target)) {
-      const q = new URL(target).searchParams.get('q') || 'search';
-      frame.src = previewUrl(q);
-      hint.hidden = false;
-      hint.textContent = target;
-    } else if (/^https?:\/\//i.test(target)) {
-      frame.hidden = true;
-      home.hidden = false;
-      if (viewport) viewport.hidden = true;
-      home.innerHTML = '';
-      home.append(el('div', { className: 'preview-note', text: 'On your iPhone, ERDOS opens this in its own browser view so Blok can filter it. This preview only loads ERDOS sample pages.' }));
-      hint.hidden = false;
-      hint.textContent = target;
+      await window.erdos.browser.load(tab.src);
     } else {
-      frame.src = target;
+      frame.removeAttribute('srcdoc');
+      frame.src = tab.src;
+      if (window.erdos.browser.native) await window.erdos.browser.setVisible(false);
     }
     renderTabs();
     syncNativeFrame();
   }
 
-  function showHome() {
+  function goBack() {
+    const tab = currentTab();
+    if (tab.kind === 'web' && window.erdos.browser.native) {
+      window.erdos.browser.back();
+      return;
+    }
+    if (tab.entries && tab.cursor > 0) {
+      tab.cursor -= 1;
+      Object.assign(tab, tab.entries[tab.cursor]);
+      renderEntry();
+      return;
+    }
+    showHome(false);
+  }
+
+  function goForward() {
+    const tab = currentTab();
+    if (tab.kind === 'web' && window.erdos.browser.native) {
+      window.erdos.browser.forward();
+      return;
+    }
+    if (tab.entries && tab.cursor < tab.entries.length - 1) {
+      tab.cursor += 1;
+      Object.assign(tab, tab.entries[tab.cursor]);
+      renderEntry();
+    }
+  }
+
+  function showHome(resetStack) {
     const tab = currentTab();
     tab.url = '';
     tab.title = 'Start';
+    tab.kind = 'home';
+    tab.html = '';
+    tab.src = '';
+    if (resetStack) {
+      tab.entries = [snapshot(tab)];
+      tab.cursor = 0;
+    }
     omnibox.value = '';
     frame.hidden = true;
     frame.src = 'about:blank';
+    frame.srcdoc = '';
     home.hidden = false;
     if (viewport) viewport.hidden = true;
     hint.hidden = true;
     home.innerHTML = '';
     home.append(
-      el('p', { className: 'start-kicker', text: 'Start' }),
-      el('h1', { text: 'Search the web' }),
-      el('p', { text: 'Blok covers ads and AI on the page. Tap a chip to show one.' }),
+      el('p', { className: 'start-kicker', text: 'ErdOS' }),
+      el('h1', { text: 'Search' }),
+      el('p', { text: 'The address bar uses ErdOS Search. A page you open stays in this browser.' }),
       el('div', { className: 'tile-grid' }, [
         el('button', {
           className: 'tile tile-accent',
           type: 'button',
           id: 'open-sample',
-          onClick: () => navigate('erdos browser'),
+          onClick: () => openSample(),
         }, [el('strong', { text: 'Try Blok on a search' }), el('span', { text: 'Sample results, with ads and AI covered' })]),
       ])
     );
     renderTabs();
     if (window.erdos.browser.native) window.erdos.browser.setVisible(false);
+  }
+
+  function openSample() {
+    pushEntry(currentTab(), {
+      title: 'Sample',
+      url: 'Blok sample',
+      kind: 'sample',
+      html: '',
+      src: previewUrl('erdos browser'),
+    });
+    renderEntry();
   }
 
   function renderTabs() {
@@ -133,8 +207,11 @@ const BrowserUI = (() => {
         text: tab.title,
         onClick: () => {
           active = tab.id;
-          if (tab.url) navigate(tab.url);
-          else showHome();
+          if (tab.entries && tab.entries[tab.cursor]) {
+            Object.assign(tab, tab.entries[tab.cursor]);
+            if (tab.kind === 'home') showHome(false);
+            else renderEntry();
+          } else showHome(true);
         },
       });
       if (tab.id === active) button.setAttribute('aria-current', 'true');
@@ -149,7 +226,7 @@ const BrowserUI = (() => {
         const id = 't' + Date.now();
         tabs.push({ id, title: 'Start', url: '' });
         active = id;
-        showHome();
+        showHome(true);
       },
     }));
   }
@@ -240,7 +317,12 @@ const BrowserUI = (() => {
   function onFrameMessage(event) {
     if (!frame || event.source !== frame.contentWindow) return;
     const data = event.data;
-    if (!data || data.source !== 'erdos-blok') return;
+    if (!data) return;
+    if (data.source === 'erdos-browser' && data.type === 'open' && data.url) {
+      navigate(data.url);
+      return;
+    }
+    if (data.source !== 'erdos-blok') return;
     if (data.type === 'ready') {
       const cfg = window.erdos.blok.configFor('sample-page');
       frame.contentWindow.postMessage({ source: 'erdos-blok-host', type: 'config', config: cfg }, '*');
@@ -294,27 +376,33 @@ const BrowserUI = (() => {
         navigate(omnibox.value);
       },
     }, [omnibox]);
-    const tabs = el('div', { className: 'tab-row' });
+    const tabRow = el('div', { className: 'tab-row' });
+    const stage = el('div', { className: 'browser-stage' }, [home, viewport]);
     panel.append(
+      stage,
       el('header', { className: 'browser-chrome' }, [
-        el('div', { className: 'nav-row' }, [form, el('button', { className: 'blok-pill', type: 'button', id: 'blok-badge', 'aria-label': 'Blok for this site', onClick: openSheet }, [
-          el('img', { src: 'assets/blok-mark.svg', alt: '' }),
-        ])]),
+        form,
         el('div', { className: 'tool-row' }, [
-          el('button', { className: 'icon-btn', type: 'button', text: '‹', 'aria-label': 'Back', onClick: () => { if (window.erdos.browser.native) window.erdos.browser.back(); else showHome(); } }),
-          el('button', { className: 'icon-btn', type: 'button', text: '›', 'aria-label': 'Forward', onClick: () => window.erdos.browser.forward() }),
-          tabs,
-          el('button', { className: 'icon-btn', type: 'button', text: '↻', 'aria-label': 'Reload', onClick: () => { if (window.erdos.browser.native) window.erdos.browser.reload(); else reloadPreview(); } }),
+          el('button', { className: 'icon-btn', type: 'button', text: '‹', 'aria-label': 'Back', onClick: () => goBack() }),
+          el('button', { className: 'icon-btn', type: 'button', text: '›', 'aria-label': 'Forward', onClick: () => goForward() }),
+          el('button', { className: 'blok-pill', type: 'button', id: 'blok-badge', 'aria-label': 'Blok for this site', onClick: openSheet }, [
+            el('img', { src: 'assets/blok-mark.svg', alt: '' }),
+          ]),
+          tabRow,
+          el('button', { className: 'icon-btn', type: 'button', text: '↻', 'aria-label': 'Reload', onClick: () => {
+            const tab = currentTab();
+            if (tab.kind === 'web' && window.erdos.browser.native) window.erdos.browser.reload();
+            else if (tab.kind === 'html' && tab.url) navigate(tab.url);
+            else reloadPreview();
+          } }),
         ]),
         hint,
-      ]),
-      home,
-      viewport
+      ])
     );
     window.addEventListener('message', onFrameMessage);
     window.addEventListener('resize', () => syncNativeFrame());
     if (window.visualViewport) window.visualViewport.addEventListener('resize', () => syncNativeFrame());
-    showHome();
+    showHome(true);
   }
 
   return { mount, navigate, openSheet, syncNativeFrame };
