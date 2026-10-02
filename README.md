@@ -63,11 +63,28 @@ git push origin v1.6.0
 - **Trophy Case**, quests, streaks, XP, rare wallpaper/theme drops
 - In-app update checks via `electron-updater` (packaged builds)
 
+## ERDOS for iPhone
+
+The iPhone app is a separate shell in `iphone/`. It reuses the `window.erdos` platform adapter and does not use the desktop taskbar or Start menu. The first launch is a swipeable intro (skip it, or replay it from Settings). Preview steps are in [iphone/README.md](iphone/README.md). There is no Xcode project in this repo.
+
+Preview the phone UI in a browser:
+
+```bash
+npm run iphone
+```
+
+Then open `http://localhost:4174` and use a 390×844 viewport. Logic checks:
+
+```bash
+npm run iphone:test
+```
+
 ## Project layout
 
 ```
 electron/     Main process, preload, progress IPC, auto-updater
 desktop/      Phosphor Glass UI (shell, WM, apps, habit loop)
+iphone/       iPhone UI, Blok page script, and starter rules
 website/      Public download / marketing page
 .github/      Release + Pages workflows
 ```

@@ -286,7 +286,7 @@
     }
   });
 
-  window.erdos.onUpdateStatus?.((payload) => {
+  window.erdos?.onUpdateStatus?.((payload) => {
     if (payload.status === 'available') {
       ErdOSUI.toast('Update available', `ErdOS ${payload.version}`, 'info');
     }
