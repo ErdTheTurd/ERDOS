@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blok</title>
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+  <div class="phone">
+    <div class="status"><span>9:41</span><span>Blok</span></div>
+    <section class="screen" id="onboarding">
+      <div class="hero">
+        <div class="blob a"></div>
+        <div class="blob b"></div>
+        <div class="brand">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#2F6BFF"/><rect x="14" y="24" width="36" height="26" rx="7" fill="none" stroke="#fff" stroke-width="4"/><rect x="24" y="12" width="16" height="16" rx="4" fill="#fff"/></svg>
+          <span>blok</span>
+        </div>
+        <h1 id="onboard-title">Ads and AI, covered until you tap.</h1>
+        <p class="lede" id="onboard-body">Blok hides ads, trackers, and AI content in Safari. Tap a placeholder to show it again.</p>
+        <ol class="steps" id="enable-steps" hidden></ol>
+        <p class="older" id="older-path" hidden>On iOS 17 and earlier: Settings, then Safari, then Extensions.</p>
+      </div>
+      <div class="onboard-actions">
+        <button type="button" class="text-btn" id="onboard-skip">Skip</button>
+        <button type="button" class="primary" id="onboard-next">Next</button>
+      </div>
+    </section>
+    <section class="screen" id="home" hidden>
+      <div class="hero">
+        <div class="blob a"></div>
+        <div class="top-actions">
+          <div class="brand">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#2F6BFF"/><rect x="14" y="24" width="36" height="26" rx="7" fill="none" stroke="#fff" stroke-width="4"/><rect x="24" y="12" width="16" height="16" rx="4" fill="#fff"/></svg>
+            <span>blok</span>
+          </div>
+          <button type="button" id="open-settings">Settings</button>
+        </div>
+        <h1>Covered until you tap.</h1>
+        <p class="lede">Today’s hides stay on this iPhone.</p>
+      </div>
+      <div class="sheet" id="home-sheet"></div>
+    </section>
+    <section class="screen" id="sites" hidden>
+      <div class="hero">
+        <button type="button" class="back" id="sites-back">Back</button>
+        <h1>Sites</h1>
+        <p class="lede">Ads and AI can be paused on one site at a time.</p>
+      </div>
+      <div class="sheet" id="sites-sheet"></div>
+    </section>
+    <section class="screen" id="settings" hidden>
+      <div class="hero">
+        <button type="button" class="back" id="settings-back">Back</button>
+        <h1>Settings</h1>
+      </div>
+      <div class="sheet" id="settings-sheet"></div>
+    </section>
+  </div>
+  <script src="/blok/blok-logic.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

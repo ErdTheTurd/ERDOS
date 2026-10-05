@@ -20,8 +20,8 @@ npm run iphone:test
 
 ## Blok in this build
 
-- **Rules.** `iphone/blok/rules.json` is a small starter list written for Blok (ads, trackers, known AI widget hosts, and a few cosmetic hides). It is not EasyList or any other GPL / CC BY-SA list. Per-site **Ads** and **AI** switches add `unless-domain` exceptions.
-- **Page script.** `iphone/blok/page-script.js` hides Google AI Overviews (and similar headings), sends Google web search to `udm=14`, and hides known AI chat widgets behind a tap-to-show chip. Clean mode hides them with no chip.
+- **Rules.** `blok/rules.json` (linked from `iphone/blok/rules.json`) is a small starter list written for Blok (ads, trackers, known AI widget hosts, and a few cosmetic hides). It is not EasyList or any other GPL / CC BY-SA list. Per-site **Ads** and **AI** switches add `unless-domain` exceptions.
+- **Page script.** `blok/page-script.js` hides Google AI Overviews (and similar headings), sends Google web search to `udm=14`, and hides known AI chat widgets behind a tap-to-show chip. Clean mode hides them with no chip. The same file is the Safari content script.
 - **Text rule (Beta).** The placeholder score hides a block at **80% or more** when it is at least about 50 words, unless you already said it was human. The overlay reads **Blok thinks this is AI-written (NN% sure)**. **No, that's human** and **Yep, that's AI** sit under it. The score is not from the real model.
 - **Other detectors.** Image, video, and audio expose the same interface and return “not installed”. Manual flags still work.
 - **Triple tap.** Triple-tap selected text, or triple-tap an image, video, or audio element, to mark it as AI. It is hidden behind the Blok overlay, stored as **Yep, that's AI**, and a toast offers **Undo**.
@@ -31,7 +31,8 @@ npm run iphone:test
 
 ```
 iphone/                 Phone HTML, CSS, and scripts
-iphone/blok/            Page script and starter content rules
+blok/                   Shared page script, rules, and Blok logic
+iphone/blok/            Symlinks to the shared files
 ```
 
 The desktop app is unchanged: `npm start` still launches Electron.

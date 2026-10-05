@@ -161,13 +161,7 @@
 
   function reviewShare(id, approve) {
     const state = learningState();
-    state.records = state.records.map((record) => {
-      if (!record || record.id !== id) return record;
-      const sharing = Object.assign({}, record.sharing, approve
-        ? { state: 'queued', eligible: true, reason: 'approved-on-device' }
-        : { state: 'on-device', eligible: false, reason: 'kept-local' });
-      return Object.assign({}, record, { sharing });
-    });
+    state.records = Logic.reviewShareRecords(state.records, id, approve);
     saveLearning(state);
     return adapterView();
   }
@@ -175,14 +169,7 @@
   function clearLearning(scope) {
     if (scope === 'shared') {
       const state = learningState();
-      state.records = state.records.map((record) => {
-        if (!record || !record.sharing) return record;
-        if (record.sharing.state !== 'queued' && record.sharing.state !== 'needs-review') return record;
-        return Object.assign({}, record, {
-          excerpt: '',
-          sharing: { eligible: false, state: 'on-device', reason: 'deleted-share-copy' },
-        });
-      });
+      state.records = Logic.clearLearningRecords(state.records, 'shared');
       saveLearning(state);
       return adapterView();
     }
