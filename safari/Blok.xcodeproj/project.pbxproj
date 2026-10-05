@@ -1,0 +1,737 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		12FBBE1BF7331B1EE0DC077F /* popup.html in ext */ = {isa = PBXBuildFile; fileRef = 3FE68C61F19E6DB441B8AE56 /* popup.html */; };
+		1877D6BC8C4D7B34478A7F11 /* OnboardingView.swift in app */ = {isa = PBXBuildFile; fileRef = E22720F9668A4020E7E61963 /* OnboardingView.swift */; };
+		18A8844B2154C6304AD93AD3 /* BlockerReload.swift in app */ = {isa = PBXBuildFile; fileRef = 55B48DCE8BB1DB83428913D6 /* BlockerReload.swift */; };
+		1C327D5BED8F249BE4DC21ED /* BlockerReload.swift in ext */ = {isa = PBXBuildFile; fileRef = 55B48DCE8BB1DB83428913D6 /* BlockerReload.swift */; };
+		2B9AF5E2DDC4090EF9681246 /* Assets.xcassets in app */ = {isa = PBXBuildFile; fileRef = 6C36FFE920F24CEDB7CFDBFC /* Assets.xcassets */; };
+		2E7A88573EE9CEE1957FD021 /* HomeView.swift in app */ = {isa = PBXBuildFile; fileRef = 5420869B93AA8C8198B23B2E /* HomeView.swift */; };
+		338233DF3779D756FD2EE986 /* page-script.js in ext */ = {isa = PBXBuildFile; fileRef = 033174AD4433D0F8542A0BF0 /* page-script.js */; };
+		344460DA5A7B0565E74E2316 /* BlokModel.swift in app */ = {isa = PBXBuildFile; fileRef = 7FAF6BF2CF21809A553F46DC /* BlokModel.swift */; };
+		3FB691AF3E667973AF4D66BF /* popup.js in ext */ = {isa = PBXBuildFile; fileRef = E20668676918E5A79B26A9FF /* popup.js */; };
+		45788A571C089EAB84E91794 /* PrivacyInfo.xcprivacy in app */ = {isa = PBXBuildFile; fileRef = 0BDFC2392C4F9A401DB5348F /* PrivacyInfo.xcprivacy */; };
+		61E339F1DD45F9CD2844216B /* images in ext */ = {isa = PBXBuildFile; fileRef = 1DC0F4DE7CE97567460C327C /* images */; };
+		71A1F79EADA4F6F6DA4FCDE2 /* BlokTheme.swift in app */ = {isa = PBXBuildFile; fileRef = 6FD3260755B63D42C95B0534 /* BlokTheme.swift */; };
+		76F9F7FB6DCA5D5BF30483FF /* BlokEngine.swift in app */ = {isa = PBXBuildFile; fileRef = AC2E1B0CF2E1E99E89005176 /* BlokEngine.swift */; };
+		8DF8CBD68607C7819BEC0710 /* BlokAppGroup.swift in app */ = {isa = PBXBuildFile; fileRef = 33DB21CC33F40C1C6378B278 /* BlokAppGroup.swift */; };
+		93FAD6C1EC5877D9A3C63C56 /* PrivacyInfo.xcprivacy in ext */ = {isa = PBXBuildFile; fileRef = 0BDFC2392C4F9A401DB5348F /* PrivacyInfo.xcprivacy */; };
+		941DD2004A52A57303640C78 /* popup.css in ext */ = {isa = PBXBuildFile; fileRef = 4F0775AF6FC30BB4360E561F /* popup.css */; };
+		942C5A4BD76BBE0C1A06A6C9 /* blok-logic.js in ext */ = {isa = PBXBuildFile; fileRef = 778C0ED06DAB9702BA76F14D /* blok-logic.js */; };
+		982EA9E1B67A1E0D3220E438 /* rules.json in ext */ = {isa = PBXBuildFile; fileRef = 1479145E6884432338BA1B83 /* rules.json */; };
+		AB9B8ED8B41BA44BA7E27D1D /* BlokModels.swift in app */ = {isa = PBXBuildFile; fileRef = 99945CCAA8DAAA8931C66CD6 /* BlokModels.swift */; };
+		AC0FBAEB7C87D536F3506137 /* BlokEngine.swift in ext */ = {isa = PBXBuildFile; fileRef = AC2E1B0CF2E1E99E89005176 /* BlokEngine.swift */; };
+		AC82631AB3B9DC62587F17B3 /* blockerList.json in blocker */ = {isa = PBXBuildFile; fileRef = 9CF29BA5636EA65BC5EB065A /* blockerList.json */; };
+		B20840DFD1E3887F20FEB07E /* SitesView.swift in app */ = {isa = PBXBuildFile; fileRef = 25BCBF2B63AED021E050C29E /* SitesView.swift */; };
+		C50DAA6ACD969F93924748F9 /* ContentBlockerRequestHandler.swift in blocker */ = {isa = PBXBuildFile; fileRef = C2CC45544FF4B2BB278E8592 /* ContentBlockerRequestHandler.swift */; };
+		CC95F517617755E456E19279 /* rules.json in app */ = {isa = PBXBuildFile; fileRef = 1479145E6884432338BA1B83 /* rules.json */; };
+		CEB83E5699420D25236D591D /* BlokAppGroup.swift in ext */ = {isa = PBXBuildFile; fileRef = 33DB21CC33F40C1C6378B278 /* BlokAppGroup.swift */; };
+		D9E0CFC6BDFDBE66550E10F2 /* manifest.json in ext */ = {isa = PBXBuildFile; fileRef = 80912AC8EF0450A786F46267 /* manifest.json */; };
+		DC56FE9F7CEFD5942FE44B69 /* SafariWebExtensionHandler.swift in ext */ = {isa = PBXBuildFile; fileRef = 8004F536AD95C3B49CA7E6CB /* SafariWebExtensionHandler.swift */; };
+		DF7BC762055078EE9D4E80EB /* background.js in ext */ = {isa = PBXBuildFile; fileRef = D508992AEB1A99F28F988C1C /* background.js */; };
+		E7B080083EA53128D542C161 /* BlokApp.swift in app */ = {isa = PBXBuildFile; fileRef = 6D174DCB2D6AEC218C53E983 /* BlokApp.swift */; };
+		E8BF89187107125EFC04C6D8 /* PrivacyInfo.xcprivacy in blocker */ = {isa = PBXBuildFile; fileRef = 0BDFC2392C4F9A401DB5348F /* PrivacyInfo.xcprivacy */; };
+		EF30A33608F0E9C4BE06D494 /* SettingsView.swift in app */ = {isa = PBXBuildFile; fileRef = F557E7613C522594926CEB0D /* SettingsView.swift */; };
+		F03D0B62804FA3A660CD0478 /* BlokAppGroup.swift in blocker */ = {isa = PBXBuildFile; fileRef = 33DB21CC33F40C1C6378B278 /* BlokAppGroup.swift */; };
+		F0A1B09B59AF9256F2FF7289 /* blok-logic.js in app */ = {isa = PBXBuildFile; fileRef = 778C0ED06DAB9702BA76F14D /* blok-logic.js */; };
+		395EE8D58C439FE9B36FC1A4 /* SafariServices.framework in app */ = {isa = PBXBuildFile; fileRef = 5CA0B2F1A8F203877C30E8DB /* SafariServices.framework */; };
+		8354C879FC839545DF41932C /* JavaScriptCore.framework in app */ = {isa = PBXBuildFile; fileRef = 8BC67017EF7DDA10A75E6421 /* JavaScriptCore.framework */; };
+		C293225A517C4069702B5CAF /* SafariServices.framework in ext */ = {isa = PBXBuildFile; fileRef = 5CA0B2F1A8F203877C30E8DB /* SafariServices.framework */; };
+		99551B9532EA305BC03A81BC /* JavaScriptCore.framework in ext */ = {isa = PBXBuildFile; fileRef = 8BC67017EF7DDA10A75E6421 /* JavaScriptCore.framework */; };
+		237EC0E19E5369E4D1422B31 /* BlokExtension.appex in Embed */ = {isa = PBXBuildFile; fileRef = C5F406EF884F0E1085CC1091 /* BlokExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		ED4BE427EDCEFC450B93A158 /* BlokContentBlocker.appex in Embed */ = {isa = PBXBuildFile; fileRef = 069579FFBC8980ECF4FF3E7C /* BlokContentBlocker.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5FD45A0B5E568EA3EEE3D282 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9831A0ED7992645038323751;
+			remoteInfo = BlokExtension;
+		};
+		CCC4EE906C092D14E6047201 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3C7193DB56A802AF110CD823;
+			remoteInfo = BlokContentBlocker;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		354DE1AFDDAA7FBB961D5290 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				237EC0E19E5369E4D1422B31 /* BlokExtension.appex in Embed */,
+				ED4BE427EDCEFC450B93A158 /* BlokContentBlocker.appex in Embed */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		6D174DCB2D6AEC218C53E983 /* BlokApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/BlokApp.swift"; sourceTree = SOURCE_ROOT; };
+		6FD3260755B63D42C95B0534 /* BlokTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/BlokTheme.swift"; sourceTree = SOURCE_ROOT; };
+		7FAF6BF2CF21809A553F46DC /* BlokModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/BlokModel.swift"; sourceTree = SOURCE_ROOT; };
+		E22720F9668A4020E7E61963 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/OnboardingView.swift"; sourceTree = SOURCE_ROOT; };
+		5420869B93AA8C8198B23B2E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/HomeView.swift"; sourceTree = SOURCE_ROOT; };
+		25BCBF2B63AED021E050C29E /* SitesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/SitesView.swift"; sourceTree = SOURCE_ROOT; };
+		F557E7613C522594926CEB0D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/SettingsView.swift"; sourceTree = SOURCE_ROOT; };
+		C9E3470D55F65C705B48345A /* AppInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "App/Info.plist"; sourceTree = SOURCE_ROOT; };
+		C4F1562A564421C5040D5037 /* Blok.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "App/Blok.entitlements"; sourceTree = SOURCE_ROOT; };
+		6C36FFE920F24CEDB7CFDBFC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "App/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
+		8004F536AD95C3B49CA7E6CB /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension/SafariWebExtensionHandler.swift"; sourceTree = SOURCE_ROOT; };
+		B7FBA1313F114F91F36B89C4 /* ExtInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Extension/Info.plist"; sourceTree = SOURCE_ROOT; };
+		E34E0BA53D31B9120091526C /* Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Extension/Extension.entitlements"; sourceTree = SOURCE_ROOT; };
+		80912AC8EF0450A786F46267 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "Extension/Resources/manifest.json"; sourceTree = SOURCE_ROOT; };
+		D508992AEB1A99F28F988C1C /* background.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "Extension/Resources/background.js"; sourceTree = SOURCE_ROOT; };
+		3FE68C61F19E6DB441B8AE56 /* popup.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "Extension/Resources/popup.html"; sourceTree = SOURCE_ROOT; };
+		4F0775AF6FC30BB4360E561F /* popup.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = "Extension/Resources/popup.css"; sourceTree = SOURCE_ROOT; };
+		E20668676918E5A79B26A9FF /* popup.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "Extension/Resources/popup.js"; sourceTree = SOURCE_ROOT; };
+		1DC0F4DE7CE97567460C327C /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Extension/Resources/images"; sourceTree = SOURCE_ROOT; };
+		C2CC45544FF4B2BB278E8592 /* ContentBlockerRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentBlocker/ContentBlockerRequestHandler.swift"; sourceTree = SOURCE_ROOT; };
+		0272EA9395B00CF3F5C45F3B /* BlockerInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ContentBlocker/Info.plist"; sourceTree = SOURCE_ROOT; };
+		83E19AFA77D0AADC403AA595 /* ContentBlocker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ContentBlocker/ContentBlocker.entitlements"; sourceTree = SOURCE_ROOT; };
+		9CF29BA5636EA65BC5EB065A /* blockerList.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "ContentBlocker/blockerList.json"; sourceTree = SOURCE_ROOT; };
+		33DB21CC33F40C1C6378B278 /* BlokAppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared/BlokAppGroup.swift"; sourceTree = SOURCE_ROOT; };
+		99945CCAA8DAAA8931C66CD6 /* BlokModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared/BlokModels.swift"; sourceTree = SOURCE_ROOT; };
+		AC2E1B0CF2E1E99E89005176 /* BlokEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared/BlokEngine.swift"; sourceTree = SOURCE_ROOT; };
+		55B48DCE8BB1DB83428913D6 /* BlockerReload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared/BlockerReload.swift"; sourceTree = SOURCE_ROOT; };
+		0BDFC2392C4F9A401DB5348F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Shared/PrivacyInfo.xcprivacy"; sourceTree = SOURCE_ROOT; };
+		778C0ED06DAB9702BA76F14D /* blok-logic.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "../blok/blok-logic.js"; sourceTree = SOURCE_ROOT; };
+		033174AD4433D0F8542A0BF0 /* page-script.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "../blok/page-script.js"; sourceTree = SOURCE_ROOT; };
+		1479145E6884432338BA1B83 /* rules.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "../blok/rules.json"; sourceTree = SOURCE_ROOT; };
+		B6CDB6E5D160E013280D3C68 /* Blok.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blok.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5F406EF884F0E1085CC1091 /* BlokExtension.appex */ = {isa = PBXFileReference; explicitFileType = wrapper.app-extension; includeInIndex = 0; path = BlokExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		069579FFBC8980ECF4FF3E7C /* BlokContentBlocker.appex */ = {isa = PBXFileReference; explicitFileType = wrapper.app-extension; includeInIndex = 0; path = BlokContentBlocker.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		5CA0B2F1A8F203877C30E8DB /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = "System/Library/Frameworks/SafariServices.framework"; sourceTree = SDKROOT; };
+		8BC67017EF7DDA10A75E6421 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = "System/Library/Frameworks/JavaScriptCore.framework"; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F001BC2AF9EB5498B3360756 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				395EE8D58C439FE9B36FC1A4 /* SafariServices.framework */,
+				8354C879FC839545DF41932C /* JavaScriptCore.framework */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		30DF5DB2668C55DBD174B4FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C293225A517C4069702B5CAF /* SafariServices.framework */,
+				99551B9532EA305BC03A81BC /* JavaScriptCore.framework */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		344E45FBBB0299866D7265FA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CF8D0BD4B75E8C2C174692A5 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				6D174DCB2D6AEC218C53E983 /* BlokApp.swift */,
+				6FD3260755B63D42C95B0534 /* BlokTheme.swift */,
+				7FAF6BF2CF21809A553F46DC /* BlokModel.swift */,
+				E22720F9668A4020E7E61963 /* OnboardingView.swift */,
+				5420869B93AA8C8198B23B2E /* HomeView.swift */,
+				25BCBF2B63AED021E050C29E /* SitesView.swift */,
+				F557E7613C522594926CEB0D /* SettingsView.swift */,
+				C9E3470D55F65C705B48345A /* AppInfo.plist */,
+				C4F1562A564421C5040D5037 /* Blok.entitlements */,
+				6C36FFE920F24CEDB7CFDBFC /* Assets.xcassets */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
+		AB5280FC43E8E42359B3FAA1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				80912AC8EF0450A786F46267 /* manifest.json */,
+				D508992AEB1A99F28F988C1C /* background.js */,
+				3FE68C61F19E6DB441B8AE56 /* popup.html */,
+				4F0775AF6FC30BB4360E561F /* popup.css */,
+				E20668676918E5A79B26A9FF /* popup.js */,
+				1DC0F4DE7CE97567460C327C /* images */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		DB1B645D927A85C5D0FC9BC3 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				8004F536AD95C3B49CA7E6CB /* SafariWebExtensionHandler.swift */,
+				B7FBA1313F114F91F36B89C4 /* ExtInfo.plist */,
+				E34E0BA53D31B9120091526C /* Extension.entitlements */,
+				AB5280FC43E8E42359B3FAA1 /* Resources */,
+			);
+			name = Extension;
+			sourceTree = "<group>";
+		};
+		021534D33F17320D4FF275AF /* ContentBlocker */ = {
+			isa = PBXGroup;
+			children = (
+				C2CC45544FF4B2BB278E8592 /* ContentBlockerRequestHandler.swift */,
+				0272EA9395B00CF3F5C45F3B /* BlockerInfo.plist */,
+				83E19AFA77D0AADC403AA595 /* ContentBlocker.entitlements */,
+				9CF29BA5636EA65BC5EB065A /* blockerList.json */,
+			);
+			name = ContentBlocker;
+			sourceTree = "<group>";
+		};
+		7A6860A1A04070265E6C4DE6 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				33DB21CC33F40C1C6378B278 /* BlokAppGroup.swift */,
+				99945CCAA8DAAA8931C66CD6 /* BlokModels.swift */,
+				AC2E1B0CF2E1E99E89005176 /* BlokEngine.swift */,
+				55B48DCE8BB1DB83428913D6 /* BlockerReload.swift */,
+				0BDFC2392C4F9A401DB5348F /* PrivacyInfo.xcprivacy */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		6240079F78A5DD4594C83782 /* blok */ = {
+			isa = PBXGroup;
+			children = (
+				778C0ED06DAB9702BA76F14D /* blok-logic.js */,
+				033174AD4433D0F8542A0BF0 /* page-script.js */,
+				1479145E6884432338BA1B83 /* rules.json */,
+			);
+			name = blok;
+			sourceTree = "<group>";
+		};
+		00C45FD35CB0F9C5F764F070 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B6CDB6E5D160E013280D3C68 /* Blok.app */,
+				C5F406EF884F0E1085CC1091 /* BlokExtension.appex */,
+				069579FFBC8980ECF4FF3E7C /* BlokContentBlocker.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ED2F3B048716C9DC7573911C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5CA0B2F1A8F203877C30E8DB /* SafariServices.framework */,
+				8BC67017EF7DDA10A75E6421 /* JavaScriptCore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ADCF10F76EBF2A74473E9DC4 /* Blok */ = {
+			isa = PBXGroup;
+			children = (
+				CF8D0BD4B75E8C2C174692A5 /* App */,
+				DB1B645D927A85C5D0FC9BC3 /* Extension */,
+				021534D33F17320D4FF275AF /* ContentBlocker */,
+				7A6860A1A04070265E6C4DE6 /* Shared */,
+				6240079F78A5DD4594C83782 /* blok */,
+				ED2F3B048716C9DC7573911C /* Frameworks */,
+				00C45FD35CB0F9C5F764F070 /* Products */,
+			);
+			name = Blok;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		29C7B681C8D62CBAC94D51C0 /* Blok */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 02DF5AA7FDE69DCB830FEF54 /* Build configuration list for PBXNativeTarget "Blok" */;
+			buildPhases = (
+				8682261519D15BD64A9E5D31 /* Sources */,
+				F001BC2AF9EB5498B3360756 /* Frameworks */,
+				E28FAD8F60ECDED9B4AD087A /* Resources */,
+				354DE1AFDDAA7FBB961D5290 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6CA4EADB7B09EBD4910B02B7 /* PBXTargetDependency */,
+				A948561834DAA7D82D0126B4 /* PBXTargetDependency */,
+			);
+			name = Blok;
+			productName = Blok;
+			productReference = B6CDB6E5D160E013280D3C68 /* Blok.app */;
+			productType = com.apple.product-type.application;
+		};
+		9831A0ED7992645038323751 /* BlokExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5AD264C1F2002224EA94F97A /* Build configuration list for PBXNativeTarget "BlokExtension" */;
+			buildPhases = (
+				597FD57E57ED99CEBFF1BB02 /* Sources */,
+				30DF5DB2668C55DBD174B4FC /* Frameworks */,
+				3F447DE10FA5EDEA89764824 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BlokExtension;
+			productName = BlokExtension;
+			productReference = C5F406EF884F0E1085CC1091 /* BlokExtension.appex */;
+			productType = com.apple.product-type.app-extension;
+		};
+		3C7193DB56A802AF110CD823 /* BlokContentBlocker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 79AF25BFA52637D079BE71F9 /* Build configuration list for PBXNativeTarget "BlokContentBlocker" */;
+			buildPhases = (
+				B4745ED9B0EDC669580EB9DC /* Sources */,
+				344E45FBBB0299866D7265FA /* Frameworks */,
+				93FFC385FCF969EFAB55D3DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BlokContentBlocker;
+			productName = BlokContentBlocker;
+			productReference = 069579FFBC8980ECF4FF3E7C /* BlokContentBlocker.appex */;
+			productType = com.apple.product-type.app-extension;
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		98F54143AB4E86B28C3AFEE0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					29C7B681C8D62CBAC94D51C0 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					9831A0ED7992645038323751 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					3C7193DB56A802AF110CD823 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = EF518AB9E379FA8088ED7FA6 /* Build configuration list for PBXProject "Blok" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = ADCF10F76EBF2A74473E9DC4 /* Blok */;
+			productRefGroup = 00C45FD35CB0F9C5F764F070 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				29C7B681C8D62CBAC94D51C0 /* Blok */,
+				9831A0ED7992645038323751 /* BlokExtension */,
+				3C7193DB56A802AF110CD823 /* BlokContentBlocker */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E28FAD8F60ECDED9B4AD087A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B9AF5E2DDC4090EF9681246 /* Assets.xcassets */,
+				45788A571C089EAB84E91794 /* PrivacyInfo.xcprivacy */,
+				F0A1B09B59AF9256F2FF7289 /* blok-logic.js */,
+				CC95F517617755E456E19279 /* rules.json */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3F447DE10FA5EDEA89764824 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D9E0CFC6BDFDBE66550E10F2 /* manifest.json */,
+				DF7BC762055078EE9D4E80EB /* background.js */,
+				12FBBE1BF7331B1EE0DC077F /* popup.html */,
+				941DD2004A52A57303640C78 /* popup.css */,
+				3FB691AF3E667973AF4D66BF /* popup.js */,
+				61E339F1DD45F9CD2844216B /* images */,
+				93FAD6C1EC5877D9A3C63C56 /* PrivacyInfo.xcprivacy */,
+				942C5A4BD76BBE0C1A06A6C9 /* blok-logic.js */,
+				338233DF3779D756FD2EE986 /* page-script.js */,
+				982EA9E1B67A1E0D3220E438 /* rules.json */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93FFC385FCF969EFAB55D3DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC82631AB3B9DC62587F17B3 /* blockerList.json */,
+				E8BF89187107125EFC04C6D8 /* PrivacyInfo.xcprivacy */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8682261519D15BD64A9E5D31 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7B080083EA53128D542C161 /* BlokApp.swift */,
+				71A1F79EADA4F6F6DA4FCDE2 /* BlokTheme.swift */,
+				344460DA5A7B0565E74E2316 /* BlokModel.swift */,
+				1877D6BC8C4D7B34478A7F11 /* OnboardingView.swift */,
+				2E7A88573EE9CEE1957FD021 /* HomeView.swift */,
+				B20840DFD1E3887F20FEB07E /* SitesView.swift */,
+				EF30A33608F0E9C4BE06D494 /* SettingsView.swift */,
+				8DF8CBD68607C7819BEC0710 /* BlokAppGroup.swift */,
+				AB9B8ED8B41BA44BA7E27D1D /* BlokModels.swift */,
+				76F9F7FB6DCA5D5BF30483FF /* BlokEngine.swift */,
+				18A8844B2154C6304AD93AD3 /* BlockerReload.swift */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		597FD57E57ED99CEBFF1BB02 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC56FE9F7CEFD5942FE44B69 /* SafariWebExtensionHandler.swift */,
+				CEB83E5699420D25236D591D /* BlokAppGroup.swift */,
+				AC0FBAEB7C87D536F3506137 /* BlokEngine.swift */,
+				1C327D5BED8F249BE4DC21ED /* BlockerReload.swift */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4745ED9B0EDC669580EB9DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C50DAA6ACD969F93924748F9 /* ContentBlockerRequestHandler.swift */,
+				F03D0B62804FA3A660CD0478 /* BlokAppGroup.swift */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6CA4EADB7B09EBD4910B02B7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9831A0ED7992645038323751 /* BlokExtension */;
+			targetProxy = 5FD45A0B5E568EA3EEE3D282 /* PBXContainerItemProxy */;
+		};
+		A948561834DAA7D82D0126B4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3C7193DB56A802AF110CD823 /* BlokContentBlocker */;
+			targetProxy = CCC4EE906C092D14E6047201 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		877A6BA951A2EA0025A2ABE8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = -Onone;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		959134B361DD7E21ADEA3164 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf-with-dsym;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = -O;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		3CF6A4F2E05B3AAE7E2CBFEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "App/Blok.entitlements";
+				INFOPLIST_FILE = "App/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Blok;
+				INFOPLIST_KEY_LSApplicationCategoryType = public.app-category.utilities;
+				PRODUCT_BUNDLE_IDENTIFIER = com.erdos.blok;
+				PRODUCT_MODULE_NAME = Blok;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = -Onone;
+			};
+			name = Debug;
+		};
+		23FB2CAEB38545C3793097DD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "App/Blok.entitlements";
+				INFOPLIST_FILE = "App/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Blok;
+				INFOPLIST_KEY_LSApplicationCategoryType = public.app-category.utilities;
+				PRODUCT_BUNDLE_IDENTIFIER = com.erdos.blok;
+				PRODUCT_MODULE_NAME = Blok;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = -O;
+			};
+			name = Release;
+		};
+		2AA0223F5929D1D6BFE534CF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = "Extension/Extension.entitlements";
+				INFOPLIST_FILE = "Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Blok;
+				PRODUCT_BUNDLE_IDENTIFIER = com.erdos.blok.Extension;
+				PRODUCT_MODULE_NAME = BlokExtension;
+				SKIP_INSTALL = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = -Onone;
+			};
+			name = Debug;
+		};
+		8B2DB9053A232B59945B8323 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = "Extension/Extension.entitlements";
+				INFOPLIST_FILE = "Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Blok;
+				PRODUCT_BUNDLE_IDENTIFIER = com.erdos.blok.Extension;
+				PRODUCT_MODULE_NAME = BlokExtension;
+				SKIP_INSTALL = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = -O;
+			};
+			name = Release;
+		};
+		0D29A6EE8529D1A0C4D721B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = "ContentBlocker/ContentBlocker.entitlements";
+				INFOPLIST_FILE = "ContentBlocker/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Blok Content Blocker";
+				PRODUCT_BUNDLE_IDENTIFIER = com.erdos.blok.ContentBlocker;
+				PRODUCT_MODULE_NAME = BlokContentBlocker;
+				SKIP_INSTALL = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = -Onone;
+			};
+			name = Debug;
+		};
+		73CCCFC03C18F6849B293115 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = "ContentBlocker/ContentBlocker.entitlements";
+				INFOPLIST_FILE = "ContentBlocker/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Blok Content Blocker";
+				PRODUCT_BUNDLE_IDENTIFIER = com.erdos.blok.ContentBlocker;
+				PRODUCT_MODULE_NAME = BlokContentBlocker;
+				SKIP_INSTALL = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = -O;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EF518AB9E379FA8088ED7FA6 /* Build configuration list for PBXProject "Blok" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				877A6BA951A2EA0025A2ABE8 /* Debug */,
+				959134B361DD7E21ADEA3164 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		02DF5AA7FDE69DCB830FEF54 /* Build configuration list for PBXNativeTarget "Blok" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3CF6A4F2E05B3AAE7E2CBFEE /* Debug */,
+				23FB2CAEB38545C3793097DD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5AD264C1F2002224EA94F97A /* Build configuration list for PBXNativeTarget "BlokExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2AA0223F5929D1D6BFE534CF /* Debug */,
+				8B2DB9053A232B59945B8323 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		79AF25BFA52637D079BE71F9 /* Build configuration list for PBXNativeTarget "BlokContentBlocker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0D29A6EE8529D1A0C4D721B9 /* Debug */,
+				73CCCFC03C18F6849B293115 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+}

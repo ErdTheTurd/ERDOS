@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Blok",
+  "description": "Hides ads and AI content in Safari. Text detection is Beta and uses a placeholder score in this build.",
+  "version": "1.0.0",
+  "icons": {
+    "48": "images/icon-48.png",
+    "96": "images/icon-96.png",
+    "128": "images/icon-128.png",
+    "256": "images/icon-256.png",
+    "512": "images/icon-512.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Blok",
+    "default_icon": {
+      "48": "images/icon-48.png",
+      "96": "images/icon-96.png"
+    }
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "js": ["blok-logic.js", "page-script.js"],
+      "matches": ["http://*/*", "https://*/*"],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
+  "permissions": ["nativeMessaging", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "browser_specific_settings": {
+    "safari": {
+      "strict_min_version": "16.0"
+    }
+  }
+}

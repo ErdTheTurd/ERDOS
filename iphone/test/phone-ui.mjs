@@ -9,7 +9,7 @@ const port = 4174;
 const base = `http://127.0.0.1:${port}`;
 
 function startServer() {
-  const child = spawn('npx', ['--yes', 'serve', root, '-p', String(port)], {
+  const child = spawn('npx', ['--yes', 'serve', root, '-p', String(port), '--symlinks'], {
     cwd: root,
     stdio: 'ignore',
   });

@@ -65,7 +65,11 @@ git push origin v1.6.0
 
 ## ERDOS for iPhone
 
-The iPhone app is a separate shell in `iphone/`. It reuses the `window.erdos` platform adapter and does not use the desktop taskbar or Start menu. The first launch is a swipeable intro (skip it, or replay it from Settings). Preview steps are in [iphone/README.md](iphone/README.md). There is no Xcode project in this repo.
+The iPhone app is a separate shell in `iphone/`. It reuses the `window.erdos` platform adapter and does not use the desktop taskbar or Start menu. The first launch is a swipeable intro (skip it, or replay it from Settings). Preview steps are in [iphone/README.md](iphone/README.md). Its bundle id is `com.erdos.browser`. There is no Xcode project for the ERDOS browser in this repo.
+
+## Blok for Safari
+
+Blok is also a separate iPhone app: a Safari web extension plus a content blocker, bundle id `com.erdos.blok`. Shared rules and the page script live in `blok/`. Build steps are in [safari/README.md](safari/README.md).
 
 Preview the phone UI in a browser:
 
@@ -84,7 +88,9 @@ npm run iphone:test
 ```
 electron/     Main process, preload, progress IPC, auto-updater
 desktop/      Phosphor Glass UI (shell, WM, apps, habit loop)
-iphone/       iPhone UI, Blok page script, and starter rules
+iphone/       iPhone UI (loads shared Blok files through symlinks)
+blok/         Shared Blok rules, page script, and detector logic
+safari/       Blok Safari extension app (Xcode project)
 website/      Public download / marketing page
 .github/      Release + Pages workflows
 ```

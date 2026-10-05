@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blok</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header>
+    <div class="mark" aria-hidden="true">
+      <svg viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#2F6BFF"/><rect x="14" y="24" width="36" height="26" rx="7" fill="none" stroke="#fff" stroke-width="4"/><rect x="24" y="12" width="16" height="16" rx="4" fill="#fff"/></svg>
+    </div>
+    <div>
+      <p class="word">blok</p>
+      <p class="host" id="host">This site</p>
+    </div>
+  </header>
+  <section class="counts" id="counts" aria-label="Blocked today"></section>
+  <section class="sheet">
+    <div class="row">
+      <div>
+        <strong>Ads</strong>
+        <span id="ads-note">On for this site</span>
+      </div>
+      <button type="button" id="ads-toggle" class="switch" aria-pressed="true" aria-label="Ads on this site"></button>
+    </div>
+    <div class="row">
+      <div>
+        <strong>AI</strong>
+        <span id="ai-note">On for this site</span>
+      </div>
+      <button type="button" id="ai-toggle" class="switch" aria-pressed="true" aria-label="AI on this site"></button>
+    </div>
+    <button type="button" id="pause" class="pause">Pause Blok on this site</button>
+    <p class="fine" id="beta">Text detection is Beta. This build uses a placeholder score, not the proprietary model. Sharing stays off unless you turn it on in the Blok app.</p>
+  </section>
+  <script src="popup.js"></script>
+</body>
+</html>
